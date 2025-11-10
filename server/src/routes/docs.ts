@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import pdfParse from 'pdf-parse';
 import fs from 'fs/promises';
+import { supabase, Document } from '../config/supabase';
 
 const router = Router();
 
@@ -100,18 +101,44 @@ router.post('/', upload.single('file'), async (req: Request, res: Response) => {
     // Limpar arquivo temporário
     await fs.unlink(req.file.path).catch(() => {});
 
-    // Preparar resposta
-    const document: DocumentResponse = {
-      id: generateDocId(),
-      filename: req.file.originalname,
-      type: req.file.originalname.substring(req.file.originalname.lastIndexOf('.') + 1),
-      size: req.file.size,
-      uploadedAt: new Date().toISOString(),
-      contentPreview: extractedText.substring(0, 200),
-      characterCount: extractedText.length,
+    // Preparar dados para salvar no Supabase
+    const fileType = req.file.originalname.substring(req.file.originalname.lastIndexOf('.') + 1);
+    const documentData: Document = {
+      title: req.file.originalname,
+      content: extractedText,
+      metadata: {
+        filename: req.file.originalname,
+        type: fileType,
+        size: req.file.size,
+        characterCount: extractedText.length,
+      }
     };
 
-    // TODO: Salvar no banco de dados
+    // Salvar no Supabase
+    const { data, error } = await supabase
+      .from('documents')
+      .insert([documentData])
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Erro ao salvar no Supabase:', error);
+      throw new Error(`Falha ao salvar documento: ${error.message}`);
+    }
+
+    console.log(`✅ Documento salvo no Supabase: ${data.id}`);
+
+    // Preparar resposta
+    const document: DocumentResponse = {
+      id: data.id,
+      filename: data.metadata.filename,
+      type: data.metadata.type,
+      size: data.metadata.size,
+      uploadedAt: data.created_at,
+      contentPreview: data.content.substring(0, 200),
+      characterCount: data.metadata.characterCount,
+    };
+
     // TODO: Processar para RAG (chunking, embeddings)
     
     console.log(`✅ Documento processado: ${document.filename} (${document.characterCount} caracteres)`);
@@ -137,12 +164,41 @@ router.post('/', upload.single('file'), async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/v1/docs - Listar documentos (TODO)
-router.get('/', (req: Request, res: Response) => {
-  res.json({
-    message: 'Endpoint para listar documentos (em desenvolvimento)',
-    documents: []
-  });
+// GET /api/v1/docs - Listar documentos
+router.get('/', async (req: Request, res: Response) => {
+  try {
+    const { data, error } = await supabase
+      .from('documents')
+      .select('id, title, metadata, created_at, updated_at')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      throw new Error(`Erro ao buscar documentos: ${error.message}`);
+    }
+
+    const documents = data.map(doc => ({
+      id: doc.id,
+      title: doc.title,
+      filename: doc.metadata.filename,
+      type: doc.metadata.type,
+      size: doc.metadata.size,
+      characterCount: doc.metadata.characterCount,
+      createdAt: doc.created_at,
+      updatedAt: doc.updated_at,
+    }));
+
+    return res.json({
+      success: true,
+      count: documents.length,
+      documents
+    });
+  } catch (error: any) {
+    console.error('Erro ao listar documentos:', error);
+    return res.status(500).json({
+      error: 'Failed to list documents',
+      message: error.message
+    });
+  }
 });
 
 // GET /api/v1/docs/:id - Obter documento específico (TODO)
