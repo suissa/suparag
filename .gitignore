@@ -1,7 +1,5 @@
 server/node_modules
 server/dist
-server/.env
-dashboard/node_modules
 dashboard/dist
 dashboard/.env
 node_modules/
