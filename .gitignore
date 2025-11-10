@@ -4,3 +4,4 @@ server/.env
 dashboard/node_modules
 dashboard/dist
 dashboard/.env
+node_modules/
