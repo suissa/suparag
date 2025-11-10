@@ -201,20 +201,75 @@ router.get('/', async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/v1/docs/:id - Obter documento específico (TODO)
-router.get('/:id', (req: Request, res: Response) => {
-  res.json({
-    message: 'Endpoint para obter documento (em desenvolvimento)',
-    id: req.params.id
-  });
+// GET /api/v1/docs/:id - Obter documento específico
+router.get('/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const { data, error } = await supabase
+      .from('documents')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return res.status(404).json({
+          error: 'Document not found',
+          message: `Documento com ID ${id} não encontrado`
+        });
+      }
+      throw new Error(`Erro ao buscar documento: ${error.message}`);
+    }
+
+    return res.json({
+      success: true,
+      document: {
+        id: data.id,
+        title: data.title,
+        content: data.content,
+        metadata: data.metadata,
+        createdAt: data.created_at,
+        updatedAt: data.updated_at,
+      }
+    });
+  } catch (error: any) {
+    console.error('Erro ao obter documento:', error);
+    return res.status(500).json({
+      error: 'Failed to get document',
+      message: error.message
+    });
+  }
 });
 
-// DELETE /api/v1/docs/:id - Deletar documento (TODO)
-router.delete('/:id', (req: Request, res: Response) => {
-  res.json({
-    message: 'Endpoint para deletar documento (em desenvolvimento)',
-    id: req.params.id
-  });
+// DELETE /api/v1/docs/:id - Deletar documento
+router.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const { error } = await supabase
+      .from('documents')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      throw new Error(`Erro ao deletar documento: ${error.message}`);
+    }
+
+    console.log(`🗑️ Documento deletado: ${id}`);
+
+    return res.json({
+      success: true,
+      message: 'Documento deletado com sucesso',
+      id
+    });
+  } catch (error: any) {
+    console.error('Erro ao deletar documento:', error);
+    return res.status(500).json({
+      error: 'Failed to delete document',
+      message: error.message
+    });
+  }
 });
 
 export default router;
