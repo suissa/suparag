@@ -250,6 +250,7 @@
 
 
 
+
   - [x] 9.1 Criar classe StatusChecker
 
 
@@ -280,6 +281,7 @@
     - Chamar clearInterval e clearTimeout
     - Remover do Map
     - _Requirements: 6.4_
+-
 
 - [ ] 10. Implementar backend - WhatsApp Router
 
