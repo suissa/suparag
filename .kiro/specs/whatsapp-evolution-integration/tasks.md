@@ -145,6 +145,7 @@
 
 
 
+
   - [x] 6.1 Criar WhatsAppConnectionContext.tsx
 
 
@@ -177,6 +178,7 @@
     - Adicionar useEffect no Provider para chamar checkConnection ao montar
     - Abrir modal automaticamente se isConnected=false
     - _Requirements: 1.1, 1.2_
+-
 
 - [ ] 7. Implementar backend - EvolutionService
 
