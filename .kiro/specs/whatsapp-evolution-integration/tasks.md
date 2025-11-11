@@ -92,7 +92,8 @@
     - Limitar máximo de tentativas (ex: 10)
     - _Requirements: Error Recovery Strategy 1_
 
-- [ ] 5. Implementar WhatsAppConnectionModal
+- [-] 5. Implementar WhatsAppConnectionModal
+
 
   - [ ] 5.1 Criar componente WhatsAppConnectionModal.tsx
     - Definir interface de props (open, onClose)
