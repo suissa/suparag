@@ -97,6 +97,7 @@
 
 
 
+
   - [x] 5.1 Criar componente WhatsAppConnectionModal.tsx
 
 
@@ -140,7 +141,8 @@
     - Limpar estado ao tentar novamente
     - _Requirements: 10.2, 10.3, 10.4, 10.5_
 
-- [ ] 6. Implementar Context Provider para conexão WhatsApp
+- [-] 6. Implementar Context Provider para conexão WhatsApp
+
 
   - [ ] 6.1 Criar WhatsAppConnectionContext.tsx
     - Definir interface WhatsAppConnectionContextValue
