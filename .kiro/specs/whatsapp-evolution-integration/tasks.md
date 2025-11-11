@@ -69,9 +69,13 @@
     - _Requirements: 2.9, 1.5_
 -
 
-- [ ] 4. Implementar hook useSSE para Server-Sent Events
+- [x] 4. Implementar hook useSSE para Server-Sent Events
 
-  - [ ] 4.1 Criar custom hook useSSE.ts
+
+
+  - [x] 4.1 Criar custom hook useSSE.ts
+
+
     - Definir interface UseSSEOptions (url, onMessage, onError, enabled)
     - Criar estado para isConnected
     - Implementar useEffect para criar EventSource quando enabled=true
@@ -80,7 +84,8 @@
     - Retornar { isConnected, close }
     - _Requirements: 5.2, 6.6_
   
-  - [ ] 4.2 Implementar reconexão automática com backoff
+  - [x] 4.2 Implementar reconexão automática com backoff
+
     - Adicionar estado para tentativas de reconexão
     - Implementar exponential backoff (1s, 2s, 4s, 8s, max 30s)
     - Reconectar automaticamente em caso de erro
