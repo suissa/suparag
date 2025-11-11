@@ -42,11 +42,14 @@ router.post('/', async (req: Request, res: Response) => {
       });
     }
 
-    // 2. Buscar contexto relevante usando busca semântica
+    // 2. Gerar embedding da pergunta usando OpenRouter
+    const embedding = await getEmbedding(message, apiKey);
+
+    // 3. Buscar contexto relevante usando busca semântica
     const { data: chunks, error: searchError } = await supabase
       .rpc('match_chunks', {
-        query_embedding: await getEmbedding(message),
-        match_threshold: 0.7,
+        query_embedding: embedding,
+        match_threshold: 0.5,
         match_count: 5
       });
 
@@ -54,22 +57,31 @@ router.post('/', async (req: Request, res: Response) => {
       console.error('Erro na busca semântica:', searchError);
     }
 
-    // 3. Construir contexto
+    console.log(`📊 Busca retornou ${chunks?.length || 0} chunks relevantes`);
+
+    // 4. Construir contexto
     let context = '';
+    let hasContext = false;
+    
     if (chunks && chunks.length > 0) {
+      hasContext = true;
       context = '\n\nRelevant context from documents:\n\n';
       chunks.forEach((chunk: any, index: number) => {
         context += `[Document ${index + 1}]\n${chunk.content}\n\n`;
       });
+    } else {
+      context = '\n\nIMPORTANT: No relevant documents were found in the knowledge base for this question. You must inform the user that you could not find information about this topic in the available documents.';
     }
 
-    // 4. Construir mensagens
+    // 5. Construir mensagens
+    const enhancedSystemPrompt = systemPrompt + context + (hasContext ? '' : '\n\nYou MUST tell the user that you could not find relevant information in the documents.');
+    
     const messages: Message[] = [
-      { role: 'system', content: systemPrompt + context },
+      { role: 'system', content: enhancedSystemPrompt },
       { role: 'user', content: message }
     ];
 
-    // 5. Chamar OpenRouter
+    // 6. Chamar OpenRouter
     const response = await axios.post(
       'https://openrouter.ai/api/v1/chat/completions',
       {
@@ -90,7 +102,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     const assistantMessage = response.data.choices[0].message.content;
 
-    // 6. Salvar conversa (opcional)
+    // 7. Salvar conversa (opcional)
     if (conversationId) {
       await supabase.from('conversations').insert({
         conversation_id: conversationId,
@@ -120,11 +132,33 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
-// Função auxiliar para gerar embedding (simplificada)
-async function getEmbedding(text: string): Promise<number[]> {
-  // Por enquanto, retorna um embedding dummy
-  // Em produção, você deve usar a API de embeddings do OpenAI ou similar
-  return new Array(1536).fill(0).map(() => Math.random());
+// Função auxiliar para gerar embedding usando OpenRouter
+async function getEmbedding(text: string, apiKey: string): Promise<number[]> {
+  try {
+    // Usar o modelo de embeddings do OpenAI via OpenRouter
+    const response = await axios.post(
+      'https://openrouter.ai/api/v1/embeddings',
+      {
+        model: 'openai/text-embedding-3-small',
+        input: text
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'http://localhost:5173',
+          'X-Title': 'NeuroPgRag'
+        }
+      }
+    );
+
+    return response.data.data[0].embedding;
+  } catch (error: any) {
+    console.error('Erro ao gerar embedding:', error.response?.data || error.message);
+    // Fallback: retornar embedding dummy se falhar
+    console.warn('⚠️ Usando embedding dummy como fallback');
+    return new Array(1536).fill(0).map(() => Math.random());
+  }
 }
 
 export default router;

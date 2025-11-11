@@ -126,16 +126,25 @@ export default function ChatPanel() {
                 >
                   <p className="whitespace-pre-wrap">{msg.content}</p>
                   {msg.sources && msg.sources.length > 0 && (
-                    <div className="mt-2 pt-2 border-t border-gray-300 dark:border-gray-600">
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                        Sources ({msg.sources.length}):
+                    <div className="mt-3 pt-3 border-t border-gray-300 dark:border-gray-600">
+                      <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                        📚 Sources ({msg.sources.length} documents):
                       </p>
                       {msg.sources.map((source, idx) => (
-                        <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 mb-1">
-                          • Document {source.documentId.substring(0, 8)}... (
-                          {(source.similarity * 100).toFixed(0)}% match)
+                        <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 mb-1.5 pl-2 border-l-2 border-primary/30">
+                          <span className="font-medium">Doc {idx + 1}:</span> {source.documentId.substring(0, 12)}...
+                          <span className="ml-2 text-primary font-semibold">
+                            {(source.similarity * 100).toFixed(1)}% relevance
+                          </span>
                         </div>
                       ))}
+                    </div>
+                  )}
+                  {msg.role === 'assistant' && (!msg.sources || msg.sources.length === 0) && (
+                    <div className="mt-2 pt-2 border-t border-yellow-300 dark:border-yellow-600">
+                      <p className="text-xs text-yellow-600 dark:text-yellow-400">
+                        ⚠️ No documents found for this query
+                      </p>
                     </div>
                   )}
                 </div>
