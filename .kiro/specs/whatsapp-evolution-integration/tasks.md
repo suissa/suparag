@@ -16,6 +16,7 @@
 
 
 
+
   - [x] 2.1 Criar interface ModalConfig completa em types
 
 
@@ -50,6 +51,7 @@
     - Chamar callback onClose ao fechar
     - Limpar event listeners no cleanup
     - _Requirements: 3.6, 3.7_
+-
 
 - [ ] 3. Criar configuração do WhatsApp Modal
 
@@ -281,6 +283,7 @@
   - _Requirements: 9.1, 9.2_
 
 - [ ] 14. Implementar logging e monitoramento
+
   - Adicionar logs em todas as operações críticas (createInstance, status changes)
   - Incluir timestamps em todos os logs
   - Logar erros com stack trace completo
