@@ -283,22 +283,29 @@
     - _Requirements: 6.4_
 -
 
-- [ ] 10. Implementar backend - WhatsApp Router
+- [x] 10. Implementar backend - WhatsApp Router
 
-  - [ ] 10.1 Criar arquivo routes/whatsapp.ts
+
+
+  - [x] 10.1 Criar arquivo routes/whatsapp.ts
+
+
     - Criar Express Router
     - Inicializar instâncias de EvolutionService, SSEManager e StatusChecker
     - Exportar router
     - _Requirements: 4.3_
   
-  - [ ] 10.2 Implementar endpoint POST /connect
+  - [x] 10.2 Implementar endpoint POST /connect
+
     - Gerar sessionId único (ou receber do body/header)
     - Chamar evolutionService.createInstance(sessionId)
     - Retornar resposta 200 imediatamente com { sessionId, instanceName }
     - Tratar erros e retornar 500 com mensagem
     - _Requirements: 4.2, 4.3, 4.4, 4.5, 4.6, 9.6_
   
-  - [ ] 10.3 Implementar endpoint GET /connect/stream (SSE)
+  - [x] 10.3 Implementar endpoint GET /connect/stream (SSE)
+
+
     - Extrair sessionId de query params ou header
     - Adicionar conexão ao SSEManager
     - Buscar instanceName do sessionId
@@ -309,14 +316,18 @@
     - Fechar conexão SSE após enviar status final
     - _Requirements: 4.7, 5.1, 5.5, 6.2, 6.3, 6.6_
   
-  - [ ] 10.4 Implementar endpoint GET /status
+  - [x] 10.4 Implementar endpoint GET /status
+
+
     - Extrair sessionId de query params
     - Buscar instanceName do sessionId
     - Chamar evolutionService.checkStatus()
     - Retornar JSON com { connected: boolean, status: string }
     - _Requirements: 1.1_
   
-  - [ ] 10.5 Implementar endpoint DELETE /disconnect
+  - [x] 10.5 Implementar endpoint DELETE /disconnect
+
+
     - Extrair sessionId de query params ou body
     - Buscar instanceName do sessionId
     - Parar StatusChecker
