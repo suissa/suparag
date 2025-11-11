@@ -3,6 +3,7 @@
 - [-] 1. Configurar ambiente e dependências
 
 
+
   - Instalar dependências necessárias (framer-motion já instalado, verificar sdk-evolution-chatbot)
   - Criar arquivo .env.example com variáveis EVOLUTION_API_URL e EVOLUTION_API_KEY
   - Adicionar validação de variáveis de ambiente no startup do servidor

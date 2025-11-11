@@ -1,13 +1,23 @@
 import express from 'express';
 import cors from 'cors';
+import { validateEnv, env } from './config/env';
 import docsRouter from './routes/docs';
 import settingsRouter from './routes/settings';
 import chunksRouter from './routes/chunks';
 import webhookRouter from './routes/webhook';
 import graphRouter from './routes/graph';
 
+// Validar variáveis de ambiente no startup
+try {
+  validateEnv();
+  console.log('✅ Variáveis de ambiente validadas com sucesso');
+} catch (error) {
+  console.error('❌ Falha na validação de variáveis de ambiente');
+  process.exit(1);
+}
+
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = env.port;
 
 // Middlewares
 app.use(cors());
