@@ -219,23 +219,28 @@
     - Chamar método de deleção da SDK (se disponível)
     - _Requirements: Deployment Notes 4_
 
-- [-] 8. Implementar backend - SSEManager
+- [x] 8. Implementar backend - SSEManager
 
 
 
-  - [ ] 8.1 Criar classe SSEManager
+
+  - [x] 8.1 Criar classe SSEManager
+
+
     - Criar Map para armazenar conexões ativas (sessionId → Response)
     - Implementar método addConnection(sessionId, res)
     - Configurar headers SSE corretos (Content-Type, Cache-Control, Connection)
     - _Requirements: 4.7_
   
-  - [ ] 8.2 Implementar método sendEvent
+  - [x] 8.2 Implementar método sendEvent
+
     - Formatar evento no padrão SSE (event: tipo\ndata: json\n\n)
     - Enviar evento para Response específico via res.write()
     - Tratar erros de envio (conexão fechada)
     - _Requirements: 5.1, 6.3, 10.1_
   
-  - [ ] 8.3 Implementar método closeConnection
+  - [x] 8.3 Implementar método closeConnection
+
     - Enviar evento final antes de fechar
     - Chamar res.end() para encerrar stream
     - Remover conexão do Map
