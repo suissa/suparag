@@ -246,7 +246,8 @@
     - Remover conexão do Map
     - _Requirements: 6.6_
 
-- [ ] 9. Implementar backend - StatusChecker
+- [-] 9. Implementar backend - StatusChecker
+
 
   - [ ] 9.1 Criar classe StatusChecker
     - Criar Map para armazenar intervalos ativos (instanceName → Timeout)
