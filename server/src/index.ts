@@ -7,6 +7,7 @@ import chunksRouter from './routes/chunks';
 import webhookRouter from './routes/webhook';
 import graphRouter from './routes/graph';
 import whatsappRouter from './routes/whatsapp';
+import chatRouter from './routes/chat';
 
 // Validar variáveis de ambiente no startup
 try {
@@ -40,6 +41,7 @@ app.use('/api/v1/chunks', chunksRouter);
 app.use('/api/v1/webhook', webhookRouter);
 app.use('/api/v1/graph', graphRouter);
 app.use('/api/v1/whatsapp', whatsappRouter);
+app.use('/api/v1/chat', chatRouter);
 
 // Error handler
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -59,6 +61,7 @@ app.listen(PORT, () => {
   console.log(`📲 Webhook API: http://localhost:${PORT}/api/v1/webhook`);
   console.log(`🕸️  Graph API: http://localhost:${PORT}/api/v1/graph`);
   console.log(`💬 WhatsApp API: http://localhost:${PORT}/api/v1/whatsapp`);
+  console.log(`🤖 Chat API: http://localhost:${PORT}/api/v1/chat`);
 });
 
 export default app;

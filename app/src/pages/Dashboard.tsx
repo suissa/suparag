@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { Upload as UploadIcon, Search, Eye, Trash2, MessageSquare, Plus, LayoutDashboard, Settings, HelpCircle } from 'lucide-react';
+import { Upload as UploadIcon, Search, Eye, Trash2, LayoutDashboard, Settings, HelpCircle } from 'lucide-react';
 import { documentsAPI } from '../services/api';
 import { Link } from 'react-router-dom';
+import ChatPanel from '../components/ChatPanel';
 
 interface Document {
   id: string;
@@ -260,39 +261,8 @@ export default function Dashboard() {
       </div>
 
       {/* RAG Chat Panel */}
-      <div className="hidden lg:flex h-full flex-col bg-background-light dark:bg-background-dark w-1/2">
-        <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#325567] p-4">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Chat Assistant</h2>
-          <button className="flex items-center justify-center gap-2 rounded-lg h-9 px-3 text-gray-700 dark:text-white text-sm font-medium hover:bg-gray-200 dark:hover:bg-white/10">
-            <Plus size={18} />
-            <span className="truncate">New Chat</span>
-          </button>
-        </div>
-
-        <div className="flex-1 flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 gap-4 p-6">
-          <div className="flex items-center justify-center size-16 rounded-full bg-primary/10 dark:bg-primary/20 text-primary">
-            <MessageSquare size={32} />
-          </div>
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-            Welcome to DocuChat AI!
-          </h3>
-          <p className="max-w-xs">
-            Ask me anything about the documents in your knowledge base to get started.
-          </p>
-        </div>
-
-        <div className="border-t border-gray-200 dark:border-[#325567] p-4">
-          <div className="relative">
-            <textarea
-              className="form-input w-full resize-none rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-[#233c48] pr-12 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary focus:ring-primary"
-              placeholder="Ask a question about your documents..."
-              rows={1}
-            />
-            <button className="absolute bottom-2 right-2 flex size-8 items-center justify-center rounded-md bg-primary text-white hover:bg-primary/90">
-              <MessageSquare size={20} />
-            </button>
-          </div>
-        </div>
+      <div className="hidden lg:flex h-full w-1/2">
+        <ChatPanel />
       </div>
     </div>
   );

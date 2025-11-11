@@ -55,4 +55,10 @@ export const graphAPI = {
   degree: (nodeId: string) => api.get(`/graph/degree/${nodeId}`),
 };
 
+// Chat
+export const chatAPI = {
+  sendMessage: (message: string, conversationId?: string) =>
+    api.post('/chat', { message, conversationId }),
+};
+
 export default api;
