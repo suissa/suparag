@@ -141,30 +141,39 @@
     - Limpar estado ao tentar novamente
     - _Requirements: 10.2, 10.3, 10.4, 10.5_
 
-- [-] 6. Implementar Context Provider para conexão WhatsApp
+- [x] 6. Implementar Context Provider para conexão WhatsApp
 
 
-  - [ ] 6.1 Criar WhatsAppConnectionContext.tsx
+
+  - [x] 6.1 Criar WhatsAppConnectionContext.tsx
+
+
     - Definir interface WhatsAppConnectionContextValue
     - Criar Context com createContext
     - Implementar Provider component
     - Criar estado global isConnected
     - _Requirements: 7.4_
   
-  - [ ] 6.2 Implementar métodos do contexto
+  - [x] 6.2 Implementar métodos do contexto
+
+
     - Implementar checkConnection que consulta GET /api/v1/whatsapp/status
     - Implementar connect que abre o modal
     - Implementar disconnect que chama DELETE /api/v1/whatsapp/disconnect
     - _Requirements: 1.1_
   
-  - [ ] 6.3 Integrar modal no Provider
+  - [x] 6.3 Integrar modal no Provider
+
+
     - Adicionar estado showModal no Provider
     - Renderizar WhatsAppConnectionModal dentro do Provider
     - Controlar prop open baseado em isConnected e showModal
     - Fechar modal automaticamente quando isConnected=true
     - _Requirements: 1.2, 7.2, 7.3_
   
-  - [ ] 6.4 Verificar status ao montar aplicação
+  - [x] 6.4 Verificar status ao montar aplicação
+
+
     - Adicionar useEffect no Provider para chamar checkConnection ao montar
     - Abrir modal automaticamente se isConnected=false
     - _Requirements: 1.1, 1.2_
