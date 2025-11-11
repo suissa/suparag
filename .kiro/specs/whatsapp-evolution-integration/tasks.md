@@ -335,7 +335,9 @@
     - Retornar 200 com { success: true }
     - _Requirements: Deployment Notes 4_
 
-- [ ] 11. Integrar router no servidor Express
+- [-] 11. Integrar router no servidor Express
+
+
 
   - Importar whatsappRouter em server/src/index.ts
   - Adicionar app.use('/api/v1/whatsapp', whatsappRouter)
