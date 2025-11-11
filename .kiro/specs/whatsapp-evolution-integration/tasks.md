@@ -184,6 +184,7 @@
 
 
 
+
   - [x] 7.1 Criar classe EvolutionService
 
 
@@ -218,7 +219,9 @@
     - Chamar método de deleção da SDK (se disponível)
     - _Requirements: Deployment Notes 4_
 
-- [ ] 8. Implementar backend - SSEManager
+- [-] 8. Implementar backend - SSEManager
+
+
 
   - [ ] 8.1 Criar classe SSEManager
     - Criar Map para armazenar conexões ativas (sessionId → Response)
