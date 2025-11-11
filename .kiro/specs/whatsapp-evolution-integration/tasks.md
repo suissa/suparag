@@ -246,30 +246,36 @@
     - Remover conexão do Map
     - _Requirements: 6.6_
 
-- [-] 9. Implementar backend - StatusChecker
+- [x] 9. Implementar backend - StatusChecker
 
 
-  - [ ] 9.1 Criar classe StatusChecker
+
+  - [x] 9.1 Criar classe StatusChecker
+
+
     - Criar Map para armazenar intervalos ativos (instanceName → Timeout)
     - Implementar método startChecking(instanceName, sessionId, callback)
     - Configurar setInterval para verificar a cada 30 segundos
     - Configurar setTimeout para timeout de 5 minutos
     - _Requirements: 6.2, 6.5_
   
-  - [ ] 9.2 Implementar lógica de verificação periódica
+  - [x] 9.2 Implementar lógica de verificação periódica
+
     - Chamar evolutionService.checkStatus() a cada intervalo
     - Comparar status atual com status anterior
     - Chamar callback apenas quando status mudar
     - _Requirements: 6.2, 6.3_
   
-  - [ ] 9.3 Implementar parada de verificação
+  - [x] 9.3 Implementar parada de verificação
+
     - Parar verificação quando status='connected'
     - Parar verificação quando timeout de 5min for atingido
     - Limpar interval e timeout
     - Remover do Map
     - _Requirements: 6.4, 6.5_
   
-  - [ ] 9.4 Implementar método stopChecking
+  - [x] 9.4 Implementar método stopChecking
+
     - Buscar interval no Map
     - Chamar clearInterval e clearTimeout
     - Remover do Map
