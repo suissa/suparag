@@ -12,6 +12,8 @@ export interface WhatsAppConnectionModalProps {
   open: boolean;
   /** Callback chamado quando o modal deve fechar */
   onClose: () => void;
+  /** ID da sessão do usuário */
+  sessionId: string;
 }
 
 /**
@@ -56,6 +58,7 @@ interface SSEEvent {
 export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = ({
   open,
   onClose,
+  sessionId,
 }) => {
   // Estado local da conexão
   const [connectionState, setConnectionState] = useState<ConnectionState>({
@@ -135,9 +138,9 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
     // Não atualizar estado aqui pois o useSSE já tenta reconectar
   };
 
-  // Integrar hook useSSE
+  // Integrar hook useSSE com sessionId
   const { close: closeSSE } = useSSE({
-    url: `${API_URL}/whatsapp/connect/stream`,
+    url: `${API_URL}/whatsapp/connect/stream?sessionId=${sessionId}`,
     onMessage: handleSSEMessage,
     onError: handleSSEError,
     enabled: shouldConnectSSE,
@@ -164,8 +167,9 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
         error: null,
       });
 
-      // Chamar API para iniciar conexão
-      const response = await api.post('/whatsapp/connect');
+      // Chamar API para iniciar conexão com sessionId
+      console.log('[WhatsAppConnectionModal] Iniciando conexão com sessionId:', sessionId);
+      const response = await api.post('/whatsapp/connect', { sessionId });
       
       console.log('[WhatsAppConnectionModal] Conexão iniciada:', response.data);
       

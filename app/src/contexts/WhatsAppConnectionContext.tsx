@@ -13,6 +13,9 @@ export interface WhatsAppConnectionContextValue {
   /** Indica se o WhatsApp está conectado */
   isConnected: boolean;
   
+  /** ID da sessão do usuário */
+  sessionId: string;
+  
   /** Verifica o status atual da conexão com o backend */
   checkConnection: () => Promise<void>;
   
@@ -61,6 +64,20 @@ export const WhatsAppConnectionProvider: React.FC<WhatsAppConnectionProviderProp
   
   // Estado para controlar exibição do modal (será implementado na subtarefa 6.3)
   const [showModal, setShowModal] = useState<boolean>(false);
+  
+  // Estado para armazenar sessionId
+  const [sessionId, setSessionId] = useState<string>(() => {
+    // Tentar recuperar sessionId do localStorage
+    const stored = localStorage.getItem('whatsapp_session_id');
+    if (stored) {
+      return stored;
+    }
+    // Gerar novo sessionId se não existir
+    const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+    localStorage.setItem('whatsapp_session_id', newSessionId);
+    console.log('[WhatsAppConnectionContext] Novo sessionId gerado:', newSessionId);
+    return newSessionId;
+  });
 
   /**
    * Verifica o status atual da conexão consultando o backend
@@ -73,8 +90,11 @@ export const WhatsAppConnectionProvider: React.FC<WhatsAppConnectionProviderProp
   const checkConnection = async (): Promise<void> => {
     try {
       console.log('[WhatsAppConnectionContext] Verificando status da conexão...');
+      console.log('[WhatsAppConnectionContext] SessionId:', sessionId);
       
-      const response = await api.get('/whatsapp/status');
+      const response = await api.get('/whatsapp/status', {
+        params: { sessionId }
+      });
       
       const { connected } = response.data;
       
@@ -118,8 +138,11 @@ export const WhatsAppConnectionProvider: React.FC<WhatsAppConnectionProviderProp
   const disconnect = async (): Promise<void> => {
     try {
       console.log('[WhatsAppConnectionContext] Desconectando WhatsApp...');
+      console.log('[WhatsAppConnectionContext] SessionId:', sessionId);
       
-      const response = await api.delete('/whatsapp/disconnect');
+      const response = await api.delete('/whatsapp/disconnect', {
+        params: { sessionId }
+      });
       
       console.log('[WhatsAppConnectionContext] Desconectado com sucesso:', response.data);
       
@@ -196,6 +219,7 @@ export const WhatsAppConnectionProvider: React.FC<WhatsAppConnectionProviderProp
   // Valor do contexto
   const contextValue: WhatsAppConnectionContextValue = {
     isConnected,
+    sessionId,
     checkConnection,
     connect,
     disconnect,
@@ -209,6 +233,7 @@ export const WhatsAppConnectionProvider: React.FC<WhatsAppConnectionProviderProp
       <WhatsAppConnectionModal
         open={showModal && !isConnected}
         onClose={handleCloseModal}
+        sessionId={sessionId}
       />
     </WhatsAppConnectionContext.Provider>
   );
