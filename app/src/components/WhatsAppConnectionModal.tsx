@@ -253,7 +253,7 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
                   </p>
                   <div className="bg-white p-4 rounded-lg shadow-lg">
                     <img
-                      src={`data:image/png;base64,${connectionState.qrCode}`}
+                      src={connectionState.qrCode.startsWith('data:') ? connectionState.qrCode : `data:image/png;base64,${connectionState.qrCode}`}
                       alt="QR Code WhatsApp"
                       className="w-64 h-64 md:w-80 md:h-80 object-contain"
                     />
