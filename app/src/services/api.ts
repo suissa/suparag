@@ -1,0 +1,58 @@
+import axios from 'axios';
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api/v1';
+
+const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Documents
+export const documentsAPI = {
+  upload: (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post('/docs', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+  list: () => api.get('/docs'),
+  get: (id: string) => api.get(`/docs/${id}`),
+  delete: (id: string) => api.delete(`/docs/${id}`),
+};
+
+// Settings
+export const settingsAPI = {
+  list: () => api.get('/settings'),
+  get: (key: string) => api.get(`/settings/${key}`),
+  update: (key: string, value: string) => api.post('/settings', { key, value }),
+  delete: (key: string) => api.delete(`/settings/${key}`),
+};
+
+// Chunks
+export const chunksAPI = {
+  list: (documentId?: string) => 
+    api.get('/chunks', { params: { document_id: documentId } }),
+  get: (id: string) => api.get(`/chunks/${id}`),
+  create: (data: any) => api.post('/chunks', data),
+  delete: (id: string) => api.delete(`/chunks/${id}`),
+};
+
+// Graph
+export const graphAPI = {
+  list: (params?: any) => api.get('/graph', { params }),
+  get: (id: string) => api.get(`/graph/${id}`),
+  create: (data: any) => api.post('/graph', data),
+  delete: (id: string) => api.delete(`/graph/${id}`),
+  neighbors: (nodeId: string, direction?: string) => 
+    api.get(`/graph/neighbors/${nodeId}`, { params: { direction } }),
+  path: (fromNode: string, toNode: string, maxDepth?: number) =>
+    api.get(`/graph/path/${fromNode}/${toNode}`, { params: { maxDepth } }),
+  subgraph: (nodeId: string, maxDepth?: number) =>
+    api.get(`/graph/subgraph/${nodeId}`, { params: { maxDepth } }),
+  degree: (nodeId: string) => api.get(`/graph/degree/${nodeId}`),
+};
+
+export default api;

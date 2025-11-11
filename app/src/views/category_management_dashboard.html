@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DocuMind - Category Overview</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#4A90E2",
+                        "background-light": "#F4F7FA",
+                        "background-dark": "#101c22",
+                        "card-light": "#FFFFFF",
+                        "card-dark": "#1a2831",
+                        "text-light-primary": "#4A4A4A",
+                        "text-dark-primary": "#FFFFFF",
+                        "text-light-secondary": "#9B9B9B",
+                        "text-dark-secondary": "#92b7c9",
+                        "border-light": "#EAEAEA",
+                        "border-dark": "#233c48"
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="flex h-full grow">
+<!-- SideNavBar -->
+<aside class="flex h-full min-h-screen w-64 flex-col justify-between border-r border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-4">
+<div class="flex flex-col gap-8">
+<div class="flex items-center gap-3 px-3 text-text-light-primary dark:text-text-dark-primary">
+<span class="material-symbols-outlined text-2xl text-primary">layers</span>
+<h2 class="text-lg font-bold">DocuMind</h2>
+</div>
+<div class="flex flex-col gap-4">
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 rounded-lg bg-primary/10 px-3 py-2 text-primary" href="#">
+<span class="material-symbols-outlined fill text-xl">grid_view</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-text-light-primary dark:text-text-dark-primary hover:bg-black/5 dark:hover:bg-white/5 rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">chat_bubble</span>
+<p class="text-sm font-medium leading-normal">Chat</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-text-light-primary dark:text-text-dark-primary hover:bg-black/5 dark:hover:bg-white/5 rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">folder_open</span>
+<p class="text-sm font-medium leading-normal">All Documents</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-text-light-primary dark:text-text-dark-primary hover:bg-black/5 dark:hover:bg-white/5 rounded-lg" href="#">
+<span class="material-symbols-outlined text-xl">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+</div>
+</div>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90">
+<span class="truncate">+ New Category</span>
+</button>
+</aside>
+<!-- Main Content -->
+<div class="flex flex-1 flex-col">
+<!-- TopNavBar -->
+<header class="flex h-16 items-center justify-between whitespace-nowrap border-b border-border-light dark:border-border-dark px-10 bg-card-light dark:bg-card-dark">
+<div class="flex flex-1">
+<label class="flex flex-col w-full max-w-md">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-10">
+<div class="text-text-light-secondary dark:text-text-dark-secondary flex bg-background-light dark:bg-background-dark items-center justify-center pl-3 rounded-l-lg border-r-0">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-light-primary dark:text-text-dark-primary focus:outline-0 focus:ring-0 border-none bg-background-light dark:bg-background-dark h-full placeholder:text-text-light-secondary dark:placeholder:text-text-dark-secondary px-4 rounded-l-none border-l-0 pl-2 text-sm font-normal" placeholder="Search documents..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 w-10 bg-transparent text-text-light-secondary dark:text-text-dark-secondary hover:bg-black/5 dark:hover:bg-white/5">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+</button>
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 w-10 bg-transparent text-text-light-secondary dark:text-text-dark-secondary hover:bg-black/5 dark:hover:bg-white/5">
+<span class="material-symbols-outlined text-2xl">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBQWTtbf3iIrvafFePGTvfUvOXte1P5UZpjm_eDF97vpo_ZNUguMosMqpyJ01Wxlp02kfLJb-mt5WRl5Z1fRCPbZ1D0CNXWBUaj6bKFhcRRFvlwx0oY18nzfEXV_EJsGKDYIoaD6una00i_JAYxfqczxkjzwFdhX3iq2gBF_lqZcPzD99sMV3vE1CVPa8EPWBaRBgzfcB6MdapuDhlfsU0T0mZGbLTon3KYbNOzyfIhGZOK_ekOw0GT-8pUkNm9dnDrWPpN-LpAby0T");'></div>
+</div>
+</header>
+<!-- Page Content -->
+<main class="flex-1 p-8">
+<div class="flex flex-col gap-6">
+<!-- PageHeading -->
+<div class="flex flex-wrap items-center justify-between gap-3">
+<p class="text-text-light-primary dark:text-text-dark-primary text-3xl font-bold leading-tight tracking-tight">Category Overview</p>
+</div>
+<!-- Chips -->
+<div class="flex gap-3">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-card-light dark:bg-card-dark pl-4 pr-2 border border-border-light dark:border-border-dark hover:bg-black/5 dark:hover:bg-white/5">
+<p class="text-text-light-primary dark:text-text-dark-primary text-sm font-medium">Sort by Name</p>
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary text-base">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-card-light dark:bg-card-dark pl-4 pr-2 border border-border-light dark:border-border-dark hover:bg-black/5 dark:hover:bg-white/5">
+<p class="text-text-light-primary dark:text-text-dark-primary text-sm font-medium">Sort by Document Count</p>
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary text-base">expand_more</span>
+</button>
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-2 rounded-lg bg-card-light dark:bg-card-dark pl-4 pr-2 border border-border-light dark:border-border-dark hover:bg-black/5 dark:hover:bg-white/5">
+<p class="text-text-light-primary dark:text-text-dark-primary text-sm font-medium">Sort by Date</p>
+<span class="material-symbols-outlined text-text-light-secondary dark:text-text-dark-secondary text-base">expand_more</span>
+</button>
+</div>
+<!-- Category Card Grid -->
+<div class="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-6">
+<!-- Category Card 1 -->
+<div class="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6 transition-shadow hover:shadow-lg dark:hover:shadow-primary/10">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined text-2xl text-primary">folder</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-text-light-secondary dark:text-text-dark-secondary rounded-full p-1 hover:bg-black/10 dark:hover:bg-white/10">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div>
+<a class="text-lg font-bold text-text-light-primary dark:text-text-dark-primary hover:text-primary dark:hover:text-primary" href="#">Financial Reports</a>
+<p class="text-3xl font-bold text-text-light-primary dark:text-text-dark-primary mt-2">15 <span class="text-base font-medium text-text-light-secondary dark:text-text-dark-secondary">Documents</span></p>
+</div>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">Updated 2 days ago</p>
+</div>
+<!-- Category Card 2 -->
+<div class="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6 transition-shadow hover:shadow-lg dark:hover:shadow-primary/10">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined text-2xl text-primary">folder</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-text-light-secondary dark:text-text-dark-secondary rounded-full p-1 hover:bg-black/10 dark:hover:bg-white/10">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div>
+<a class="text-lg font-bold text-text-light-primary dark:text-text-dark-primary hover:text-primary dark:hover:text-primary" href="#">Project Alpha Specs</a>
+<p class="text-3xl font-bold text-text-light-primary dark:text-text-dark-primary mt-2">8 <span class="text-base font-medium text-text-light-secondary dark:text-text-dark-secondary">Documents</span></p>
+</div>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">Updated 5 days ago</p>
+</div>
+<!-- Category Card 3 -->
+<div class="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6 transition-shadow hover:shadow-lg dark:hover:shadow-primary/10">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined text-2xl text-primary">folder</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-text-light-secondary dark:text-text-dark-secondary rounded-full p-1 hover:bg-black/10 dark:hover:bg-white/10">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div>
+<a class="text-lg font-bold text-text-light-primary dark:text-text-dark-primary hover:text-primary dark:hover:text-primary" href="#">Legal Contracts</a>
+<p class="text-3xl font-bold text-text-light-primary dark:text-text-dark-primary mt-2">22 <span class="text-base font-medium text-text-light-secondary dark:text-text-dark-secondary">Documents</span></p>
+</div>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">Updated 1 hour ago</p>
+</div>
+<!-- Category Card 4 -->
+<div class="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6 transition-shadow hover:shadow-lg dark:hover:shadow-primary/10">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined text-2xl text-primary">folder</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-text-light-secondary dark:text-text-dark-secondary rounded-full p-1 hover:bg-black/10 dark:hover:bg-white/10">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div>
+<a class="text-lg font-bold text-text-light-primary dark:text-text-dark-primary hover:text-primary dark:hover:text-primary" href="#">Meeting Notes</a>
+<p class="text-3xl font-bold text-text-light-primary dark:text-text-dark-primary mt-2">47 <span class="text-base font-medium text-text-light-secondary dark:text-text-dark-secondary">Documents</span></p>
+</div>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">Updated 1 day ago</p>
+</div>
+<!-- Category Card 5 -->
+<div class="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6 transition-shadow hover:shadow-lg dark:hover:shadow-primary/10">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined text-2xl text-primary">folder</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-text-light-secondary dark:text-text-dark-secondary rounded-full p-1 hover:bg-black/10 dark:hover:bg-white/10">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div>
+<a class="text-lg font-bold text-text-light-primary dark:text-text-dark-primary hover:text-primary dark:hover:text-primary" href="#">Marketing Materials</a>
+<p class="text-3xl font-bold text-text-light-primary dark:text-text-dark-primary mt-2">12 <span class="text-base font-medium text-text-light-secondary dark:text-text-dark-secondary">Documents</span></p>
+</div>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">Updated 1 week ago</p>
+</div>
+<!-- Category Card 6 -->
+<div class="group flex cursor-pointer flex-col gap-4 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6 transition-shadow hover:shadow-lg dark:hover:shadow-primary/10">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-4">
+<div class="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
+<span class="material-symbols-outlined text-2xl text-primary">folder</span>
+</div>
+</div>
+<button class="opacity-0 group-hover:opacity-100 transition-opacity text-text-light-secondary dark:text-text-dark-secondary rounded-full p-1 hover:bg-black/10 dark:hover:bg-white/10">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div>
+<a class="text-lg font-bold text-text-light-primary dark:text-text-dark-primary hover:text-primary dark:hover:text-primary" href="#">HR Policies</a>
+<p class="text-3xl font-bold text-text-light-primary dark:text-text-dark-primary mt-2">3 <span class="text-base font-medium text-text-light-secondary dark:text-text-dark-secondary">Documents</span></p>
+</div>
+<p class="text-sm text-text-light-secondary dark:text-text-dark-secondary">Updated 3 days ago</p>
+</div>
+</div>
+<!-- Empty State (Uncomment to view) -->
+<!-- 
+                         <div class="flex flex-col items-center justify-center text-center py-24 px-6 rounded-xl border-2 border-dashed border-border-light dark:border-border-dark mt-6">
+                            <div class="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 mb-6">
+                                <span class="material-symbols-outlined text-4xl text-primary">create_new_folder</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-text-light-primary dark:text-text-dark-primary">No categories yet</h3>
+                            <p class="mt-2 max-w-sm text-text-light-secondary dark:text-text-dark-secondary">Create your first category to start organizing your documents.</p>
+                            <button class="mt-8 flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-6 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90">
+                                <span class="truncate">Create Category</span>
+                            </button>
+                         </div>
+                         -->
+</div>
+</main>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,73 +1,149 @@
-# React + TypeScript + Vite
+# NeuroPgRag - Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface web para o sistema de Chat AI com RAG + WhatsApp.
 
-Currently, two official plugins are available:
+## 🚀 Instalação
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+cd app
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔧 Configuração
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+O arquivo `.env` já está configurado para conectar com a API local:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_URL=http://localhost:4000/api/v1
+```
+
+## 📦 Executar
+
+```bash
+# Desenvolvimento
+npm run dev
+
+# Build para produção
+npm run build
+
+# Preview do build
+npm run preview
+```
+
+## 🎨 Funcionalidades
+
+### 1. Upload de Documentos
+- Upload de arquivos PDF, TXT e MD
+- Validação de tipo e tamanho (máx. 10MB)
+- Preview do conteúdo extraído
+- Feedback visual de sucesso/erro
+
+### 2. Listagem de Documentos
+- Visualização de todos os documentos
+- Detalhes: tipo, tamanho, caracteres, data
+- Visualizar conteúdo completo
+- Deletar documentos
+
+### 3. Configurações
+- Gerenciar configurações do sistema
+- OpenRouter API Key
+- Modelo selecionado
+- System Prompt
+
+### 4. Chat (Em desenvolvimento)
+- Interface de chat com IA
+- Integração com RAG
+- Histórico de conversas
+
+### 5. Grafo (Em desenvolvimento)
+- Visualização do grafo de conhecimento
+- Relações entre documentos
+- Busca de caminhos
+
+## 🧪 Testar Integração
+
+1. **Iniciar o servidor backend:**
+```bash
+cd server
+npm run dev
+```
+
+2. **Iniciar o frontend:**
+```bash
+cd app
+npm run dev
+```
+
+3. **Acessar:** http://localhost:5173
+
+4. **Testar upload:**
+   - Clique em "Escolher Arquivo"
+   - Selecione um arquivo PDF, TXT ou MD
+   - Clique em "Fazer Upload"
+   - Verifique o sucesso e os detalhes do documento
+
+5. **Verificar no banco:**
+   - Acesse a página "Documentos"
+   - Veja o documento listado
+   - Clique no ícone de olho para visualizar o conteúdo
+
+## 📊 Estrutura
+
+```
+app/
+├── src/
+│   ├── components/
+│   │   └── Layout.tsx          # Layout principal com sidebar
+│   ├── pages/
+│   │   ├── Upload.tsx          # Página de upload
+│   │   ├── Documents.tsx       # Listagem de documentos
+│   │   └── Settings.tsx        # Configurações
+│   ├── services/
+│   │   └── api.ts              # Cliente API (axios)
+│   ├── App.tsx                 # Rotas principais
+│   ├── main.tsx                # Entry point
+│   └── index.css               # Tailwind CSS
+├── .env                        # Variáveis de ambiente
+├── tailwind.config.js          # Configuração Tailwind
+└── package.json
+```
+
+## 🎨 Tecnologias
+
+- **React 19** - Framework UI
+- **TypeScript** - Tipagem estática
+- **Vite** - Build tool
+- **Tailwind CSS** - Estilização
+- **React Router** - Roteamento
+- **Axios** - Cliente HTTP
+- **Lucide React** - Ícones
+
+## 🔗 API Endpoints Utilizados
+
+- `POST /api/v1/docs` - Upload de documentos
+- `GET /api/v1/docs` - Listar documentos
+- `GET /api/v1/docs/:id` - Obter documento
+- `DELETE /api/v1/docs/:id` - Deletar documento
+- `GET /api/v1/settings` - Listar configurações
+- `POST /api/v1/settings` - Atualizar configuração
+
+## 🐛 Troubleshooting
+
+### Erro de CORS
+Se encontrar erro de CORS, verifique se o servidor backend está com CORS habilitado:
+```typescript
+app.use(cors());
+```
+
+### API não conecta
+Verifique se:
+1. O servidor backend está rodando na porta 4000
+2. A URL no `.env` está correta
+3. Não há firewall bloqueando a conexão
+
+### Build falha
+```bash
+rm -rf node_modules package-lock.json
+npm install
+npm run build
 ```

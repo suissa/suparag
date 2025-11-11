@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DocuManager - Upload Documents</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex min-h-screen">
+<!-- SideNavBar -->
+<aside class="w-64 flex-shrink-0 bg-[#111c22] p-4 flex flex-col justify-between">
+<div class="flex flex-col gap-8">
+<div class="flex items-center gap-3 px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="DocuManager logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBLMLIc9BVey7Ni82-QFe_3QZaH6DWRynbnXdvws9qFlFEPUPZD83FD60qkOELxGXzMSsiJHGG06dVIANWr-HPHllg7Qlbb5Jq60qA6BwPQ2YWnQ8MqNmEy2PqblnCeL1QIibrSFz1jEJ1sfrteX2CccOVoLbt_gGWrHRaXBmwNUI-fLh_usKcturb_2cXMf9LIJ5QWpUN8E9Aza-XsHblprQBv8NcE22FVp5wqsRkfPrgnkuSTeNYODfKyT2RLmb6B_pbGhrW3Em67");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-medium leading-normal">DocuManager</h1>
+<p class="text-[#92b7c9] text-sm font-normal leading-normal">Workspace</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">folder</span>
+<p class="text-sm font-medium leading-normal">Documents</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<p class="text-sm font-medium leading-normal">Chat</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-sm font-medium leading-normal">Analytics</p>
+</a>
+</nav>
+</div>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-3 py-2 text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-white/70 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<p class="text-sm font-medium leading-normal">Logout</p>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-8 overflow-y-auto">
+<div class="max-w-4xl mx-auto flex flex-col gap-8">
+<!-- PageHeading -->
+<div class="flex flex-wrap justify-between gap-3">
+<div class="flex flex-col gap-2">
+<p class="text-slate-800 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Upload Your Documents</p>
+<p class="text-slate-500 dark:text-[#92b7c9] text-base font-normal leading-normal">Add new files to your knowledge base</p>
+</div>
+</div>
+<!-- EmptyState / Dropzone -->
+<div class="flex flex-col">
+<div class="flex flex-col items-center gap-6 rounded-lg border-2 border-dashed border-slate-300 dark:border-[#325567] px-6 py-14 bg-slate-50 dark:bg-slate-900/20 hover:border-primary dark:hover:border-primary transition-colors">
+<div class="text-primary">
+<span class="material-symbols-outlined !text-5xl">cloud_upload</span>
+</div>
+<div class="flex max-w-[480px] flex-col items-center gap-2">
+<p class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] text-center">Drag &amp; drop files here</p>
+<p class="text-slate-600 dark:text-white/80 text-sm font-normal leading-normal text-center">Supports PDF, DOCX, TXT. Max file size: 25MB</p>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-slate-700 dark:bg-[#233c48] text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-slate-600 dark:hover:bg-slate-500/50">
+<span class="truncate">Or, browse for files</span>
+</button>
+</div>
+</div>
+<!-- File List / Queue -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center p-4 rounded-lg bg-slate-100 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
+<div class="flex-shrink-0 mr-4">
+<span class="material-symbols-outlined text-green-500 !text-3xl">check_circle</span>
+</div>
+<div class="flex-grow">
+<p class="text-slate-800 dark:text-white font-medium">quarterly-report-q3.pdf</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">1.2 MB - Upload Complete</p>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-2">
+<div class="bg-green-500 h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+</div>
+<button class="ml-4 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex items-center p-4 rounded-lg bg-slate-100 dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800">
+<div class="flex-shrink-0 mr-4">
+<span class="material-symbols-outlined text-primary !text-3xl">upload</span>
+</div>
+<div class="flex-grow">
+<p class="text-slate-800 dark:text-white font-medium">project-charter-v2.docx</p>
+<p class="text-slate-500 dark:text-slate-400 text-sm">2.5 MB - 65%</p>
+<div class="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5 mt-2">
+<div class="bg-primary h-1.5 rounded-full" style="width: 65%"></div>
+</div>
+</div>
+<button class="ml-4 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex items-center p-4 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-900/50">
+<div class="flex-shrink-0 mr-4">
+<span class="material-symbols-outlined text-red-500 !text-3xl">error</span>
+</div>
+<div class="flex-grow">
+<p class="text-red-800 dark:text-red-300 font-medium">research-notes.txt</p>
+<p class="text-red-600 dark:text-red-400 text-sm">Upload failed: File size exceeds the limit</p>
+<div class="w-full bg-red-200 dark:bg-red-900/60 rounded-full h-1.5 mt-2">
+<div class="bg-red-500 h-1.5 rounded-full" style="width: 30%"></div>
+</div>
+</div>
+<button class="ml-4 text-red-400 dark:text-red-500 hover:text-red-600 dark:hover:text-red-300">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- SectionHeader -->
+<h3 class="text-slate-800 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] pt-4">Optional: Organize Your Documents</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- TextField / Tagging -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-800 dark:text-white text-base font-medium leading-normal" for="tags">Add tags</label>
+<div class="flex items-center w-full rounded-lg border border-slate-300 dark:border-[#325567] bg-slate-100 dark:bg-[#192b33] focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+<input class="form-input flex-1 bg-transparent text-slate-800 dark:text-white placeholder:text-slate-400 dark:placeholder:text-[#92b7c9] p-3 text-base font-normal leading-normal border-0 focus:ring-0" id="tags" placeholder="e.g., project-alpha, legal, 2024"/>
+<button class="text-slate-400 dark:text-[#92b7c9] px-3">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+<div class="flex flex-wrap gap-2 pt-2">
+<span class="flex items-center gap-1.5 bg-primary/20 text-primary text-sm font-medium px-2 py-1 rounded-full">
+                                project-alpha
+                                <button><span class="material-symbols-outlined !text-sm">close</span></button>
+</span>
+<span class="flex items-center gap-1.5 bg-primary/20 text-primary text-sm font-medium px-2 py-1 rounded-full">
+                                q3-report
+                                <button><span class="material-symbols-outlined !text-sm">close</span></button>
+</span>
+</div>
+</div>
+<!-- Category Selector -->
+<div class="flex flex-col gap-2">
+<label class="text-slate-800 dark:text-white text-base font-medium leading-normal" for="category">Assign to a category</label>
+<select class="form-select w-full rounded-lg border border-slate-300 dark:border-[#325567] bg-slate-100 dark:bg-[#192b33] text-slate-800 dark:text-white p-3 text-base font-normal leading-normal focus:border-primary focus:ring-1 focus:ring-primary" id="category">
+<option>General</option>
+<option>Financial Reports</option>
+<option>Legal Documents</option>
+<option>Project Plans</option>
+</select>
+</div>
+</div>
+<!-- Final Actions -->
+<div class="flex justify-end gap-4 pt-4 border-t border-slate-200 dark:border-slate-800">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-slate-200 dark:bg-slate-800 text-slate-800 dark:text-white text-sm font-bold leading-normal hover:bg-slate-300 dark:hover:bg-slate-700">
+<span class="truncate">Cancel</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-primary text-white text-sm font-bold leading-normal hover:bg-primary/90">
+<span class="truncate">Upload 1 File</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+</body></html>

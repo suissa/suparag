@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DocuChat AI Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#13a4ec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101c22",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-screen w-full flex-row overflow-hidden">
+<aside class="flex h-full w-64 flex-col bg-[#111c22] p-4">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3 px-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="DocuChat AI logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBgT0eH6IAe9fLungpiEZZ6wSO4Sk4WeGvDDJ9EBekw6aVnW7DaAB51SSpWYTVs0MDH-iLxRrxcaZ-4sVBf2VjU4UsdoRftJmA9uE3ExV2ZrgpACXyqPdfqSl6jFPxPmd4IqylUceZhbqoS2thpG5PBbTQ1I3tgaNhkJhYT89VNWDbVtIDU5Dn-tteR4gwEMZKQ1OoyxUJrkDItHDuXUDZLsNAUjkguRcWuuscPkPf3Wku_9Hy5tacVU0HXAOr_BJrRhMz8G0EhHRV8");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-medium leading-normal">DocuChat AI</h1>
+<p class="text-gray-400 dark:text-[#92b7c9] text-sm font-normal leading-normal">RAG Assistant</p>
+</div>
+</div>
+<nav class="mt-4 flex flex-col gap-2">
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-200 dark:hover:bg-[#233c48]/50" href="#">
+<span class="material-symbols-outlined text-gray-600 dark:text-white">description</span>
+<p class="text-gray-800 dark:text-white text-sm font-medium leading-normal">Documents</p>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-200 dark:hover:bg-[#233c48]/50" href="#">
+<span class="material-symbols-outlined text-gray-600 dark:text-white">chat</span>
+<p class="text-gray-800 dark:text-white text-sm font-medium leading-normal">Chat</p>
+</a>
+<a class="flex items-center gap-3 rounded-lg bg-primary/20 dark:bg-[#233c48] px-3 py-2" href="#">
+<span class="material-symbols-outlined text-primary dark:text-white">category</span>
+<p class="text-primary dark:text-white text-sm font-medium leading-normal">Categories</p>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-200 dark:hover:bg-[#233c48]/50" href="#">
+<span class="material-symbols-outlined text-gray-600 dark:text-white">settings</span>
+<p class="text-gray-800 dark:text-white text-sm font-medium leading-normal">Settings</p>
+</a>
+</nav>
+</div>
+<div class="mt-auto">
+<div class="flex items-center gap-3 p-2">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBU5O9pk-vM7kc0yLfkkqxeXi2-gU5t2IpacyWmdMmHpE3ftkAx_CmzLNfiul_bSQvvAi1NhJEr6WUOZfWj2NMWmU9HJ1owKqWtkZ0Yhkbz78wPLphttVLJlu5DL2VTyT0f2h-d1HjLnIk94lGnFdeoHzhXFd0SEbZjE0zgJ45GTkFCqgw65xs4X63zVCCyr2Iccyt3urjHaH_olc5fANhkGqnOkfVt9Y0zEKMGYY24Ks0pVqM2B0U_H1RtcZBVvd_VfZhshiFB4gX_");'></div>
+<div class="flex flex-col">
+<p class="text-white text-sm font-medium leading-normal">Alex Turner</p>
+<p class="text-gray-400 dark:text-[#92b7c9] text-xs font-normal leading-normal">alex.t@example.com</p>
+</div>
+</div>
+</div>
+</aside>
+<main class="flex h-full flex-1 flex-col overflow-y-auto">
+<div class="flex h-full flex-col bg-white dark:bg-[#111c22]">
+<div class="p-6">
+<div class="flex flex-wrap items-center justify-between gap-3">
+<div class="flex min-w-72 flex-col gap-1">
+<p class="text-gray-900 dark:text-white text-3xl font-black leading-tight tracking-[-0.033em]">Manage Categories</p>
+<p class="text-gray-500 dark:text-[#92b7c9] text-base font-normal leading-normal">Organize your documents with custom categories.</p>
+</div>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold leading-normal tracking-[0.015em] hover:bg-primary/90">
+<span class="material-symbols-outlined text-lg">add</span>
+<span class="truncate">Create Category</span>
+</button>
+</div>
+<div class="flex flex-wrap items-center gap-4 pt-6">
+<div class="flex-grow">
+<label class="flex flex-col min-w-40 h-12 w-full max-w-sm">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-gray-100 dark:bg-[#233c48]">
+<div class="text-gray-400 dark:text-[#92b7c9] flex items-center justify-center pl-4">
+<span class="material-symbols-outlined">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-r-lg text-gray-900 dark:text-white focus:outline-0 focus:ring-0 border-none bg-transparent h-full placeholder:text-gray-400 dark:placeholder:text-[#92b7c9] px-2 text-base font-normal leading-normal" placeholder="Search categories..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex gap-2">
+<button class="flex h-8 shrink-0 items-center justify-center gap-x-1.5 rounded-lg bg-gray-100 dark:bg-[#233c48] px-3">
+<p class="text-gray-700 dark:text-white text-sm font-medium leading-normal">Sort By: Name</p>
+<span class="material-symbols-outlined text-gray-500 dark:text-white text-base">expand_more</span>
+</button>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto px-6 pb-6 @container">
+<div class="flex overflow-hidden rounded-lg border border-gray-200 dark:border-[#325567] bg-white dark:bg-[#111c22]">
+<table class="w-full text-left">
+<thead class="bg-gray-50 dark:bg-[#192b33]">
+<tr>
+<th class="px-4 py-3 text-sm font-medium text-gray-600 dark:text-white">Category Name</th>
+<th class="table-column-480 px-4 py-3 text-sm font-medium text-gray-600 dark:text-white">Documents</th>
+<th class="table-column-600 px-4 py-3 text-sm font-medium text-gray-600 dark:text-white">Date Created</th>
+<th class="px-4 py-3 text-sm font-medium text-gray-500 dark:text-[#92b7c9]">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200 dark:divide-[#325567]">
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5">
+<td class="h-[72px] px-4 py-2 text-gray-900 dark:text-white text-sm font-normal leading-normal">Financial Reports</td>
+<td class="table-column-480 h-[72px] px-4 py-2 text-gray-500 dark:text-[#92b7c9] text-sm">12</td>
+<td class="table-column-600 h-[72px] px-4 py-2 text-gray-500 dark:text-[#92b7c9] text-sm">2023-10-15</td>
+<td class="h-[72px] px-4 py-2">
+<button class="text-gray-500 dark:text-[#92b7c9] hover:text-primary p-1"><span class="material-symbols-outlined text-xl">edit</span></button>
+<button class="text-gray-500 dark:text-[#92b7c9] hover:text-red-500 p-1"><span class="material-symbols-outlined text-xl">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5">
+<td class="h-[72px] px-4 py-2 text-gray-900 dark:text-white text-sm font-normal leading-normal">Project Proposals</td>
+<td class="table-column-480 h-[72px] px-4 py-2 text-gray-500 dark:text-[#92b7c9] text-sm">8</td>
+<td class="table-column-600 h-[72px] px-4 py-2 text-gray-500 dark:text-[#92b7c9] text-sm">2023-09-28</td>
+<td class="h-[72px] px-4 py-2">
+<button class="text-gray-500 dark:text-[#92b7c9] hover:text-primary p-1"><span class="material-symbols-outlined text-xl">edit</span></button>
+<button class="text-gray-500 dark:text-[#92b7c9] hover:text-red-500 p-1"><span class="material-symbols-outlined text-xl">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5">
+<td class="h-[72px] px-4 py-2 text-gray-900 dark:text-white text-sm font-normal leading-normal">HR Documents</td>
+<td class="table-column-480 h-[72px] px-4 py-2 text-gray-500 dark:text-[#92b7c9] text-sm">24</td>
+<td class="table-column-600 h-[72px] px-4 py-2 text-gray-500 dark:text-[#92b7c9] text-sm">2023-08-01</td>
+<td class="h-[72px] px-4 py-2">
+<button class="text-gray-500 dark:text-[#92b7c9] hover:text-primary p-1"><span class="material-symbols-outlined text-xl">edit</span></button>
+<button class="text-gray-500 dark:text-[#92b7c9] hover:text-red-500 p-1"><span class="material-symbols-outlined text-xl">delete</span></button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5">
+<td class="h-[72px] px-4 py-2 text-gray-900 dark:text-white text-sm font-normal leading-normal">Marketing Materials</td>
+<td class="table-column-480 h-[72px] px-4 py-2 text-gray-500 dark:text-[#92b7c9] text-sm">35</td>
+<td class="table-column-600 h-[72px] px-4 py-2 text-gray-500 dark:text-[#92b7c9] text-sm">2023-07-19</td>
+<td class="h-[72px] px-4 py-2">
+<button class="text-gray-500 dark:text-[#92b7c9] hover:text-primary p-1"><span class="material-symbols-outlined text-xl">edit</span></button>
+<button class="text-gray-500 dark:text-[#92b7c9] hover:text-red-500 p-1"><span class="material-symbols-outlined text-xl">delete</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<style>
+                        @container(max-width:600px){.table-column-600{display: none;}}
+                        @container(max-width:480px){.table-column-480{display: none;}}
+                    </style>
+</div>
+</main>
+</div>
+
+</body></html>

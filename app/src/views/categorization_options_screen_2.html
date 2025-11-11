@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manage Categories</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+      .material-symbols-outlined.fill {
+        font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#13a4ec",
+              "background-light": "#f6f7f8",
+              "background-dark": "#101c22",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex min-h-screen">
+<aside class="w-64 flex-shrink-0 bg-[#fbfcfc] dark:bg-[#111c22] border-r border-gray-200 dark:border-gray-800">
+<div class="flex h-full flex-col justify-between p-4">
+<div class="flex flex-col gap-4">
+<div class="flex gap-3 items-center">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAL2BG2IeUTV7nvB6uBKdnWAU9VJRwtM4hqRvZt17ofBE6DdkyQYs9m66fCpxxUSZJrdD5y0wKDZ0hM1HdTNXlghSBsFmP61XQ1UzmCCu8PitOJYHKGBqjq_laQUWEBO03BTtNCMfBd5XalqyAvA2HgsI2k8sDGZtL1P7YgHmRHZlO6V66LagkywFZOUp3ZCBBCNkNtMVQOqqf9WMD7sZrsRCeioTkP4K0dTQDJxXO3Q6_o1cO9fQnJ0jMmrZUMNzHzkJkOKtHZ8hWU");'></div>
+<div class="flex flex-col">
+<h1 class="text-gray-900 dark:text-white text-base font-medium leading-normal">John Doe</h1>
+<p class="text-gray-500 dark:text-[#92b7c9] text-sm font-normal leading-normal">john.doe@example.com</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">description</span>
+<p class="text-sm font-medium leading-normal">Documents</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary dark:bg-[#233c48] dark:text-white" href="#">
+<span class="material-symbols-outlined fill">sell</span>
+<p class="text-sm font-medium leading-normal">Categories</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<p class="text-sm font-medium leading-normal">Chat</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+</nav>
+</div>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-primary/20" href="#">
+<span class="material-symbols-outlined">help</span>
+<p class="text-sm font-medium leading-normal">Help</p>
+</a>
+</div>
+</div>
+</aside>
+<main class="flex-1 p-8">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-wrap justify-between items-start gap-4 mb-6">
+<div class="flex flex-col gap-2">
+<h1 class="text-gray-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Manage Categories</h1>
+<p class="text-gray-500 dark:text-[#92b7c9] text-base font-normal leading-normal">View, create, edit, or delete categories for your documents.</p>
+</div>
+<button class="flex items-center justify-center rounded-lg h-10 bg-primary text-white gap-2 text-sm font-bold leading-normal tracking-[0.015em] px-4 hover:bg-primary/90 transition-colors">
+<span class="material-symbols-outlined fill text-xl">add</span>
+<span class="truncate">New Category</span>
+</button>
+</div>
+<div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+<div class="relative w-full sm:max-w-xs">
+<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+<span class="material-symbols-outlined text-gray-400 dark:text-gray-500">search</span>
+</div>
+<input class="block w-full rounded-lg border-gray-300 bg-white dark:bg-[#111c22] dark:border-gray-700 py-2 pl-10 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm" placeholder="Search categories..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<label class="text-sm font-medium text-gray-700 dark:text-gray-300" for="sort-by">Sort by</label>
+<select class="block w-full rounded-lg border-gray-300 bg-white dark:bg-[#111c22] dark:border-gray-700 py-2 pl-3 pr-8 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-inset focus:ring-primary" id="sort-by">
+<option>Name (A-Z)</option>
+<option>Name (Z-A)</option>
+<option>Document Count (High-Low)</option>
+<option>Document Count (Low-High)</option>
+</select>
+</div>
+<button class="inline-flex items-center gap-2 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-[#111c22] px-3 py-2 text-sm font-medium text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-white/5">
+<span class="material-symbols-outlined text-base">filter_list</span>
+<span>Filters</span>
+</button>
+</div>
+</div>
+<div class="overflow-hidden rounded-lg border border-gray-200 dark:border-[#325567] bg-white dark:bg-[#111c22]">
+<table class="min-w-full divide-y divide-gray-200 dark:divide-[#325567]">
+<thead class="bg-gray-50 dark:bg-[#192b33]">
+<tr>
+<th class="relative px-6 py-3.5" scope="col">
+<input class="h-4 w-4 rounded border-gray-300 dark:border-[#325567] bg-transparent text-primary focus:ring-primary dark:checked:bg-primary dark:checked:border-primary" type="checkbox"/>
+</th>
+<th class="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-white w-2/5" scope="col">Category Name</th>
+<th class="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-white w-2/5" scope="col">Document Count</th>
+<th class="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-white" scope="col">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-200 dark:divide-[#325567]">
+<tr>
+<td class="relative px-6 py-4 whitespace-nowrap">
+<input class="h-4 w-4 rounded border-gray-300 dark:border-[#325567] bg-transparent text-primary focus:ring-primary dark:checked:bg-primary dark:checked:border-primary" type="checkbox"/>
+</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-white">Financial Reports</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-[#92b7c9]">15 Documents</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+<div class="flex items-center gap-2">
+<button class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-md hover:bg-gray-100 dark:hover:bg-white/10" title="Edit">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500 rounded-md hover:bg-red-50 dark:hover:bg-red-500/10" title="Delete">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="relative px-6 py-4 whitespace-nowrap">
+<input class="h-4 w-4 rounded border-gray-300 dark:border-[#325567] bg-transparent text-primary focus:ring-primary dark:checked:bg-primary dark:checked:border-primary" type="checkbox"/>
+</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-white">Project Blueprints</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-[#92b7c9]">8 Documents</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+<div class="flex items-center gap-2">
+<button class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-md hover:bg-gray-100 dark:hover:bg-white/10" title="Edit">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500 rounded-md hover:bg-red-50 dark:hover:bg-red-500/10" title="Delete">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="relative px-6 py-4 whitespace-nowrap">
+<input class="h-4 w-4 rounded border-gray-300 dark:border-[#325567] bg-transparent text-primary focus:ring-primary dark:checked:bg-primary dark:checked:border-primary" type="checkbox"/>
+</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-white">Meeting Notes</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-[#92b7c9]">22 Documents</td>
+<td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+<div class="flex items-center gap-2">
+<button class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white rounded-md hover:bg-gray-100 dark:hover:bg-white/10" title="Edit">
+<span class="material-symbols-outlined text-xl">edit</span>
+</button>
+<button class="p-2 text-gray-500 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500 rounded-md hover:bg-red-50 dark:hover:bg-red-500/10" title="Delete">
+<span class="material-symbols-outlined text-xl">delete</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+</body></html>

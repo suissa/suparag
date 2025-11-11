@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Connect WhatsApp</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#13a4ec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101c22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24
+        }
+    </style>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex min-h-screen w-full">
+<!-- SideNavBar -->
+<aside class="flex h-screen w-64 flex-col bg-[#111c22] p-4 font-display">
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="AI Corp logo" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDx_0cXnLk8R5gDSWRe_1FQ0-qocFcx4tFzxfH5GLaW0xSAoIx9t1OiQ8FqP84LdmEyTEVfCTd-dLOIa37vDm9-X1I91pLIZanDN08ubm3fxe6uP7uCnjVX6pRnAqy-y0Cbq1bj8fKNP-3P70E2i6R1_lAmO-u5pIOK9TUkq2eR23joM7xmg64sR9QtPl7mg16xj6Ex8CQZRCffm7huvA-SQS3x2WRlzsOPwokDtc4mPGSXjcYokx9QnAPmowaLBQCgK9e-FS3DmcRI");'></div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-medium leading-normal">AI Corp</h1>
+<p class="text-[#92b7c9] text-sm font-normal leading-normal">Workspace</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium leading-normal">Dashboard</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">description</span>
+<p class="text-sm font-medium leading-normal">Documents</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">chat</span>
+<p class="text-sm font-medium leading-normal">Chat</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">integration_instructions</span>
+<p class="text-sm font-medium leading-normal">Integrations</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium leading-normal">Settings</p>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-8">
+<header class="flex flex-wrap justify-between gap-3">
+<h1 class="text-zinc-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Integrations</h1>
+</header>
+<!-- This is just placeholder content to show what's behind the modal -->
+<div class="mt-8 text-zinc-700 dark:text-zinc-300">
+<p>This is the main application content area. The modal will appear over this content.</p>
+</div>
+</main>
+<!-- Modal Overlay -->
+<div class="absolute inset-0 flex items-center justify-center bg-zinc-900/70 backdrop-blur-sm z-50">
+<div class="bg-background-light dark:bg-background-dark w-full max-w-4xl rounded-xl shadow-2xl flex overflow-hidden border border-zinc-200 dark:border-zinc-800">
+<!-- Left Side: Instructions -->
+<div class="w-1/2 p-10 flex flex-col justify-center">
+<button class="absolute top-4 right-4 text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+<div>
+<h1 class="text-zinc-900 dark:text-white text-3xl font-bold leading-tight tracking-tight">Link with WhatsApp</h1>
+<p class="text-zinc-600 dark:text-zinc-400 mt-2">To connect, follow these steps:</p>
+<ol class="mt-8 space-y-6">
+<li class="flex items-start gap-4">
+<div class="flex-shrink-0 flex items-center justify-center size-8 rounded-full bg-primary/20 text-primary font-bold text-sm">1</div>
+<p class="text-zinc-700 dark:text-zinc-300 pt-1">Open WhatsApp on your phone.</p>
+</li>
+<li class="flex items-start gap-4">
+<div class="flex-shrink-0 flex items-center justify-center size-8 rounded-full bg-primary/20 text-primary font-bold text-sm">2</div>
+<p class="text-zinc-700 dark:text-zinc-300 pt-1">Go to <span class="font-semibold text-zinc-800 dark:text-zinc-100">Settings &gt; Linked Devices</span> and tap 'Link a Device'.</p>
+</li>
+<li class="flex items-start gap-4">
+<div class="flex-shrink-0 flex items-center justify-center size-8 rounded-full bg-primary/20 text-primary font-bold text-sm">3</div>
+<p class="text-zinc-700 dark:text-zinc-300 pt-1">Point your phone camera at this screen to scan the QR code.</p>
+</li>
+</ol>
+</div>
+</div>
+<!-- Right Side: QR Code -->
+<div class="w-1/2 bg-zinc-100 dark:bg-black/20 p-10 flex flex-col items-center justify-center gap-6">
+<div class="w-64 h-64 bg-white p-4 rounded-lg shadow-md">
+<div class="w-full h-full bg-center bg-no-repeat bg-contain" data-alt="A QR code for linking a WhatsApp account" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAoGVcgKWqG9SVeNAE633kjVTzyOc7sKwNcsPyVvG6o2yEeboCLcjD6opE8SxseXQFEhUa02prDf0XQiAtN3kxvU3ZiJPf8IDIpSkP5cZ5wQFYzOV4l8n10lX9xQAlrgI_jCKwMjlaRr6xNhjoBTg1rqjT4Ztl4EdimlB3lKrSXderW8--GdXr_bTly-JRT8KHz08EBD1NibomFAGNCmLBfOMikWm5UepaaQtWjS5F8WGJyBw9kBRfYCjIUnvEHvmlHfMMtdI_X3gWC");'></div>
+</div>
+<div class="text-center">
+<div class="flex items-center justify-center gap-2 text-zinc-600 dark:text-zinc-400">
+<div class="animate-spin" style="animation-duration: 2s;">
+<span class="material-symbols-outlined text-xl">progress_activity</span>
+</div>
+<p>Waiting for connection...</p>
+</div>
+</div>
+<button class="px-5 py-2.5 text-sm font-medium text-zinc-700 bg-white dark:bg-zinc-800 dark:text-zinc-300 rounded-lg border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-700/50 transition-colors">
+                        Refresh QR Code
+                    </button>
+</div>
+</div>
+</div>
+</div>
+</body></html>
