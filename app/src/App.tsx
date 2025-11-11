@@ -4,6 +4,7 @@ import Upload from './pages/Upload';
 import Documents from './pages/Documents';
 import Settings from './pages/Settings';
 import { WhatsAppConnectionProvider } from './contexts/WhatsAppConnectionContext';
+import Uploadfull from './pages/Uploadfull';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
             <Routes>
               <Route index element={<Upload />} />
               <Route path="documents" element={<Documents />} />
+              <Route path="uploadfull" element={<Uploadfull />} />
               <Route path="settings" element={<Settings />} />
               <Route path="chat" element={<div className="text-center py-12 text-white">Chat em desenvolvimento...</div>} />
               <Route path="analytics" element={<div className="text-center py-12 text-white">Analytics em desenvolvimento...</div>} />

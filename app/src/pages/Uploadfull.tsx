@@ -44,28 +44,31 @@ export default function Upload() {
   };
 
   return (
-    <div className="max-w-4xl rounded-lg bg-slate-900/95 p-8">
+    <div className="max-w-4xl">
       <div className="flex flex-wrap justify-between gap-3">
             <div className="flex flex-col gap-2">
               <p
                 className="text-slate-800 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]"
               >
-                Upload de Documentos
+                Upload Your Documents
               </p>
               <p
                 className="text-slate-500 dark:text-[#92b7c9] text-base font-normal leading-normal"
               >
-                Envie arquivos PDF, TXT ou MD para o sistema RAG
+                Add new files to your knowledge base
               </p>
             </div>
           </div>
-
       {/* Upload Area */}
-      <div className="bg-transparent rounded-lg border-2 border-dashed border-gray-300 rounded-lg p-12 hover:border-blue-400 transition-colors ">
-        <div className="text-center">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center hover:border-blue-400 transition-colors">
           <UploadIcon className="mx-auto mb-4 text-gray-400" size={48} />
-          <p className="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] text-center">Drag &amp; drop files here</p>
-          <p className="text-slate-600 dark:text-white/80 text-sm font-normal leading-normal text-center">Supports PDF, DOCX, TXT. Max file size: 25MB</p>
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">
+            Selecione um arquivo
+          </h3>
+          <p className="text-sm text-gray-500 mb-4">
+            PDF, TXT ou MD (máx. 10MB)
+          </p>
           <input
             id="file-input"
             type="file"
@@ -75,7 +78,7 @@ export default function Upload() {
           />
           <label
             htmlFor="file-input"
-            className="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-11 px-6 bg-primary text-white text-sm font-bold leading-normal hover:bg-primary/90"
+            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition-colors"
           >
             Escolher Arquivo
           </label>

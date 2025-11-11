@@ -371,7 +371,10 @@
   - Logar erros com stack trace completo
   - _Requirements: 9.7_
 
-- [ ]* 15. Testes e validação
+- [ ] 15. Testes e validação
+
+
+
   - [ ]* 15.1 Criar testes unitários para ConfigurableModal
     - Testar renderização com diferentes configs
     - Testar eventos de fechamento (ESC, click overlay)
