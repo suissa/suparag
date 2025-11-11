@@ -362,6 +362,8 @@
 - [ ] 13. Adicionar variáveis de ambiente
 
   - Criar arquivo .env.example com EVOLUTION_API_URL e EVOLUTION_API_KEY
+
+
   - Documentar variáveis opcionais (EVOLUTION_INSTANCE_PREFIX, etc)
   - Adicionar validação no startup do servidor
   - _Requirements: 9.1, 9.2_
