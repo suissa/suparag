@@ -56,6 +56,7 @@
 - [x] 3. Criar configuração do WhatsApp Modal
 
 
+
   - [x] 3.1 Criar arquivo whatsAppModalConfig.spec.ts
 
 
@@ -66,6 +67,7 @@
     - Configurar overlay com blur e clickClose
     - Configurar behavior com animações e escClose
     - _Requirements: 2.9, 1.5_
+-
 
 - [ ] 4. Implementar hook useSSE para Server-Sent Events
 
