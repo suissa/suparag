@@ -53,9 +53,12 @@
     - _Requirements: 3.6, 3.7_
 -
 
-- [ ] 3. Criar configuração do WhatsApp Modal
+- [x] 3. Criar configuração do WhatsApp Modal
 
-  - [ ] 3.1 Criar arquivo whatsAppModalConfig.spec.ts
+
+  - [x] 3.1 Criar arquivo whatsAppModalConfig.spec.ts
+
+
     - Exportar objeto whatsAppModalConfig com valores padrão
     - Configurar bg com suporte a dark mode
     - Configurar fonts para title, text e link
