@@ -1,4 +1,5 @@
 import { Response } from 'express';
+import { createLogger } from './logger';
 
 /**
  * Interface para eventos SSE enviados ao cliente
@@ -19,11 +20,14 @@ export interface SSEEvent {
  */
 export class SSEManager {
   private connections: Map<string, Response>;
+  private logger = createLogger('SSEManager');
 
   constructor() {
     // Criar Map para armazenar conexões ativas (sessionId → Response)
     this.connections = new Map<string, Response>();
-    console.log('✅ SSEManager inicializado');
+    this.logger.info('SSEManager inicializado', {
+      operation: 'constructor'
+    });
   }
 
   /**
@@ -33,7 +37,10 @@ export class SSEManager {
    * @param res - Objeto Response do Express para streaming
    */
   addConnection(sessionId: string, res: Response): void {
-    console.log(`📡 Adicionando conexão SSE para sessionId: ${sessionId}`);
+    this.logger.info('Adicionando conexão SSE', {
+      operation: 'addConnection',
+      sessionId
+    });
 
     // Configurar headers SSE corretos
     res.setHeader('Content-Type', 'text/event-stream');
@@ -49,12 +56,19 @@ export class SSEManager {
 
     // Configurar handler para quando cliente desconectar
     res.on('close', () => {
-      console.log(`🔌 Cliente desconectou SSE: ${sessionId}`);
+      this.logger.info('Cliente desconectou SSE', {
+        operation: 'addConnection.onClose',
+        sessionId,
+        remainingConnections: this.connections.size - 1
+      });
       this.connections.delete(sessionId);
     });
 
-    console.log(`✅ Conexão SSE estabelecida para sessionId: ${sessionId}`);
-    console.log(`   Total de conexões ativas: ${this.connections.size}`);
+    this.logger.info('Conexão SSE estabelecida com sucesso', {
+      operation: 'addConnection',
+      sessionId,
+      totalConnections: this.connections.size
+    });
   }
 
   /**
@@ -68,7 +82,11 @@ export class SSEManager {
     const res = this.connections.get(sessionId);
 
     if (!res) {
-      console.warn(`⚠️  Tentativa de enviar evento para sessionId inexistente: ${sessionId}`);
+      this.logger.warn('Tentativa de enviar evento para sessionId inexistente', {
+        operation: 'sendEvent',
+        sessionId,
+        eventType: event.type
+      });
       return false;
     }
 
@@ -78,9 +96,12 @@ export class SSEManager {
       const eventData = JSON.stringify(event.data);
       const formattedEvent = `event: ${eventType}\ndata: ${eventData}\n\n`;
 
-      console.log(`📤 Enviando evento SSE para ${sessionId}:`);
-      console.log(`   Tipo: ${eventType}`);
-      console.log(`   Data: ${eventData.substring(0, 100)}${eventData.length > 100 ? '...' : ''}`);
+      this.logger.debug('Enviando evento SSE', {
+        operation: 'sendEvent',
+        sessionId,
+        eventType,
+        dataSize: eventData.length
+      });
 
       // Enviar evento para Response específico via res.write()
       res.write(formattedEvent);
@@ -88,7 +109,11 @@ export class SSEManager {
       return true;
     } catch (error) {
       // Tratar erros de envio (conexão fechada)
-      console.error(`❌ Erro ao enviar evento SSE para ${sessionId}:`, error);
+      this.logger.error('Erro ao enviar evento SSE', {
+        operation: 'sendEvent',
+        sessionId,
+        eventType: event.type
+      }, error as Error);
       
       // Remover conexão com erro do Map
       this.connections.delete(sessionId);
@@ -114,7 +139,13 @@ export class SSEManager {
       }
     }
 
-    console.log(`📡 Broadcast enviado para ${successCount}/${targets.length} clientes`);
+    this.logger.info('Broadcast enviado', {
+      operation: 'broadcast',
+      eventType: event.type,
+      successCount,
+      totalTargets: targets.length
+    });
+    
     return successCount;
   }
 
@@ -128,12 +159,19 @@ export class SSEManager {
     const res = this.connections.get(sessionId);
 
     if (!res) {
-      console.warn(`⚠️  Tentativa de fechar conexão inexistente: ${sessionId}`);
+      this.logger.warn('Tentativa de fechar conexão inexistente', {
+        operation: 'closeConnection',
+        sessionId
+      });
       return;
     }
 
     try {
-      console.log(`🔌 Encerrando conexão SSE para sessionId: ${sessionId}`);
+      this.logger.info('Encerrando conexão SSE', {
+        operation: 'closeConnection',
+        sessionId,
+        hasFinalEvent: !!finalEvent
+      });
 
       // Enviar evento final antes de fechar (se fornecido)
       if (finalEvent) {
@@ -143,13 +181,19 @@ export class SSEManager {
       // Chamar res.end() para encerrar stream
       res.end();
 
-      console.log(`✅ Conexão SSE encerrada para sessionId: ${sessionId}`);
+      this.logger.info('Conexão SSE encerrada com sucesso', {
+        operation: 'closeConnection',
+        sessionId,
+        remainingConnections: this.connections.size - 1
+      });
     } catch (error) {
-      console.error(`❌ Erro ao encerrar conexão SSE para ${sessionId}:`, error);
+      this.logger.error('Erro ao encerrar conexão SSE', {
+        operation: 'closeConnection',
+        sessionId
+      }, error as Error);
     } finally {
       // Remover conexão do Map
       this.connections.delete(sessionId);
-      console.log(`   Total de conexões ativas: ${this.connections.size}`);
     }
   }
 
@@ -187,7 +231,12 @@ export class SSEManager {
    * @param finalEvent - Evento final opcional a enviar para todos antes de fechar
    */
   closeAllConnections(finalEvent?: SSEEvent): void {
-    console.log(`🔌 Encerrando todas as conexões SSE (${this.connections.size} ativas)`);
+    const totalConnections = this.connections.size;
+    
+    this.logger.info('Encerrando todas as conexões SSE', {
+      operation: 'closeAllConnections',
+      totalConnections
+    });
 
     const sessionIds = Array.from(this.connections.keys());
     
@@ -195,6 +244,9 @@ export class SSEManager {
       this.closeConnection(sessionId, finalEvent);
     }
 
-    console.log('✅ Todas as conexões SSE foram encerradas');
+    this.logger.info('Todas as conexões SSE foram encerradas', {
+      operation: 'closeAllConnections',
+      closedConnections: totalConnections
+    });
   }
 }

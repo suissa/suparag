@@ -3,16 +3,22 @@ import { randomUUID } from 'crypto';
 import { EvolutionService } from '../services/evolutionService';
 import { SSEManager } from '../services/sseManager';
 import { StatusChecker } from '../services/statusChecker';
+import { createLogger } from '../services/logger';
 
 // Criar Express Router
 const router = Router();
+
+// Criar logger para o router
+const logger = createLogger('WhatsAppRouter');
 
 // Inicializar instâncias de EvolutionService, SSEManager e StatusChecker
 const evolutionService = new EvolutionService();
 const sseManager = new SSEManager();
 const statusChecker = new StatusChecker(evolutionService);
 
-console.log('✅ WhatsApp Router inicializado com todos os serviços');
+logger.info('WhatsApp Router inicializado com todos os serviços', {
+  operation: 'initialization'
+});
 
 /**
  * POST /api/v1/whatsapp/connect
@@ -30,6 +36,8 @@ console.log('✅ WhatsApp Router inicializado com todos os serviços');
  *   - 500: { error: string, message: string, timestamp: string }
  */
 router.post('/connect', async (req: Request, res: Response) => {
+  const startTime = Date.now();
+  
   try {
     // Gerar sessionId único (ou receber do body/header)
     const sessionId = 
@@ -37,13 +45,22 @@ router.post('/connect', async (req: Request, res: Response) => {
       req.headers['x-session-id'] as string || 
       randomUUID();
 
-    console.log('📱 POST /connect - Iniciando conexão WhatsApp');
-    console.log(`   Session ID: ${sessionId}`);
+    logger.info('POST /connect - Iniciando conexão WhatsApp', {
+      operation: 'POST /connect',
+      sessionId,
+      ip: req.ip
+    });
 
     // Chamar evolutionService.createInstance(sessionId)
     const instanceName = await evolutionService.createInstance(sessionId);
 
-    console.log(`✅ Instância criada com sucesso: ${instanceName}`);
+    const duration = Date.now() - startTime;
+    logger.info('Instância criada com sucesso', {
+      operation: 'POST /connect',
+      sessionId,
+      instanceName,
+      duration: `${duration}ms`
+    });
 
     // Retornar resposta 200 imediatamente com { sessionId, instanceName }
     return res.status(200).json({
@@ -54,7 +71,12 @@ router.post('/connect', async (req: Request, res: Response) => {
     });
 
   } catch (error: any) {
-    console.error('❌ Erro ao criar instância WhatsApp:', error);
+    const duration = Date.now() - startTime;
+    logger.error('Erro ao criar instância WhatsApp', {
+      operation: 'POST /connect',
+      duration: `${duration}ms`,
+      ip: req.ip
+    }, error);
 
     // Tratar erros e retornar 500 com mensagem
     return res.status(500).json({
@@ -83,6 +105,8 @@ router.post('/connect', async (req: Request, res: Response) => {
  *   - error: { code: string, message: string, timestamp: string }
  */
 router.get('/connect/stream', async (req: Request, res: Response): Promise<void> => {
+  const startTime = Date.now();
+  
   try {
     // Extrair sessionId de query params ou header
     const sessionId = 
@@ -90,6 +114,11 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
       req.headers['x-session-id'] as string;
 
     if (!sessionId) {
+      logger.warn('Tentativa de conexão SSE sem sessionId', {
+        operation: 'GET /connect/stream',
+        ip: req.ip
+      });
+      
       res.status(400).json({
         error: 'MISSING_SESSION_ID',
         message: 'sessionId é obrigatório (query param ou header x-session-id)',
@@ -98,8 +127,11 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    console.log('📡 GET /connect/stream - Estabelecendo conexão SSE');
-    console.log(`   Session ID: ${sessionId}`);
+    logger.info('GET /connect/stream - Estabelecendo conexão SSE', {
+      operation: 'GET /connect/stream',
+      sessionId,
+      ip: req.ip
+    });
 
     // Adicionar conexão ao SSEManager
     sseManager.addConnection(sessionId, res);
@@ -108,6 +140,11 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
     const instanceName = evolutionService.getInstanceName(sessionId);
 
     if (!instanceName) {
+      logger.warn('Instância não encontrada para sessionId', {
+        operation: 'GET /connect/stream',
+        sessionId
+      });
+      
       // Enviar erro se instância não encontrada
       sseManager.sendEvent(sessionId, {
         type: 'error',
@@ -122,7 +159,11 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
       return;
     }
 
-    console.log(`   Instance Name: ${instanceName}`);
+    logger.info('Instância encontrada, iniciando stream SSE', {
+      operation: 'GET /connect/stream',
+      sessionId,
+      instanceName
+    });
 
     // Iniciar loop para obter QR code da Evolution
     let qrCodeAttempts = 0;
@@ -132,13 +173,24 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
     const qrCodeLoop = setInterval(async () => {
       try {
         qrCodeAttempts++;
-        console.log(`🔍 Tentativa ${qrCodeAttempts}/${maxQrCodeAttempts} de obter QR code...`);
+        logger.debug('Tentativa de obter QR code', {
+          operation: 'GET /connect/stream.qrCodeLoop',
+          sessionId,
+          instanceName,
+          attempt: qrCodeAttempts,
+          maxAttempts: maxQrCodeAttempts
+        });
 
         // Tentar obter QR code
         const qrCode = await evolutionService.getQRCode(instanceName);
 
         if (qrCode) {
-          console.log('✅ QR code obtido com sucesso!');
+          logger.info('QR code obtido com sucesso', {
+            operation: 'GET /connect/stream.qrCodeLoop',
+            sessionId,
+            instanceName,
+            attempts: qrCodeAttempts
+          });
 
           // Enviar evento 'qrcode' via SSE quando QR estiver disponível
           sseManager.sendEvent(sessionId, {
@@ -153,10 +205,20 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
           clearInterval(qrCodeLoop);
 
           // Iniciar StatusChecker para verificação periódica
-          console.log('🔍 Iniciando verificação periódica de status...');
+          logger.info('Iniciando verificação periódica de status', {
+            operation: 'GET /connect/stream',
+            sessionId,
+            instanceName
+          });
           
           statusChecker.startChecking(instanceName, sessionId, (status) => {
-            console.log('🔄 Status mudou:', status);
+            logger.info('Status mudou (callback)', {
+              operation: 'GET /connect/stream.statusCallback',
+              sessionId,
+              instanceName,
+              status: status.status,
+              connected: status.connected
+            });
 
             // Enviar evento 'status' quando status mudar
             sseManager.sendEvent(sessionId, {
@@ -171,7 +233,12 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
 
             // Fechar conexão SSE após enviar status final
             if (status.connected || status.status === 'timeout' || status.status === 'error') {
-              console.log('🔌 Encerrando conexão SSE (status final recebido)');
+              logger.info('Encerrando conexão SSE (status final recebido)', {
+                operation: 'GET /connect/stream.statusCallback',
+                sessionId,
+                instanceName,
+                finalStatus: status.status
+              });
               
               setTimeout(() => {
                 sseManager.closeConnection(sessionId);
@@ -182,7 +249,13 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
 
         // Se atingir máximo de tentativas sem QR code
         if (qrCodeAttempts >= maxQrCodeAttempts) {
-          console.warn('⚠️  Máximo de tentativas atingido sem obter QR code');
+          logger.warn('Máximo de tentativas atingido sem obter QR code', {
+            operation: 'GET /connect/stream.qrCodeLoop',
+            sessionId,
+            instanceName,
+            attempts: qrCodeAttempts
+          });
+          
           clearInterval(qrCodeLoop);
 
           sseManager.sendEvent(sessionId, {
@@ -199,13 +272,26 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
 
       } catch (qrError: any) {
         // QR code ainda não disponível, continuar tentando
-        console.log(`   QR code ainda não disponível: ${qrError.message}`);
+        logger.debug('QR code ainda não disponível', {
+          operation: 'GET /connect/stream.qrCodeLoop',
+          sessionId,
+          instanceName,
+          attempt: qrCodeAttempts,
+          error: qrError.message
+        });
       }
     }, qrCodeInterval);
 
     // Limpar interval se cliente desconectar
     res.on('close', () => {
-      console.log('🔌 Cliente desconectou, limpando recursos...');
+      const duration = Date.now() - startTime;
+      logger.info('Cliente desconectou, limpando recursos', {
+        operation: 'GET /connect/stream.onClose',
+        sessionId,
+        instanceName,
+        duration: `${duration}ms`
+      });
+      
       clearInterval(qrCodeLoop);
       statusChecker.stopChecking(instanceName);
     });
@@ -214,7 +300,12 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
     return;
 
   } catch (error: any) {
-    console.error('❌ Erro no endpoint SSE:', error);
+    const duration = Date.now() - startTime;
+    logger.error('Erro no endpoint SSE', {
+      operation: 'GET /connect/stream',
+      duration: `${duration}ms`,
+      ip: req.ip
+    }, error);
 
     // Tentar enviar erro via SSE se possível
     const sessionId = 
@@ -261,6 +352,8 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
  *   - 500: { error: string, message: string }
  */
 router.get('/status', async (req: Request, res: Response) => {
+  const startTime = Date.now();
+  
   try {
     // Extrair sessionId de query params
     const sessionId = 
@@ -268,6 +361,11 @@ router.get('/status', async (req: Request, res: Response) => {
       req.headers['x-session-id'] as string;
 
     if (!sessionId) {
+      logger.warn('Tentativa de verificar status sem sessionId', {
+        operation: 'GET /status',
+        ip: req.ip
+      });
+      
       return res.status(400).json({
         error: 'MISSING_SESSION_ID',
         message: 'sessionId é obrigatório (query param ou header x-session-id)',
@@ -275,14 +373,20 @@ router.get('/status', async (req: Request, res: Response) => {
       });
     }
 
-    console.log('🔍 GET /status - Verificando status da conexão');
-    console.log(`   Session ID: ${sessionId}`);
+    logger.info('GET /status - Verificando status da conexão', {
+      operation: 'GET /status',
+      sessionId,
+      ip: req.ip
+    });
 
     // Buscar instanceName do sessionId
     const instanceName = evolutionService.getInstanceName(sessionId);
 
     if (!instanceName) {
-      console.warn('⚠️  Instância não encontrada para sessionId:', sessionId);
+      logger.warn('Instância não encontrada para sessionId', {
+        operation: 'GET /status',
+        sessionId
+      });
       
       return res.status(404).json({
         error: 'INSTANCE_NOT_FOUND',
@@ -291,12 +395,18 @@ router.get('/status', async (req: Request, res: Response) => {
       });
     }
 
-    console.log(`   Instance Name: ${instanceName}`);
-
     // Chamar evolutionService.checkStatus()
     const status = await evolutionService.checkStatus(instanceName);
 
-    console.log(`✅ Status verificado:`, status);
+    const duration = Date.now() - startTime;
+    logger.info('Status verificado com sucesso', {
+      operation: 'GET /status',
+      sessionId,
+      instanceName,
+      status: status.status,
+      connected: status.connected,
+      duration: `${duration}ms`
+    });
 
     // Retornar JSON com { connected: boolean, status: string }
     return res.status(200).json({
@@ -307,7 +417,12 @@ router.get('/status', async (req: Request, res: Response) => {
     });
 
   } catch (error: any) {
-    console.error('❌ Erro ao verificar status:', error);
+    const duration = Date.now() - startTime;
+    logger.error('Erro ao verificar status', {
+      operation: 'GET /status',
+      duration: `${duration}ms`,
+      ip: req.ip
+    }, error);
 
     return res.status(500).json({
       error: 'STATUS_CHECK_FAILED',
@@ -338,6 +453,8 @@ router.get('/status', async (req: Request, res: Response) => {
  *   - 500: { error: string, message: string }
  */
 router.delete('/disconnect', async (req: Request, res: Response) => {
+  const startTime = Date.now();
+  
   try {
     // Extrair sessionId de query params ou body
     const sessionId = 
@@ -346,6 +463,11 @@ router.delete('/disconnect', async (req: Request, res: Response) => {
       req.headers['x-session-id'] as string;
 
     if (!sessionId) {
+      logger.warn('Tentativa de desconectar sem sessionId', {
+        operation: 'DELETE /disconnect',
+        ip: req.ip
+      });
+      
       return res.status(400).json({
         error: 'MISSING_SESSION_ID',
         message: 'sessionId é obrigatório (query param, body ou header x-session-id)',
@@ -353,14 +475,20 @@ router.delete('/disconnect', async (req: Request, res: Response) => {
       });
     }
 
-    console.log('🔌 DELETE /disconnect - Desconectando instância WhatsApp');
-    console.log(`   Session ID: ${sessionId}`);
+    logger.info('DELETE /disconnect - Desconectando instância WhatsApp', {
+      operation: 'DELETE /disconnect',
+      sessionId,
+      ip: req.ip
+    });
 
     // Buscar instanceName do sessionId
     const instanceName = evolutionService.getInstanceName(sessionId);
 
     if (!instanceName) {
-      console.warn('⚠️  Instância não encontrada para sessionId:', sessionId);
+      logger.warn('Instância não encontrada para sessionId', {
+        operation: 'DELETE /disconnect',
+        sessionId
+      });
       
       return res.status(404).json({
         error: 'INSTANCE_NOT_FOUND',
@@ -369,17 +497,29 @@ router.delete('/disconnect', async (req: Request, res: Response) => {
       });
     }
 
-    console.log(`   Instance Name: ${instanceName}`);
+    logger.info('Iniciando processo de desconexão', {
+      operation: 'DELETE /disconnect',
+      sessionId,
+      instanceName
+    });
 
     // Parar StatusChecker
     if (statusChecker.isChecking(instanceName)) {
-      console.log('🛑 Parando verificação de status...');
+      logger.debug('Parando verificação de status', {
+        operation: 'DELETE /disconnect',
+        sessionId,
+        instanceName
+      });
       statusChecker.stopChecking(instanceName);
     }
 
     // Fechar conexão SSE se existir
     if (sseManager.hasConnection(sessionId)) {
-      console.log('🔌 Fechando conexão SSE...');
+      logger.debug('Fechando conexão SSE', {
+        operation: 'DELETE /disconnect',
+        sessionId,
+        instanceName
+      });
       sseManager.closeConnection(sessionId, {
         type: 'status',
         data: {
@@ -394,7 +534,13 @@ router.delete('/disconnect', async (req: Request, res: Response) => {
     // Chamar evolutionService.deleteInstance()
     await evolutionService.deleteInstance(instanceName);
 
-    console.log('✅ Instância desconectada e deletada com sucesso');
+    const duration = Date.now() - startTime;
+    logger.info('Instância desconectada e deletada com sucesso', {
+      operation: 'DELETE /disconnect',
+      sessionId,
+      instanceName,
+      duration: `${duration}ms`
+    });
 
     // Retornar 200 com { success: true }
     return res.status(200).json({
@@ -405,7 +551,12 @@ router.delete('/disconnect', async (req: Request, res: Response) => {
     });
 
   } catch (error: any) {
-    console.error('❌ Erro ao desconectar instância:', error);
+    const duration = Date.now() - startTime;
+    logger.error('Erro ao desconectar instância', {
+      operation: 'DELETE /disconnect',
+      duration: `${duration}ms`,
+      ip: req.ip
+    }, error);
 
     return res.status(500).json({
       error: 'DISCONNECT_FAILED',

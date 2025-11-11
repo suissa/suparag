@@ -1,6 +1,7 @@
 import { EvolutionClient, ConnectionState } from 'sdk-evolution-chatbot';
 import { env } from '../config/env';
 import { randomUUID } from 'crypto';
+import { createLogger } from './logger';
 
 /**
  * Interface para dados de instância armazenados
@@ -33,6 +34,7 @@ export interface ConnectionStatus {
 export class EvolutionService {
   private client: EvolutionClient;
   private instances: Map<string, InstanceData>;
+  private logger = createLogger('EvolutionService');
 
   constructor() {
     // Inicializar cliente SDK Evolution com credenciais do .env
@@ -44,9 +46,11 @@ export class EvolutionService {
     // Criar Map para armazenar instâncias ativas
     this.instances = new Map<string, InstanceData>();
 
-    console.log('✅ EvolutionService inicializado com sucesso');
-    console.log(`   API URL: ${env.evolution.apiUrl}`);
-    console.log(`   Instance Prefix: ${env.evolution.instancePrefix}`);
+    this.logger.info('EvolutionService inicializado com sucesso', {
+      operation: 'constructor',
+      apiUrl: env.evolution.apiUrl,
+      instancePrefix: env.evolution.instancePrefix
+    });
   }
 
   /**
@@ -57,18 +61,22 @@ export class EvolutionService {
    * @throws Error se a criação falhar
    */
   async createInstance(sessionId: string): Promise<string> {
+    const startTime = Date.now();
+    
     try {
       // Gerar instanceName único usando timestamp e UUID
       const timestamp = Date.now();
       const uuid = randomUUID().split('-')[0]; // Usar apenas primeira parte do UUID
       const instanceName = `${env.evolution.instancePrefix}_${timestamp}_${uuid}`;
 
-      console.log(`📱 Criando instância WhatsApp...`);
-      console.log(`   Session ID: ${sessionId}`);
-      console.log(`   Instance Name: ${instanceName}`);
+      this.logger.info('Iniciando criação de instância WhatsApp', {
+        operation: 'createInstance',
+        sessionId,
+        instanceName
+      });
 
       // Chamar client.instances.create() com parâmetros corretos
-      const response = await this.client.instances.create({
+      await this.client.instances.create({
         instanceName,
         qrcode: true,
         integration: 'WHATSAPP-BAILEYS'
@@ -84,13 +92,25 @@ export class EvolutionService {
 
       this.instances.set(sessionId, instanceData);
 
-      console.log(`✅ Instância criada com sucesso: ${instanceName}`);
-      console.log(`   Response:`, response);
+      const duration = Date.now() - startTime;
+      this.logger.info('Instância criada com sucesso', {
+        operation: 'createInstance',
+        sessionId,
+        instanceName,
+        duration: `${duration}ms`,
+        totalInstances: this.instances.size
+      });
 
       // Retornar instanceName criado
       return instanceName;
     } catch (error) {
-      console.error('❌ Erro ao criar instância WhatsApp:', error);
+      const duration = Date.now() - startTime;
+      this.logger.error('Falha ao criar instância WhatsApp', {
+        operation: 'createInstance',
+        sessionId,
+        duration: `${duration}ms`
+      }, error as Error);
+      
       throw new Error(`Falha ao criar instância: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     }
   }
@@ -133,19 +153,23 @@ export class EvolutionService {
    * @throws Error se a consulta falhar
    */
   async checkStatus(instanceName: string): Promise<ConnectionStatus> {
+    const startTime = Date.now();
+    
     try {
-      console.log(`🔍 Verificando status da instância: ${instanceName}`);
+      this.logger.debug('Verificando status da instância', {
+        operation: 'checkStatus',
+        instanceName
+      });
 
       // Consultar status da instância usando SDK
       const response = await this.client.instances.connectionState({
         instanceName
       });
 
-      console.log(`   Status response:`, response);
-
       // Determinar se está conectado baseado no estado retornado
       const state = response?.instance?.state || ConnectionState.CLOSED;
       const connected = state === ConnectionState.OPEN;
+      const previousStatus = this.getInstanceData(this.getSessionIdByInstance(instanceName) || '')?.status;
 
       // Atualizar status local se a instância existir no Map
       for (const [sessionId, data] of this.instances.entries()) {
@@ -156,6 +180,20 @@ export class EvolutionService {
         }
       }
 
+      const duration = Date.now() - startTime;
+      
+      // Log apenas se status mudou (para evitar spam)
+      if (previousStatus !== state) {
+        this.logger.info('Status da instância mudou', {
+          operation: 'checkStatus',
+          instanceName,
+          previousStatus,
+          newStatus: state,
+          connected,
+          duration: `${duration}ms`
+        });
+      }
+
       // Retornar objeto com status (connected, disconnected, etc)
       return {
         connected,
@@ -163,7 +201,12 @@ export class EvolutionService {
         instanceName
       };
     } catch (error) {
-      console.error(`❌ Erro ao verificar status da instância ${instanceName}:`, error);
+      const duration = Date.now() - startTime;
+      this.logger.error('Erro ao verificar status da instância', {
+        operation: 'checkStatus',
+        instanceName,
+        duration: `${duration}ms`
+      }, error as Error);
       
       // Em caso de erro, retornar como desconectado
       return {
@@ -175,6 +218,18 @@ export class EvolutionService {
   }
 
   /**
+   * Obtém sessionId a partir do instanceName
+   */
+  private getSessionIdByInstance(instanceName: string): string | undefined {
+    for (const [sessionId, data] of this.instances.entries()) {
+      if (data.instanceName === instanceName) {
+        return sessionId;
+      }
+    }
+    return undefined;
+  }
+
+  /**
    * Obtém o QR code de uma instância WhatsApp para autenticação
    * 
    * @param instanceName - Nome da instância
@@ -182,15 +237,18 @@ export class EvolutionService {
    * @throws Error se a consulta falhar ou QR não estiver disponível
    */
   async getQRCode(instanceName: string): Promise<string> {
+    const startTime = Date.now();
+    
     try {
-      console.log(`📱 Obtendo QR code da instância: ${instanceName}`);
+      this.logger.debug('Obtendo QR code da instância', {
+        operation: 'getQRCode',
+        instanceName
+      });
 
       // Consultar QR code da instância usando SDK
       const response = await this.client.instances.connect({
         instanceName
       });
-
-      console.log(`   QR Code response:`, response);
 
       // Extrair QR code base64 da resposta
       const qrCode = response?.base64;
@@ -199,10 +257,24 @@ export class EvolutionService {
         throw new Error('QR code não disponível na resposta da API');
       }
 
+      const duration = Date.now() - startTime;
+      this.logger.info('QR code obtido com sucesso', {
+        operation: 'getQRCode',
+        instanceName,
+        qrCodeLength: qrCode.length,
+        duration: `${duration}ms`
+      });
+
       // Retornar string base64 do QR code
       return qrCode;
     } catch (error) {
-      console.error(`❌ Erro ao obter QR code da instância ${instanceName}:`, error);
+      const duration = Date.now() - startTime;
+      this.logger.error('Falha ao obter QR code', {
+        operation: 'getQRCode',
+        instanceName,
+        duration: `${duration}ms`
+      }, error as Error);
+      
       throw new Error(`Falha ao obter QR code: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     }
   }
@@ -214,8 +286,13 @@ export class EvolutionService {
    * @throws Error se a deleção falhar
    */
   async deleteInstance(instanceName: string): Promise<void> {
+    const startTime = Date.now();
+    
     try {
-      console.log(`🗑️  Deletando instância: ${instanceName}`);
+      this.logger.info('Iniciando deleção de instância', {
+        operation: 'deleteInstance',
+        instanceName
+      });
 
       // Remover instância do Map local primeiro
       let sessionIdToRemove: string | null = null;
@@ -228,7 +305,12 @@ export class EvolutionService {
 
       if (sessionIdToRemove) {
         this.instances.delete(sessionIdToRemove);
-        console.log(`   Instância removida do Map local (sessionId: ${sessionIdToRemove})`);
+        this.logger.debug('Instância removida do Map local', {
+          operation: 'deleteInstance',
+          instanceName,
+          sessionId: sessionIdToRemove,
+          remainingInstances: this.instances.size
+        });
       }
 
       // Chamar método de deleção da SDK (se disponível)
@@ -236,13 +318,29 @@ export class EvolutionService {
         await this.client.instances.delete({
           instanceName
         });
-        console.log(`✅ Instância deletada com sucesso da Evolution API: ${instanceName}`);
+        
+        const duration = Date.now() - startTime;
+        this.logger.info('Instância deletada com sucesso da Evolution API', {
+          operation: 'deleteInstance',
+          instanceName,
+          duration: `${duration}ms`
+        });
       } catch (apiError) {
         // Se a API retornar erro (ex: instância já deletada), apenas logar
-        console.warn(`⚠️  Aviso ao deletar da API (pode já estar deletada):`, apiError);
+        this.logger.warn('Aviso ao deletar da API (pode já estar deletada)', {
+          operation: 'deleteInstance',
+          instanceName,
+          error: apiError instanceof Error ? apiError.message : String(apiError)
+        });
       }
     } catch (error) {
-      console.error(`❌ Erro ao deletar instância ${instanceName}:`, error);
+      const duration = Date.now() - startTime;
+      this.logger.error('Falha ao deletar instância', {
+        operation: 'deleteInstance',
+        instanceName,
+        duration: `${duration}ms`
+      }, error as Error);
+      
       throw new Error(`Falha ao deletar instância: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     }
   }

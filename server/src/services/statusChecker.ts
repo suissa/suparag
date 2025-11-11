@@ -1,5 +1,6 @@
 import { EvolutionService, ConnectionStatus } from './evolutionService';
 import { env } from '../config/env';
+import { createLogger } from './logger';
 
 /**
  * Interface para dados de verificação armazenados
@@ -32,6 +33,7 @@ export class StatusChecker {
   private evolutionService: EvolutionService;
   private checkInterval: number;
   private checkTimeout: number;
+  private logger = createLogger('StatusChecker');
 
   constructor(evolutionService: EvolutionService) {
     // Criar Map para armazenar intervalos ativos (instanceName → CheckingData)
@@ -44,9 +46,11 @@ export class StatusChecker {
     this.checkInterval = env.evolution.checkInterval || 30000; // 30 segundos
     this.checkTimeout = env.evolution.timeout || 300000; // 5 minutos
 
-    console.log('✅ StatusChecker inicializado');
-    console.log(`   Intervalo de verificação: ${this.checkInterval}ms (${this.checkInterval / 1000}s)`);
-    console.log(`   Timeout máximo: ${this.checkTimeout}ms (${this.checkTimeout / 1000}s)`);
+    this.logger.info('StatusChecker inicializado', {
+      operation: 'constructor',
+      checkInterval: `${this.checkInterval}ms`,
+      checkTimeout: `${this.checkTimeout}ms`
+    });
   }
 
   /**
@@ -63,14 +67,21 @@ export class StatusChecker {
   ): void {
     // Verificar se já existe verificação ativa para esta instância
     if (this.checkings.has(instanceName)) {
-      console.warn(`⚠️  Verificação já ativa para instância: ${instanceName}`);
+      this.logger.warn('Verificação já ativa para instância', {
+        operation: 'startChecking',
+        instanceName,
+        sessionId
+      });
       return;
     }
 
-    console.log(`🔍 Iniciando verificação periódica para instância: ${instanceName}`);
-    console.log(`   Session ID: ${sessionId}`);
-    console.log(`   Intervalo: ${this.checkInterval}ms`);
-    console.log(`   Timeout: ${this.checkTimeout}ms`);
+    this.logger.info('Iniciando verificação periódica', {
+      operation: 'startChecking',
+      instanceName,
+      sessionId,
+      checkInterval: `${this.checkInterval}ms`,
+      checkTimeout: `${this.checkTimeout}ms`
+    });
 
     // Configurar setInterval para verificar a cada 30 segundos
     const interval = setInterval(async () => {
@@ -79,7 +90,12 @@ export class StatusChecker {
 
     // Configurar setTimeout para timeout de 5 minutos
     const timeout = setTimeout(() => {
-      console.log(`⏱️  Timeout de ${this.checkTimeout}ms atingido para instância: ${instanceName}`);
+      this.logger.warn('Timeout atingido para verificação de instância', {
+        operation: 'startChecking.timeout',
+        instanceName,
+        sessionId,
+        timeoutMs: this.checkTimeout
+      });
       
       // Notificar callback com status de timeout
       callback({
@@ -104,8 +120,12 @@ export class StatusChecker {
 
     this.checkings.set(instanceName, checkingData);
 
-    console.log(`✅ Verificação periódica iniciada para: ${instanceName}`);
-    console.log(`   Total de verificações ativas: ${this.checkings.size}`);
+    this.logger.info('Verificação periódica iniciada com sucesso', {
+      operation: 'startChecking',
+      instanceName,
+      sessionId,
+      totalCheckings: this.checkings.size
+    });
 
     // Realizar primeira verificação imediatamente
     this.performCheck(instanceName, callback);
@@ -124,25 +144,36 @@ export class StatusChecker {
     const checkingData = this.checkings.get(instanceName);
     
     if (!checkingData) {
-      console.warn(`⚠️  Dados de verificação não encontrados para: ${instanceName}`);
+      this.logger.warn('Dados de verificação não encontrados', {
+        operation: 'performCheck',
+        instanceName
+      });
       return;
     }
 
     try {
-      console.log(`🔍 Verificando status da instância: ${instanceName}`);
+      this.logger.debug('Executando verificação de status', {
+        operation: 'performCheck',
+        instanceName,
+        sessionId: checkingData.sessionId,
+        lastStatus: checkingData.lastStatus
+      });
 
       // Chamar evolutionService.checkStatus() a cada intervalo
       const currentStatus = await this.evolutionService.checkStatus(instanceName);
-
-      console.log(`   Status atual: ${currentStatus.status}`);
-      console.log(`   Conectado: ${currentStatus.connected}`);
-      console.log(`   Status anterior: ${checkingData.lastStatus}`);
 
       // Comparar status atual com status anterior
       const statusChanged = currentStatus.status !== checkingData.lastStatus;
 
       if (statusChanged) {
-        console.log(`🔄 Status mudou de "${checkingData.lastStatus}" para "${currentStatus.status}"`);
+        this.logger.info('Status da instância mudou', {
+          operation: 'performCheck',
+          instanceName,
+          sessionId: checkingData.sessionId,
+          previousStatus: checkingData.lastStatus,
+          newStatus: currentStatus.status,
+          connected: currentStatus.connected
+        });
         
         // Atualizar lastStatus
         checkingData.lastStatus = currentStatus.status;
@@ -153,14 +184,26 @@ export class StatusChecker {
 
         // Parar verificação quando status='connected'
         if (currentStatus.connected) {
-          console.log(`✅ Instância conectada! Parando verificação: ${instanceName}`);
+          this.logger.info('Instância conectada! Parando verificação', {
+            operation: 'performCheck',
+            instanceName,
+            sessionId: checkingData.sessionId
+          });
           this.stopChecking(instanceName);
         }
       } else {
-        console.log(`   Status não mudou, continuando verificação...`);
+        this.logger.debug('Status não mudou, continuando verificação', {
+          operation: 'performCheck',
+          instanceName,
+          status: currentStatus.status
+        });
       }
     } catch (error) {
-      console.error(`❌ Erro ao verificar status da instância ${instanceName}:`, error);
+      this.logger.error('Erro ao verificar status da instância', {
+        operation: 'performCheck',
+        instanceName,
+        sessionId: checkingData.sessionId
+      }, error as Error);
       
       // Em caso de erro, notificar callback
       callback({
@@ -181,11 +224,18 @@ export class StatusChecker {
     const checkingData = this.checkings.get(instanceName);
 
     if (!checkingData) {
-      console.warn(`⚠️  Tentativa de parar verificação inexistente: ${instanceName}`);
+      this.logger.warn('Tentativa de parar verificação inexistente', {
+        operation: 'stopChecking',
+        instanceName
+      });
       return;
     }
 
-    console.log(`🛑 Parando verificação para instância: ${instanceName}`);
+    this.logger.info('Parando verificação de instância', {
+      operation: 'stopChecking',
+      instanceName,
+      sessionId: checkingData.sessionId
+    });
 
     // Chamar clearInterval e clearTimeout
     clearInterval(checkingData.interval);
@@ -195,9 +245,14 @@ export class StatusChecker {
     this.checkings.delete(instanceName);
 
     const duration = Date.now() - checkingData.startedAt.getTime();
-    console.log(`✅ Verificação parada para: ${instanceName}`);
-    console.log(`   Duração total: ${duration}ms (${(duration / 1000).toFixed(1)}s)`);
-    console.log(`   Total de verificações ativas: ${this.checkings.size}`);
+    this.logger.info('Verificação parada com sucesso', {
+      operation: 'stopChecking',
+      instanceName,
+      sessionId: checkingData.sessionId,
+      duration: `${duration}ms`,
+      durationSeconds: (duration / 1000).toFixed(1),
+      remainingCheckings: this.checkings.size
+    });
   }
 
   /**
@@ -250,7 +305,12 @@ export class StatusChecker {
    * Para todas as verificações ativas (útil para shutdown graceful)
    */
   stopAllCheckings(): void {
-    console.log(`🛑 Parando todas as verificações (${this.checkings.size} ativas)`);
+    const totalCheckings = this.checkings.size;
+    
+    this.logger.info('Parando todas as verificações', {
+      operation: 'stopAllCheckings',
+      totalCheckings
+    });
 
     const instanceNames = Array.from(this.checkings.keys());
     
@@ -258,6 +318,9 @@ export class StatusChecker {
       this.stopChecking(instanceName);
     }
 
-    console.log('✅ Todas as verificações foram paradas');
+    this.logger.info('Todas as verificações foram paradas', {
+      operation: 'stopAllCheckings',
+      stoppedCheckings: totalCheckings
+    });
   }
 }
