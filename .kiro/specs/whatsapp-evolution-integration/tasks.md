@@ -335,7 +335,8 @@
     - Retornar 200 com { success: true }
     - _Requirements: Deployment Notes 4_
 
-- [-] 11. Integrar router no servidor Express
+- [x] 11. Integrar router no servidor Express
+
 
 
 
@@ -344,7 +345,9 @@
   - Adicionar log de inicialização do endpoint
   - _Requirements: 4.3_
 
-- [ ] 12. Integrar Provider no App.tsx
+- [-] 12. Integrar Provider no App.tsx
+
+
 
   - Importar WhatsAppConnectionProvider
   - Envolver aplicação com Provider
