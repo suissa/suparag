@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ConfigurableModal } from './ConfigurableModal';
 import { whatsAppModalConfig } from './specs/whatsAppModalConfig.spec';
 import { useSSE } from '../hooks/useSSE';
@@ -69,6 +69,9 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
 
   // Estado para controlar se deve conectar ao SSE
   const [shouldConnectSSE, setShouldConnectSSE] = useState(false);
+  
+  // Ref para o timeout de 5 minutos
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // URL base da API
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api/v1';
@@ -100,6 +103,23 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
               qrCode: parsedData.qrcode,
               error: null,
             }));
+            
+            // Limpar timeout anterior se existir
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+            }
+            
+            // Configurar timeout de 5 minutos (300000ms)
+            console.log('[WhatsAppConnectionModal] Iniciando timeout de 5 minutos');
+            timeoutRef.current = setTimeout(() => {
+              console.log('[WhatsAppConnectionModal] Timeout de 5 minutos atingido');
+              setConnectionState({
+                status: 'error',
+                qrCode: null,
+                error: 'Tempo limite de 5 minutos excedido. Por favor, tente novamente.',
+              });
+              setShouldConnectSSE(false);
+            }, 300000); // 5 minutos
           }
           break;
 
@@ -107,6 +127,13 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
           // Atualizar status de conexão
           if (parsedData.connected === true) {
             console.log('[WhatsAppConnectionModal] WhatsApp conectado!');
+            
+            // Limpar timeout
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+              timeoutRef.current = null;
+            }
+            
             setConnectionState({
               status: 'connected',
               qrCode: null,
@@ -118,6 +145,13 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
             }, 1500);
           } else if (parsedData.connected === false) {
             console.log('[WhatsAppConnectionModal] Conexão falhou');
+            
+            // Limpar timeout
+            if (timeoutRef.current) {
+              clearTimeout(timeoutRef.current);
+              timeoutRef.current = null;
+            }
+            
             setConnectionState({
               status: 'error',
               qrCode: null,
@@ -157,13 +191,28 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
     enabled: shouldConnectSSE,
   });
 
-  // Limpar SSE quando modal fechar
+  // Limpar SSE e timeout quando modal fechar
   useEffect(() => {
     if (!open) {
       setShouldConnectSSE(false);
       closeSSE();
+      
+      // Limpar timeout se existir
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
     }
   }, [open, closeSSE]);
+  
+  // Cleanup ao desmontar componente
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
 
   /**
    * Inicia o processo de conexão com WhatsApp
