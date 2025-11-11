@@ -121,6 +121,22 @@ export function useSSE(options: UseSSEOptions): UseSSEReturn {
         onMessage(event);
       });
 
+      // Listeners para eventos customizados do WhatsApp
+      eventSource.addEventListener('qrcode', (event: MessageEvent) => {
+        console.log('[useSSE] Evento qrcode recebido');
+        onMessage(event);
+      });
+
+      eventSource.addEventListener('status', (event: MessageEvent) => {
+        console.log('[useSSE] Evento status recebido');
+        onMessage(event);
+      });
+
+      eventSource.addEventListener('error', (event: MessageEvent) => {
+        console.log('[useSSE] Evento error recebido');
+        onMessage(event);
+      });
+
       // Listener para evento 'error' - erro na conexão
       eventSource.addEventListener('error', (error: Event) => {
         console.error('[useSSE] Erro na conexão:', error);

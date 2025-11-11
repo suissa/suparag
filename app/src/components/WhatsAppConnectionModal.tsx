@@ -79,17 +79,25 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
    */
   const handleSSEMessage = (event: MessageEvent) => {
     try {
-      const parsedData: SSEEvent = JSON.parse(event.data);
-      console.log('[WhatsAppConnectionModal] Evento SSE recebido:', parsedData);
+      console.log('[WhatsAppConnectionModal] Evento SSE recebido:', event.type, event.data);
+      
+      const parsedData = JSON.parse(event.data);
+      const eventType = event.type; // 'qrcode', 'status', 'error', ou 'message'
 
-      switch (parsedData.type) {
+      // Se for evento 'message' genérico, tentar extrair tipo do data
+      const type = eventType !== 'message' ? eventType : parsedData.type;
+
+      console.log('[WhatsAppConnectionModal] Tipo do evento:', type, 'Data:', parsedData);
+
+      switch (type) {
         case 'qrcode':
           // Atualizar QR code
-          if (parsedData.data.qrcode) {
+          if (parsedData.qrcode) {
+            console.log('[WhatsAppConnectionModal] QR Code recebido, atualizando estado');
             setConnectionState(prev => ({
               ...prev,
               status: 'connecting',
-              qrCode: parsedData.data.qrcode!,
+              qrCode: parsedData.qrcode,
               error: null,
             }));
           }
@@ -97,7 +105,8 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
 
         case 'status':
           // Atualizar status de conexão
-          if (parsedData.data.connected === true) {
+          if (parsedData.connected === true) {
+            console.log('[WhatsAppConnectionModal] WhatsApp conectado!');
             setConnectionState({
               status: 'connected',
               qrCode: null,
@@ -107,7 +116,8 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
             setTimeout(() => {
               onClose();
             }, 1500);
-          } else if (parsedData.data.connected === false) {
+          } else if (parsedData.connected === false) {
+            console.log('[WhatsAppConnectionModal] Conexão falhou');
             setConnectionState({
               status: 'error',
               qrCode: null,
@@ -118,10 +128,11 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
 
         case 'error':
           // Atualizar estado de erro
+          console.log('[WhatsAppConnectionModal] Erro recebido:', parsedData.message);
           setConnectionState({
             status: 'error',
             qrCode: null,
-            error: parsedData.data.message || 'Erro desconhecido',
+            error: parsedData.message || 'Erro desconhecido',
           });
           break;
       }
