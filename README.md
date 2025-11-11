@@ -26,7 +26,7 @@ Deploy: Vercel (obrigatório)
 Evolution API URL: https://evodevs.cordex.ai
 
 Evolution API Key: V0e3EBKbaJFnKREYfFCqOnoi904vAPV7
-
+integre todas as rotas e gere os testes com jest 
 Docs: doc.evolution-api.com
 
 📦 Entrega

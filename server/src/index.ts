@@ -3,6 +3,7 @@ import cors from 'cors';
 import docsRouter from './routes/docs';
 import settingsRouter from './routes/settings';
 import chunksRouter from './routes/chunks';
+import webhookRouter from './routes/webhook';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -24,6 +25,7 @@ app.get('/health', (req, res) => {
 app.use('/api/v1/docs', docsRouter);
 app.use('/api/v1/settings', settingsRouter);
 app.use('/api/v1/chunks', chunksRouter);
+app.use('/api/v1/webhook', webhookRouter);
 
 // Error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -40,6 +42,7 @@ app.listen(PORT, () => {
   console.log(`📄 Docs API: http://localhost:${PORT}/api/v1/docs`);
   console.log(`⚙️  Settings API: http://localhost:${PORT}/api/v1/settings`);
   console.log(`📦 Chunks API: http://localhost:${PORT}/api/v1/chunks`);
+  console.log(`📲 Webhook API: http://localhost:${PORT}/api/v1/webhook`);
 });
 
 export default app;
