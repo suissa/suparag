@@ -180,9 +180,13 @@
     - _Requirements: 1.1, 1.2_
 -
 
-- [ ] 7. Implementar backend - EvolutionService
+- [x] 7. Implementar backend - EvolutionService
 
-  - [ ] 7.1 Criar classe EvolutionService
+
+
+  - [x] 7.1 Criar classe EvolutionService
+
+
     - Inicializar cliente sdk-evolution-chatbot com credenciais do .env
     - Criar Map para armazenar instâncias ativas
     - Implementar método createInstance(sessionId)
@@ -192,18 +196,24 @@
     - Retornar instanceName criado
     - _Requirements: 4.3, 4.4, 4.5, 9.4, 9.5_
   
-  - [ ] 7.2 Implementar método checkStatus
+  - [x] 7.2 Implementar método checkStatus
+
+
     - Chamar client.setInstance(instanceName)
     - Consultar status da instância usando SDK
     - Retornar objeto com status (connected, disconnected, etc)
     - _Requirements: 6.1, 6.2_
   
-  - [ ] 7.3 Implementar método getQRCode
+  - [x] 7.3 Implementar método getQRCode
+
+
     - Consultar QR code da instância usando SDK
     - Retornar string base64 do QR code
     - _Requirements: 5.1_
   
-  - [ ] 7.4 Implementar método deleteInstance
+  - [x] 7.4 Implementar método deleteInstance
+
+
     - Remover instância do Map local
     - Chamar método de deleção da SDK (se disponível)
     - _Requirements: Deployment Notes 4_
