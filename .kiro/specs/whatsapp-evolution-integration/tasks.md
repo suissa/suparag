@@ -345,7 +345,8 @@
   - Adicionar log de inicialização do endpoint
   - _Requirements: 4.3_
 
-- [-] 12. Integrar Provider no App.tsx
+- [x] 12. Integrar Provider no App.tsx
+
 
 
 
@@ -353,6 +354,7 @@
   - Envolver aplicação com Provider
   - Verificar que modal aparece automaticamente ao carregar desconectado
   - _Requirements: 1.1, 1.2_
+
 
 - [ ] 13. Adicionar variáveis de ambiente
 
