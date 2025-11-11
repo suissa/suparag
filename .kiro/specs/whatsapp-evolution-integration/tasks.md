@@ -11,16 +11,22 @@
   - Adicionar validação de variáveis de ambiente no startup do servidor
   - _Requirements: 9.1, 9.2, 9.3_
 
-- [-] 2. Implementar componente ConfigurableModal genérico
+- [x] 2. Implementar componente ConfigurableModal genérico
 
 
-  - [ ] 2.1 Criar interface ModalConfig completa em types
+
+
+  - [x] 2.1 Criar interface ModalConfig completa em types
+
+
     - Definir tipos TypeScript para todas as propriedades de configuração
     - Exportar interface ModalConfig com valores opcionais
     - Criar type guards para validação de config
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9_
   
-  - [ ] 2.2 Implementar componente ConfigurableModal.tsx
+  - [x] 2.2 Implementar componente ConfigurableModal.tsx
+
+
     - Criar componente funcional com props (open, config, onClose, children)
     - Implementar renderização condicional com AnimatePresence do Framer Motion
     - Aplicar classes CSS dinâmicas baseadas em config
@@ -28,7 +34,8 @@
     - Adicionar suporte a tema claro/escuro automático
     - _Requirements: 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 1.5_
   
-  - [ ] 2.3 Implementar animações com Framer Motion
+  - [x] 2.3 Implementar animações com Framer Motion
+
     - Configurar motion.div para overlay com fade in/out
     - Configurar motion.div para modal com enterAnimation
     - Configurar motion.div para modal com exitAnimation
@@ -36,7 +43,8 @@
     - Aplicar valores padrão de animação (scale, opacity, time)
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5_
   
-  - [ ] 2.4 Implementar eventos de fechamento
+  - [x] 2.4 Implementar eventos de fechamento
+
     - Adicionar useEffect para listener de tecla ESC
     - Implementar handler de click no overlay (se clickClose=true)
     - Chamar callback onClose ao fechar
@@ -44,6 +52,7 @@
     - _Requirements: 3.6, 3.7_
 
 - [ ] 3. Criar configuração do WhatsApp Modal
+
   - [ ] 3.1 Criar arquivo whatsAppModalConfig.spec.ts
     - Exportar objeto whatsAppModalConfig com valores padrão
     - Configurar bg com suporte a dark mode
@@ -54,6 +63,7 @@
     - _Requirements: 2.9, 1.5_
 
 - [ ] 4. Implementar hook useSSE para Server-Sent Events
+
   - [ ] 4.1 Criar custom hook useSSE.ts
     - Definir interface UseSSEOptions (url, onMessage, onError, enabled)
     - Criar estado para isConnected
@@ -71,6 +81,7 @@
     - _Requirements: Error Recovery Strategy 1_
 
 - [ ] 5. Implementar WhatsAppConnectionModal
+
   - [ ] 5.1 Criar componente WhatsAppConnectionModal.tsx
     - Definir interface de props (open, onClose)
     - Criar estado local ConnectionState (status, qrCode, error)
@@ -105,6 +116,7 @@
     - _Requirements: 10.2, 10.3, 10.4, 10.5_
 
 - [ ] 6. Implementar Context Provider para conexão WhatsApp
+
   - [ ] 6.1 Criar WhatsAppConnectionContext.tsx
     - Definir interface WhatsAppConnectionContextValue
     - Criar Context com createContext
@@ -131,6 +143,7 @@
     - _Requirements: 1.1, 1.2_
 
 - [ ] 7. Implementar backend - EvolutionService
+
   - [ ] 7.1 Criar classe EvolutionService
     - Inicializar cliente sdk-evolution-chatbot com credenciais do .env
     - Criar Map para armazenar instâncias ativas
@@ -158,6 +171,7 @@
     - _Requirements: Deployment Notes 4_
 
 - [ ] 8. Implementar backend - SSEManager
+
   - [ ] 8.1 Criar classe SSEManager
     - Criar Map para armazenar conexões ativas (sessionId → Response)
     - Implementar método addConnection(sessionId, res)
@@ -177,6 +191,7 @@
     - _Requirements: 6.6_
 
 - [ ] 9. Implementar backend - StatusChecker
+
   - [ ] 9.1 Criar classe StatusChecker
     - Criar Map para armazenar intervalos ativos (instanceName → Timeout)
     - Implementar método startChecking(instanceName, sessionId, callback)
@@ -204,6 +219,7 @@
     - _Requirements: 6.4_
 
 - [ ] 10. Implementar backend - WhatsApp Router
+
   - [ ] 10.1 Criar arquivo routes/whatsapp.ts
     - Criar Express Router
     - Inicializar instâncias de EvolutionService, SSEManager e StatusChecker
@@ -244,18 +260,21 @@
     - _Requirements: Deployment Notes 4_
 
 - [ ] 11. Integrar router no servidor Express
+
   - Importar whatsappRouter em server/src/index.ts
   - Adicionar app.use('/api/v1/whatsapp', whatsappRouter)
   - Adicionar log de inicialização do endpoint
   - _Requirements: 4.3_
 
 - [ ] 12. Integrar Provider no App.tsx
+
   - Importar WhatsAppConnectionProvider
   - Envolver aplicação com Provider
   - Verificar que modal aparece automaticamente ao carregar desconectado
   - _Requirements: 1.1, 1.2_
 
 - [ ] 13. Adicionar variáveis de ambiente
+
   - Criar arquivo .env.example com EVOLUTION_API_URL e EVOLUTION_API_KEY
   - Documentar variáveis opcionais (EVOLUTION_INSTANCE_PREFIX, etc)
   - Adicionar validação no startup do servidor
