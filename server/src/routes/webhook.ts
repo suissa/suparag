@@ -42,6 +42,51 @@ function extractMessageText(message: any): string {
   return '';
 }
 
+// Processar mensagem de texto/conversa
+async function processConversation(phoneNumber: string, data: any): Promise<string> {
+  const messageText = extractMessageText(data.message);
+  console.log('💬 Processando conversa:', messageText);
+  
+  // TODO: Implementar processamento com IA + RAG
+  // TODO: Buscar contexto nos documentos
+  // TODO: Gerar resposta com LLM
+  
+  return `Mensagem de texto recebida: "${messageText}"`;
+}
+
+// Processar mensagem de imagem
+async function processImageMessage(phoneNumber: string, data: any): Promise<string> {
+  const imageUrl = data.message?.imageMessage?.url;
+  const caption = data.message?.imageMessage?.caption || '';
+  
+  console.log('🖼️ Processando imagem');
+  console.log('📎 URL:', imageUrl);
+  console.log('📝 Legenda:', caption);
+  
+  // TODO: Baixar imagem
+  // TODO: Processar com OCR se necessário
+  // TODO: Gerar resposta
+  
+  return `Imagem recebida${caption ? ` com legenda: "${caption}"` : ''}`;
+}
+
+// Processar mensagem de áudio
+async function processAudioMessage(phoneNumber: string, data: any): Promise<string> {
+  const audioUrl = data.message?.audioMessage?.url;
+  const duration = data.message?.audioMessage?.seconds || 0;
+  
+  console.log('🎤 Processando áudio');
+  console.log('📎 URL:', audioUrl);
+  console.log('⏱️ Duração:', duration, 'segundos');
+  
+  // TODO: Baixar áudio
+  // TODO: Transcrever com Whisper/Speech-to-Text
+  // TODO: Processar texto transcrito com IA
+  // TODO: Gerar resposta
+  
+  return `Áudio recebido (${duration}s)`;
+}
+
 // POST /api/v1/webhook - Receber mensagens do WhatsApp
 router.post('/', async (req: Request, res: Response) => {
   try {
@@ -80,26 +125,37 @@ router.post('/', async (req: Request, res: Response) => {
     // Extrair informações da mensagem
     const remoteJid = payload.data?.key?.remoteJid;
     const phoneNumber = extractPhoneNumber(remoteJid);
-    const messageText = extractMessageText(payload.data?.message);
     const pushName = payload.data?.pushName || 'Desconhecido';
+    const messageType = payload.data?.messageType;
 
     console.log('📱 Telefone:', phoneNumber);
     console.log('👤 Nome:', pushName);
-    console.log('💬 Mensagem:', messageText);
+    console.log('📋 Tipo:', messageType);
 
-    // Validar se há texto na mensagem
-    if (!messageText) {
-      console.log('⏭️ Mensagem sem texto ignorada');
-      return res.status(200).json({
-        success: true,
-        message: 'Mensagem sem texto'
-      });
+    // Processar mensagem baseado no tipo
+    let processResult: string;
+    
+    switch (messageType) {
+      case 'conversation':
+      case 'extendedTextMessage':
+        processResult = await processConversation(phoneNumber, payload.data);
+        break;
+      
+      case 'imageMessage':
+        processResult = await processImageMessage(phoneNumber, payload.data);
+        break;
+      
+      case 'audioMessage':
+        processResult = await processAudioMessage(phoneNumber, payload.data);
+        break;
+      
+      default:
+        console.log('⏭️ Tipo de mensagem não suportado:', messageType);
+        return res.status(200).json({
+          success: true,
+          message: `Tipo de mensagem não suportado: ${messageType}`
+        });
     }
-
-    // TODO: Processar mensagem com IA + RAG
-    // TODO: Buscar contexto relevante dos documentos
-    // TODO: Gerar resposta com LLM
-    // TODO: Enviar resposta via Evolution API
 
     console.log('✅ Mensagem processada com sucesso');
 
@@ -109,8 +165,9 @@ router.post('/', async (req: Request, res: Response) => {
       data: {
         phoneNumber,
         pushName,
-        messageText,
-        messageId: payload.data?.key?.id
+        messageType,
+        messageId: payload.data?.key?.id,
+        processResult
       }
     });
 

@@ -4,6 +4,7 @@ import docsRouter from './routes/docs';
 import settingsRouter from './routes/settings';
 import chunksRouter from './routes/chunks';
 import webhookRouter from './routes/webhook';
+import graphRouter from './routes/graph';
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -26,6 +27,7 @@ app.use('/api/v1/docs', docsRouter);
 app.use('/api/v1/settings', settingsRouter);
 app.use('/api/v1/chunks', chunksRouter);
 app.use('/api/v1/webhook', webhookRouter);
+app.use('/api/v1/graph', graphRouter);
 
 // Error handler
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -43,6 +45,7 @@ app.listen(PORT, () => {
   console.log(`⚙️  Settings API: http://localhost:${PORT}/api/v1/settings`);
   console.log(`📦 Chunks API: http://localhost:${PORT}/api/v1/chunks`);
   console.log(`📲 Webhook API: http://localhost:${PORT}/api/v1/webhook`);
+  console.log(`🕸️  Graph API: http://localhost:${PORT}/api/v1/graph`);
 });
 
 export default app;

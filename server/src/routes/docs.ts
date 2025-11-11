@@ -164,9 +164,79 @@ router.post('/', upload.single('file'), async (req: Request, res: Response) => {
   }
 });
 
-// GET /api/v1/docs - Listar documentos
+// GET /api/v1/docs - Listar documentos (com busca fuzzy opcional)
 router.get('/', async (req: Request, res: Response) => {
   try {
+    const { search, fuzzy } = req.query;
+
+    // Se houver busca fuzzy (pg_trgm)
+    if (search && fuzzy === 'true') {
+      const searchTerm = search as string;
+      
+      // Busca com similaridade usando pg_trgm
+      const { data, error } = await supabase.rpc('search_documents_fuzzy', {
+        search_term: searchTerm
+      });
+
+      if (error) {
+        // Se a função não existir, fazer busca SQL direta
+        console.log('Função RPC não encontrada, usando busca SQL direta');
+        
+        const { data: sqlData, error: sqlError } = await supabase
+          .from('documents')
+          .select('id, title, content, metadata, created_at, updated_at')
+          .ilike('content', `%${searchTerm}%`)
+          .order('created_at', { ascending: false })
+          .limit(20);
+
+        if (sqlError) {
+          throw new Error(`Erro ao buscar documentos: ${sqlError.message}`);
+        }
+
+        const documents = sqlData.map((doc: any) => ({
+          id: doc.id,
+          title: doc.title,
+          filename: doc.metadata?.filename,
+          type: doc.metadata?.type,
+          size: doc.metadata?.size,
+          characterCount: doc.metadata?.characterCount,
+          contentPreview: doc.content?.substring(0, 200),
+          createdAt: doc.created_at,
+          updatedAt: doc.updated_at,
+        }));
+
+        return res.json({
+          success: true,
+          count: documents.length,
+          searchTerm,
+          searchType: 'ilike',
+          documents
+        });
+      }
+
+      const documents = data.map((doc: any) => ({
+        id: doc.id,
+        title: doc.title,
+        filename: doc.metadata?.filename,
+        type: doc.metadata?.type,
+        size: doc.metadata?.size,
+        characterCount: doc.metadata?.characterCount,
+        contentPreview: doc.content?.substring(0, 200),
+        score: doc.score,
+        createdAt: doc.created_at,
+        updatedAt: doc.updated_at,
+      }));
+
+      return res.json({
+        success: true,
+        count: documents.length,
+        searchTerm,
+        searchType: 'fuzzy',
+        documents
+      });
+    }
+
+    // Busca normal (sem fuzzy)
     const { data, error } = await supabase
       .from('documents')
       .select('id, title, metadata, created_at, updated_at')
@@ -176,13 +246,13 @@ router.get('/', async (req: Request, res: Response) => {
       throw new Error(`Erro ao buscar documentos: ${error.message}`);
     }
 
-    const documents = data.map(doc => ({
+    const documents = data.map((doc: any) => ({
       id: doc.id,
       title: doc.title,
-      filename: doc.metadata.filename,
-      type: doc.metadata.type,
-      size: doc.metadata.size,
-      characterCount: doc.metadata.characterCount,
+      filename: doc.metadata?.filename,
+      type: doc.metadata?.type,
+      size: doc.metadata?.size,
+      characterCount: doc.metadata?.characterCount,
       createdAt: doc.created_at,
       updatedAt: doc.updated_at,
     }));

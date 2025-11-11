@@ -14,7 +14,7 @@ describe('Webhook API', () => {
   });
 
   describe('POST /api/v1/webhook', () => {
-    it('should process messages.upsert event', async () => {
+    it('should process conversation message', async () => {
       const payload = {
         event: 'messages.upsert',
         instance: 'test-instance',
@@ -41,7 +41,8 @@ describe('Webhook API', () => {
       expect(response.body).toHaveProperty('success', true);
       expect(response.body.data).toHaveProperty('phoneNumber', '5511999999999');
       expect(response.body.data).toHaveProperty('pushName', 'João Silva');
-      expect(response.body.data).toHaveProperty('messageText', 'Olá, preciso de ajuda');
+      expect(response.body.data).toHaveProperty('messageType', 'conversation');
+      expect(response.body.data).toHaveProperty('processResult');
     });
 
     it('should process extendedTextMessage', async () => {
@@ -71,7 +72,104 @@ describe('Webhook API', () => {
 
       expect(response.status).toBe(200);
       expect(response.body).toHaveProperty('success', true);
-      expect(response.body.data).toHaveProperty('messageText', 'Mensagem com texto estendido');
+      expect(response.body.data).toHaveProperty('messageType', 'extendedTextMessage');
+      expect(response.body.data).toHaveProperty('processResult');
+    });
+
+    it('should process image message', async () => {
+      const payload = {
+        event: 'messages.upsert',
+        instance: 'test-instance',
+        data: {
+          key: {
+            remoteJid: '5511777777777@s.whatsapp.net',
+            fromMe: false,
+            id: 'msg-img'
+          },
+          pushName: 'Pedro Costa',
+          message: {
+            imageMessage: {
+              url: 'https://example.com/image.jpg',
+              caption: 'Veja esta imagem'
+            }
+          },
+          messageType: 'imageMessage',
+          messageTimestamp: Date.now()
+        }
+      };
+
+      const response = await request(app)
+        .post('/api/v1/webhook')
+        .send(payload);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('success', true);
+      expect(response.body.data).toHaveProperty('messageType', 'imageMessage');
+      expect(response.body.data).toHaveProperty('processResult');
+      expect(response.body.data.processResult).toContain('Imagem recebida');
+    });
+
+    it('should process audio message', async () => {
+      const payload = {
+        event: 'messages.upsert',
+        instance: 'test-instance',
+        data: {
+          key: {
+            remoteJid: '5511666666666@s.whatsapp.net',
+            fromMe: false,
+            id: 'msg-audio'
+          },
+          pushName: 'Ana Lima',
+          message: {
+            audioMessage: {
+              url: 'https://example.com/audio.ogg',
+              seconds: 15
+            }
+          },
+          messageType: 'audioMessage',
+          messageTimestamp: Date.now()
+        }
+      };
+
+      const response = await request(app)
+        .post('/api/v1/webhook')
+        .send(payload);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('success', true);
+      expect(response.body.data).toHaveProperty('messageType', 'audioMessage');
+      expect(response.body.data).toHaveProperty('processResult');
+      expect(response.body.data.processResult).toContain('Áudio recebido');
+    });
+
+    it('should reject unsupported message types', async () => {
+      const payload = {
+        event: 'messages.upsert',
+        instance: 'test-instance',
+        data: {
+          key: {
+            remoteJid: '5511555555555@s.whatsapp.net',
+            fromMe: false,
+            id: 'msg-video'
+          },
+          pushName: 'Carlos Silva',
+          message: {
+            videoMessage: {
+              url: 'https://example.com/video.mp4'
+            }
+          },
+          messageType: 'videoMessage',
+          messageTimestamp: Date.now()
+        }
+      };
+
+      const response = await request(app)
+        .post('/api/v1/webhook')
+        .send(payload);
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveProperty('success', true);
+      expect(response.body.message).toContain('não suportado');
     });
 
     it('should ignore non-messages.upsert events', async () => {
@@ -146,35 +244,7 @@ describe('Webhook API', () => {
       expect(response.body).toHaveProperty('message', 'Mensagens próprias não são processadas');
     });
 
-    it('should ignore messages without text', async () => {
-      const payload = {
-        event: 'messages.upsert',
-        instance: 'test-instance',
-        data: {
-          key: {
-            remoteJid: '5511999999999@s.whatsapp.net',
-            fromMe: false,
-            id: 'msg-no-text'
-          },
-          pushName: 'João Silva',
-          message: {
-            imageMessage: {
-              url: 'https://example.com/image.jpg'
-            }
-          },
-          messageType: 'imageMessage',
-          messageTimestamp: Date.now()
-        }
-      };
 
-      const response = await request(app)
-        .post('/api/v1/webhook')
-        .send(payload);
-
-      expect(response.status).toBe(200);
-      expect(response.body).toHaveProperty('success', true);
-      expect(response.body).toHaveProperty('message', 'Mensagem sem texto');
-    });
 
     it('should extract phone number correctly', async () => {
       const payload = {

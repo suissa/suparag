@@ -42,7 +42,11 @@ O webhook processa apenas:
 - ✅ Evento `messages.upsert`
 - ✅ Mensagens individuais (não grupos)
 - ✅ Mensagens recebidas (não enviadas por nós)
-- ✅ Mensagens com texto
+- ✅ Tipos suportados:
+  - `conversation` - Mensagens de texto simples
+  - `extendedTextMessage` - Mensagens de texto com formatação
+  - `imageMessage` - Imagens (com ou sem legenda)
+  - `audioMessage` - Áudios/notas de voz
 
 ## ⏭️ Mensagens Ignoradas
 
@@ -50,9 +54,33 @@ O webhook ignora:
 - ❌ Outros eventos (connection.update, etc)
 - ❌ Mensagens de grupos (`@g.us`)
 - ❌ Mensagens enviadas por nós (`fromMe: true`)
-- ❌ Mensagens sem texto (imagens, áudios, etc)
+- ❌ Tipos não suportados (videoMessage, documentMessage, stickerMessage, etc)
 
-## 🔍 Extração de Dados
+## 🔍 Processamento por Tipo de Mensagem
+
+### Switch de Tipos
+```typescript
+const messageType = body?.data?.messageType;
+
+switch (messageType) {
+  case 'conversation':
+  case 'extendedTextMessage':
+    await processConversation(phoneNumber, body?.data);
+    break;
+  
+  case 'imageMessage':
+    await processImageMessage(phoneNumber, body?.data);
+    break;
+  
+  case 'audioMessage':
+    await processAudioMessage(phoneNumber, body?.data);
+    break;
+  
+  default:
+    // Tipo não suportado
+    break;
+}
+```
 
 ### Telefone do Contato
 ```typescript
@@ -66,22 +94,40 @@ function extractPhoneNumber(remoteJid: string): string {
 - Input: `5511999999999@s.whatsapp.net`
 - Output: `5511999999999`
 
-### Texto da Mensagem
+### Processadores por Tipo
+
+#### 1. Conversation (Texto)
 ```typescript
-function extractMessageText(message: any): string {
-  if (message.conversation) {
-    return message.conversation;
-  }
-  if (message.extendedTextMessage?.text) {
-    return message.extendedTextMessage.text;
-  }
-  return '';
+async function processConversation(phoneNumber: string, data: any): Promise<string> {
+  const messageText = extractMessageText(data.message);
+  // Processar com IA + RAG
+  return result;
+}
+```
+
+#### 2. Image Message (Imagem)
+```typescript
+async function processImageMessage(phoneNumber: string, data: any): Promise<string> {
+  const imageUrl = data.message?.imageMessage?.url;
+  const caption = data.message?.imageMessage?.caption || '';
+  // Baixar imagem, processar com OCR se necessário
+  return result;
+}
+```
+
+#### 3. Audio Message (Áudio)
+```typescript
+async function processAudioMessage(phoneNumber: string, data: any): Promise<string> {
+  const audioUrl = data.message?.audioMessage?.url;
+  const duration = data.message?.audioMessage?.seconds || 0;
+  // Baixar áudio, transcrever com Whisper
+  return result;
 }
 ```
 
 ## 📤 Resposta do Webhook
 
-### Sucesso (200)
+### Sucesso - Conversation (200)
 ```json
 {
   "success": true,
@@ -89,8 +135,39 @@ function extractMessageText(message: any): string {
   "data": {
     "phoneNumber": "5511999999999",
     "pushName": "João Silva",
-    "messageText": "Olá, preciso de ajuda",
-    "messageId": "3EB0XXXXX"
+    "messageType": "conversation",
+    "messageId": "3EB0XXXXX",
+    "processResult": "Mensagem de texto recebida: \"Olá, preciso de ajuda\""
+  }
+}
+```
+
+### Sucesso - Image (200)
+```json
+{
+  "success": true,
+  "message": "Mensagem recebida e processada",
+  "data": {
+    "phoneNumber": "5511999999999",
+    "pushName": "João Silva",
+    "messageType": "imageMessage",
+    "messageId": "3EB0XXXXX",
+    "processResult": "Imagem recebida com legenda: \"Veja esta foto\""
+  }
+}
+```
+
+### Sucesso - Audio (200)
+```json
+{
+  "success": true,
+  "message": "Mensagem recebida e processada",
+  "data": {
+    "phoneNumber": "5511999999999",
+    "pushName": "João Silva",
+    "messageType": "audioMessage",
+    "messageId": "3EB0XXXXX",
+    "processResult": "Áudio recebido (15s)"
   }
 }
 ```
@@ -108,6 +185,14 @@ function extractMessageText(message: any): string {
 {
   "success": true,
   "message": "Mensagens de grupo não são processadas"
+}
+```
+
+### Tipo Não Suportado (200)
+```json
+{
+  "success": true,
+  "message": "Tipo de mensagem não suportado: videoMessage"
 }
 ```
 
@@ -162,20 +247,46 @@ curl http://localhost:4000/api/v1/webhook
 
 O webhook gera logs detalhados:
 
+**Mensagem de texto:**
 ```
 📨 Webhook recebido: messages.upsert
 📱 Telefone: 5511999999999
 👤 Nome: João Silva
-💬 Mensagem: Olá, preciso de ajuda
+📋 Tipo: conversation
+💬 Processando conversa: Olá, preciso de ajuda
 ✅ Mensagem processada com sucesso
 ```
 
-Mensagens ignoradas:
+**Mensagem de imagem:**
+```
+📨 Webhook recebido: messages.upsert
+📱 Telefone: 5511999999999
+👤 Nome: João Silva
+📋 Tipo: imageMessage
+🖼️ Processando imagem
+📎 URL: https://example.com/image.jpg
+📝 Legenda: Veja esta foto
+✅ Mensagem processada com sucesso
+```
+
+**Mensagem de áudio:**
+```
+📨 Webhook recebido: messages.upsert
+📱 Telefone: 5511999999999
+👤 Nome: João Silva
+📋 Tipo: audioMessage
+🎤 Processando áudio
+📎 URL: https://example.com/audio.ogg
+⏱️ Duração: 15 segundos
+✅ Mensagem processada com sucesso
+```
+
+**Mensagens ignoradas:**
 ```
 ⏭️ Evento ignorado: connection.update
 ⏭️ Mensagem de grupo ignorada
 ⏭️ Mensagem própria ignorada
-⏭️ Mensagem sem texto ignorada
+⏭️ Tipo de mensagem não suportado: videoMessage
 ```
 
 ## 🔄 Fluxo de Processamento
