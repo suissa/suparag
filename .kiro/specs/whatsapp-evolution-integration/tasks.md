@@ -356,6 +356,7 @@
   - _Requirements: 1.1, 1.2_
 
 
+
 - [ ] 13. Adicionar variáveis de ambiente
 
   - Criar arquivo .env.example com EVOLUTION_API_URL e EVOLUTION_API_KEY

@@ -15,21 +15,8 @@ interface RequiredEnvVars {
 }
 
 /**
- * Interface para tipagem das variáveis de ambiente opcionais
- */
-interface OptionalEnvVars {
-  NODE_ENV?: string;
-  OPENROUTER_API_KEY?: string;
-  MAX_FILE_SIZE?: string;
-  UPLOAD_DIR?: string;
-  EVOLUTION_INSTANCE_PREFIX?: string;
-  EVOLUTION_CHECK_INTERVAL?: string;
-  EVOLUTION_TIMEOUT?: string;
-}
-
-/**
  * Valida se todas as variáveis de ambiente obrigatórias estão definidas
- * @throws {Error} Se alguma variável obrigatória estiver faltando
+ * @throws {Error} Se alguma variável obrigatória estiver faltando ou inválida
  */
 export function validateEnv(): void {
   const requiredVars: (keyof RequiredEnvVars)[] = [
@@ -41,7 +28,9 @@ export function validateEnv(): void {
   ];
 
   const missingVars: string[] = [];
+  const invalidVars: string[] = [];
 
+  // Validar variáveis obrigatórias
   for (const varName of requiredVars) {
     if (!process.env[varName]) {
       missingVars.push(varName);
@@ -59,6 +48,54 @@ Consulte o arquivo .env.example para referência.
 
     console.error(errorMessage);
     throw new Error(`Missing required environment variables: ${missingVars.join(', ')}`);
+  }
+
+  // Validar URLs
+  try {
+    new URL(process.env.SUPABASE_URL!);
+  } catch {
+    invalidVars.push('SUPABASE_URL (URL inválida)');
+  }
+
+  try {
+    new URL(process.env.EVOLUTION_API_URL!);
+  } catch {
+    invalidVars.push('EVOLUTION_API_URL (URL inválida)');
+  }
+
+  // Validar valores numéricos opcionais
+  if (process.env.EVOLUTION_CHECK_INTERVAL) {
+    const interval = parseInt(process.env.EVOLUTION_CHECK_INTERVAL, 10);
+    if (isNaN(interval) || interval < 1000) {
+      invalidVars.push('EVOLUTION_CHECK_INTERVAL (deve ser >= 1000ms)');
+    }
+  }
+
+  if (process.env.EVOLUTION_TIMEOUT) {
+    const timeout = parseInt(process.env.EVOLUTION_TIMEOUT, 10);
+    if (isNaN(timeout) || timeout < 10000) {
+      invalidVars.push('EVOLUTION_TIMEOUT (deve ser >= 10000ms)');
+    }
+  }
+
+  if (process.env.MAX_FILE_SIZE) {
+    const maxSize = parseInt(process.env.MAX_FILE_SIZE, 10);
+    if (isNaN(maxSize) || maxSize < 1) {
+      invalidVars.push('MAX_FILE_SIZE (deve ser > 0)');
+    }
+  }
+
+  if (invalidVars.length > 0) {
+    const errorMessage = `
+❌ Erro: Variáveis de ambiente com valores inválidos:
+${invalidVars.map(v => `   - ${v}`).join('\n')}
+
+Por favor, corrija estas variáveis no arquivo .env
+Consulte o arquivo .env.example para referência.
+    `.trim();
+
+    console.error(errorMessage);
+    throw new Error(`Invalid environment variables: ${invalidVars.join(', ')}`);
   }
 }
 
