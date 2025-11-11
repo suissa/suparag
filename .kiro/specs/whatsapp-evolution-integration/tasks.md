@@ -92,23 +92,31 @@
     - Limitar máximo de tentativas (ex: 10)
     - _Requirements: Error Recovery Strategy 1_
 
-- [-] 5. Implementar WhatsAppConnectionModal
+- [x] 5. Implementar WhatsAppConnectionModal
 
 
-  - [ ] 5.1 Criar componente WhatsAppConnectionModal.tsx
+
+
+  - [x] 5.1 Criar componente WhatsAppConnectionModal.tsx
+
+
     - Definir interface de props (open, onClose)
     - Criar estado local ConnectionState (status, qrCode, error)
     - Renderizar ConfigurableModal com whatsAppModalConfig
     - Implementar UI condicional baseada em status
     - _Requirements: 1.2, 1.3, 7.3_
   
-  - [ ] 5.2 Implementar lógica de conexão
+  - [x] 5.2 Implementar lógica de conexão
+
+
     - Criar função handleConnect que chama POST /api/v1/whatsapp/connect
     - Atualizar status para 'connecting' ao iniciar
     - Tratar erros de requisição HTTP
     - _Requirements: 4.2, 4.6_
   
-  - [ ] 5.3 Integrar hook useSSE para receber eventos
+  - [x] 5.3 Integrar hook useSSE para receber eventos
+
+
     - Usar useSSE com URL /api/v1/whatsapp/connect/stream
     - Parsear eventos SSE (qrcode, status, error)
     - Atualizar estado qrCode ao receber evento 'qrcode'
@@ -116,13 +124,17 @@
     - Atualizar error ao receber evento 'error'
     - _Requirements: 5.1, 5.2, 5.3, 5.5, 5.6, 7.1_
   
-  - [ ] 5.4 Implementar exibição de QR code
+  - [x] 5.4 Implementar exibição de QR code
+
+
     - Renderizar loading spinner enquanto qrCode é null
     - Decodificar base64 e exibir imagem do QR code
     - Adicionar estilos responsivos para QR code
     - _Requirements: 5.4_
   
-  - [ ] 5.5 Implementar tratamento de erros e retry
+  - [x] 5.5 Implementar tratamento de erros e retry
+
+
     - Exibir mensagem de erro quando status='error'
     - Adicionar botão "Tentar Novamente"
     - Limpar estado ao tentar novamente
