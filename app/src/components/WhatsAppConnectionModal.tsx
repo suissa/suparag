@@ -143,20 +143,10 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
             setTimeout(() => {
               onClose();
             }, 1500);
-          } else if (parsedData.connected === false) {
-            console.log('[WhatsAppConnectionModal] Conexão falhou');
-            
-            // Limpar timeout
-            if (timeoutRef.current) {
-              clearTimeout(timeoutRef.current);
-              timeoutRef.current = null;
-            }
-            
-            setConnectionState({
-              status: 'error',
-              qrCode: null,
-              error: 'Tempo limite de conexão excedido',
-            });
+          } else if (parsedData.connected === false && parsedData.status !== 'connecting') {
+            // Só mostrar erro se não for status intermediário "connecting"
+            // O status "connecting" é normal e esperado enquanto aguarda scan do QR
+            console.log('[WhatsAppConnectionModal] Status intermediário ignorado:', parsedData.status);
           }
           break;
 
