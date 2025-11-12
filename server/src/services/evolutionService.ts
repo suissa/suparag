@@ -40,7 +40,8 @@ export class EvolutionService {
     // Inicializar cliente SDK Evolution com credenciais do .env
     this.client = new EvolutionClient({
       serverUrl: env.evolution.apiUrl,
-      token: env.evolution.apiKey
+      token: env.evolution.apiKey,
+      instance: 'NeuroPgRag'
     });
 
     // Criar Map para armazenar instâncias ativas
@@ -249,7 +250,7 @@ export class EvolutionService {
       const response = await this.client.instances.connect({
         instanceName
       });
-
+      console.log('\n\n\nRESPONSE:', response);
       // Extrair QR code base64 da resposta
       const qrCode = response?.base64;
 

@@ -183,7 +183,7 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
 
         // Tentar obter QR code
         const qrCode = await evolutionService.getQRCode(instanceName);
-
+        console.log('\n\n\nQR Code:', qrCode);
         if (qrCode) {
           logger.info('QR code obtido com sucesso', {
             operation: 'GET /connect/stream.qrCodeLoop',
