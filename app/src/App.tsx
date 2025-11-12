@@ -1,69 +1,88 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { CRMProvider } from './contexts/CRMContext';
+import { WhatsAppConnectionProvider } from './contexts/WhatsAppConnectionContext';
+
+// Páginas existentes
+import Dashboard from './pages/Dashboard';
 import Upload from './pages/Upload';
 import Documents from './pages/Documents';
 import Settings from './pages/Settings';
-import Dashboard from './pages/Dashboard';
-import { WhatsAppConnectionProvider } from './contexts/WhatsAppConnectionContext';
 import Uploadfull from './pages/Uploadfull';
+
+// Novas páginas CRM
+import CustomersPage from './pages/customers/index';
+import CustomerDetailPage from './pages/customers/[id]';
+import InteractionsPage from './pages/interactions/index';
+import TicketsPage from './pages/tickets/index';
+import RagPage from './pages/rag/index';
+import MetricsPage from './pages/metrics/index';
+
+import { DashboardLayout } from './layouts/DashboardLayout';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 minutos
+    },
+  },
+});
 
 function App() {
   return (
-    <WhatsAppConnectionProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route index element={<Dashboard />} />
-          <Route path="upload" element={
-            <div className="flex min-h-screen bg-[#101c22]">
-              <Sidebar />
-              <main className="flex-1 p-8 overflow-y-auto">
-                <Upload />
-              </main>
-            </div>
-          } />
-          <Route path="documents" element={
-            <div className="flex min-h-screen bg-[#101c22]">
-              <Sidebar />
-              <main className="flex-1 p-8 overflow-y-auto">
-                <Documents />
-              </main>
-            </div>
-          } />
-          <Route path="uploadfull" element={
-            <div className="flex min-h-screen bg-[#101c22]">
-              <Sidebar />
-              <main className="flex-1 p-8 overflow-y-auto">
-                <Uploadfull />
-              </main>
-            </div>
-          } />
-          <Route path="settings" element={
-            <div className="flex min-h-screen bg-[#101c22]">
-              <Sidebar />
-              <main className="flex-1 p-8 overflow-y-auto">
-                <Settings />
-              </main>
-            </div>
-          } />
-          <Route path="chat" element={
-            <div className="flex min-h-screen bg-[#101c22]">
-              <Sidebar />
-              <main className="flex-1 p-8 overflow-y-auto">
-                <div className="text-center py-12 text-white">Chat em desenvolvimento...</div>
-              </main>
-            </div>
-          } />
-          <Route path="analytics" element={
-            <div className="flex min-h-screen bg-[#101c22]">
-              <Sidebar />
-              <main className="flex-1 p-8 overflow-y-auto">
-                <div className="text-center py-12 text-white">Analytics em desenvolvimento...</div>
-              </main>
-            </div>
-          } />
-        </Routes>
-      </BrowserRouter>
-    </WhatsAppConnectionProvider>
+    <QueryClientProvider client={queryClient}>
+      <CRMProvider>
+        <WhatsAppConnectionProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route index element={<Dashboard />} />
+              
+              {/* Rotas CRM */}
+              <Route path="/customers" element={<CustomersPage />} />
+              <Route path="/customers/:id" element={<CustomerDetailPage />} />
+              <Route path="/interactions" element={<InteractionsPage />} />
+              <Route path="/tickets" element={<TicketsPage />} />
+              <Route path="/rag" element={<RagPage />} />
+              <Route path="/metrics" element={<MetricsPage />} />
+              
+              {/* Rotas existentes */}
+              <Route path="/upload" element={
+                <DashboardLayout>
+                  <Upload />
+                </DashboardLayout>
+              } />
+              <Route path="/documents" element={
+                <DashboardLayout>
+                  <Documents />
+                </DashboardLayout>
+              } />
+              <Route path="/uploadfull" element={
+                <DashboardLayout>
+                  <Uploadfull />
+                </DashboardLayout>
+              } />
+              <Route path="/settings" element={
+                <DashboardLayout>
+                  <Settings />
+                </DashboardLayout>
+              } />
+              <Route path="/chat" element={
+                <DashboardLayout>
+                  <div className="text-center py-12 text-white">Chat em desenvolvimento...</div>
+                </DashboardLayout>
+              } />
+              <Route path="/analytics" element={
+                <DashboardLayout>
+                  <div className="text-center py-12 text-white">Analytics em desenvolvimento...</div>
+                </DashboardLayout>
+              } />
+            </Routes>
+          </BrowserRouter>
+        </WhatsAppConnectionProvider>
+      </CRMProvider>
+    </QueryClientProvider>
   );
 }
 
