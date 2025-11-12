@@ -3,13 +3,19 @@ import { Link, useLocation } from 'react-router-dom';
 const Sidebar = () => {
   const location = useLocation();
   
-  const isActive = (path: string) => location.pathname === path;
+  const isActive = (path: string) => {
+    if (path === '/') return location.pathname === path;
+    return location.pathname.startsWith(path);
+  };
   
   const navItems = [
-    { path: '/', icon: 'dashboard', label: 'Dashboard' },
-    { path: '/documents', icon: 'folder', label: 'Documents', filled: true },
-    { path: '/chat', icon: 'chat_bubble', label: 'Chat' },
-    { path: '/analytics', icon: 'bar_chart', label: 'Analytics' },
+    { path: '/', icon: 'dashboard', label: 'Dashboard', exact: true },
+    { path: '/customers', icon: 'people', label: 'Clientes', filled: true },
+    { path: '/interactions', icon: 'chat', label: 'Interações', filled: true },
+    { path: '/tickets', icon: 'confirmation_number', label: 'Tickets', filled: true },
+    { path: '/rag', icon: 'description', label: 'RAG Docs', filled: true },
+    { path: '/metrics', icon: 'analytics', label: 'Métricas', filled: true },
+    { path: '/documents', icon: 'folder', label: 'Documents' },
     { path: '/settings', icon: 'settings', label: 'Settings' },
   ];
 
@@ -26,25 +32,28 @@ const Sidebar = () => {
           </div>
         </div>
         <nav className="flex flex-col gap-2">
-          {navItems.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
-                isActive(item.path)
-                  ? 'bg-primary/20 text-primary'
-                  : 'text-white/70 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              <span 
-                className="material-symbols-outlined"
-                style={isActive(item.path) && item.filled ? { fontVariationSettings: "'FILL' 1" } : {}}
+          {navItems.map((item) => {
+            const active = item.exact ? location.pathname === item.path : isActive(item.path);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg transition-colors ${
+                  active
+                    ? 'bg-primary/20 text-primary'
+                    : 'text-white/70 hover:text-white hover:bg-white/5'
+                }`}
               >
-                {item.icon}
-              </span>
-              <p className="text-sm font-medium leading-normal">{item.label}</p>
-            </Link>
-          ))}
+                <span 
+                  className="material-symbols-outlined"
+                  style={active && item.filled ? { fontVariationSettings: "'FILL' 1" } : {}}
+                >
+                  {item.icon}
+                </span>
+                <p className="text-sm font-medium leading-normal">{item.label}</p>
+              </Link>
+            );
+          })}
         </nav>
       </div>
       <div className="flex flex-col gap-2">
