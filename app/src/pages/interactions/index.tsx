@@ -6,7 +6,7 @@ import { Input } from '../../components/Input';
 import { Modal } from '../../components/Modal';
 import { useInteractions, useCreateInteraction, useDeleteInteraction } from '../../hooks/useInteractions';
 import { useCustomers } from '../../hooks/useCustomers';
-import { Interaction } from '../../services/supabaseClient';
+import { type Interaction } from '../../services/supabaseClient';
 
 export default function InteractionsPage() {
   const { data: interactions = [], isLoading } = useInteractions();
