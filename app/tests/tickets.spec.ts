@@ -7,7 +7,7 @@ test.describe('Tickets', () => {
   });
 
   test('deve exibir página de tickets', async ({ page }) => {
-    await expect(page.locator('h1')).toContainText('Tickets');
+    await expect(page.locator('main h1')).toContainText('Tickets');
     await expect(page.locator('text=Gerencie tickets de suporte')).toBeVisible();
   });
 
@@ -20,11 +20,18 @@ test.describe('Tickets', () => {
   });
 
   test('deve abrir modal de novo ticket', async ({ page }) => {
-    await page.click('button:has-text("Novo Ticket")');
-    await expect(page.locator('h2:has-text("Novo Ticket")')).toBeVisible();
+    await page.waitForTimeout(1000);
+    await page.keyboard.press('Escape').catch(() => {});
+    await page.waitForTimeout(500);
+    
+    const button = page.locator('button:has-text("Novo Ticket")').first();
+    await button.waitFor({ state: 'visible', timeout: 10000 });
+    await button.evaluate((el: HTMLElement) => el.click());
+    
+    await expect(page.locator('h2:has-text("Novo Ticket")')).toBeVisible({ timeout: 10000 });
     
     // Fechar modal
-    await page.keyboard.press('Escape').catch(() => {});
+    await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
   });
 

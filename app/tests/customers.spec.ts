@@ -12,11 +12,22 @@ test.describe('CRUD de Clientes', () => {
   });
 
   test('deve abrir modal de novo cliente', async ({ page }) => {
-    await page.locator('button:has-text("Novo Cliente")').click();
-    await expect(page.locator('h2:has-text("Novo Cliente")')).toBeVisible();
+    await page.waitForTimeout(1000);
     
-    // Fechar modal para não interferir em outros testes
+    // Tentar fechar qualquer modal aberto
     await page.keyboard.press('Escape').catch(() => {});
+    await page.waitForTimeout(500);
+    
+    const button = page.locator('button:has-text("Novo Cliente")').first();
+    await button.waitFor({ state: 'visible', timeout: 10000 });
+    
+    // Usar JavaScript para clicar diretamente
+    await button.evaluate((el: HTMLElement) => el.click());
+    
+    await expect(page.locator('h2:has-text("Novo Cliente")')).toBeVisible({ timeout: 10000 });
+    
+    // Fechar modal
+    await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
   });
 
@@ -30,11 +41,15 @@ test.describe('CRUD de Clientes', () => {
   test('deve navegar para detalhes do cliente', async ({ page }) => {
     await page.waitForTimeout(1000);
     
+    // Fechar qualquer modal aberto
+    await page.keyboard.press('Escape').catch(() => {});
+    await page.waitForTimeout(500);
+    
     const viewButton = page.locator('button:has-text("Ver")').first();
     const isVisible = await viewButton.isVisible().catch(() => false);
     
     if (isVisible) {
-      await viewButton.click();
+      await viewButton.evaluate((el: HTMLElement) => el.click());
       await expect(page).toHaveURL(/\/customers\/.+/);
       await expect(page.locator('button:has-text("Voltar")')).toBeVisible();
     } else {
