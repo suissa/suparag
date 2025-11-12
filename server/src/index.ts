@@ -60,20 +60,23 @@ app.use((err: any, _req: express.Request, res: express.Response, _next: express.
   });
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-  console.log(`📝 Health check: http://localhost:${PORT}/health`);
-  console.log(`📄 Docs API: http://localhost:${PORT}/api/v1/docs`);
-  console.log(`⚙️  Settings API: http://localhost:${PORT}/api/v1/settings`);
-  console.log(`📦 Chunks API: http://localhost:${PORT}/api/v1/chunks`);
-  console.log(`📲 Webhook API: http://localhost:${PORT}/api/v1/webhook`);
-  console.log(`🕸️  Graph API: http://localhost:${PORT}/api/v1/graph`);
-  console.log(`💬 WhatsApp API: http://localhost:${PORT}/api/v1/whatsapp`);
-  console.log(`🤖 Chat API: http://localhost:${PORT}/api/v1/chat`);
-  console.log(`👥 Customers API: http://localhost:${PORT}/api/v1/customers`);
-  console.log(`💬 Interactions API: http://localhost:${PORT}/api/v1/interactions`);
-  console.log(`🎫 Tickets API: http://localhost:${PORT}/api/v1/tickets`);
-  console.log(`🔍 RAG API: http://localhost:${PORT}/api/v1/rag`);
-});
+// Só iniciar o servidor se não estiver em modo de teste
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+    console.log(`📝 Health check: http://localhost:${PORT}/health`);
+    console.log(`📄 Docs API: http://localhost:${PORT}/api/v1/docs`);
+    console.log(`⚙️  Settings API: http://localhost:${PORT}/api/v1/settings`);
+    console.log(`📦 Chunks API: http://localhost:${PORT}/api/v1/chunks`);
+    console.log(`📲 Webhook API: http://localhost:${PORT}/api/v1/webhook`);
+    console.log(`🕸️  Graph API: http://localhost:${PORT}/api/v1/graph`);
+    console.log(`💬 WhatsApp API: http://localhost:${PORT}/api/v1/whatsapp`);
+    console.log(`🤖 Chat API: http://localhost:${PORT}/api/v1/chat`);
+    console.log(`👥 Customers API: http://localhost:${PORT}/api/v1/customers`);
+    console.log(`💬 Interactions API: http://localhost:${PORT}/api/v1/interactions`);
+    console.log(`🎫 Tickets API: http://localhost:${PORT}/api/v1/tickets`);
+    console.log(`🔍 RAG API: http://localhost:${PORT}/api/v1/rag`);
+  });
+}
 
 export default app;
