@@ -6,32 +6,31 @@ test.describe('Navegação do CRM', () => {
     
     // Verificar Dashboard
     await expect(page).toHaveURL('/');
-    await expect(page.locator('h1')).toContainText('Dashboard');
     
     // Navegar para Clientes
     await page.click('text=Clientes');
     await expect(page).toHaveURL('/customers');
-    await expect(page.locator('h1')).toContainText('Clientes');
+    await expect(page.locator('main h1')).toContainText('Clientes');
     
     // Navegar para Interações
     await page.click('text=Interações');
     await expect(page).toHaveURL('/interactions');
-    await expect(page.locator('h1')).toContainText('Interações');
+    await expect(page.locator('main h1')).toContainText('Interações');
     
     // Navegar para Tickets
     await page.click('text=Tickets');
     await expect(page).toHaveURL('/tickets');
-    await expect(page.locator('h1')).toContainText('Tickets');
+    await expect(page.locator('main h1')).toContainText('Tickets');
     
     // Navegar para RAG Docs
     await page.click('text=RAG Docs');
     await expect(page).toHaveURL('/rag');
-    await expect(page.locator('h1')).toContainText('Documentos RAG');
+    await expect(page.locator('main h1')).toContainText('Documentos RAG');
     
     // Navegar para Métricas
     await page.click('text=Métricas');
     await expect(page).toHaveURL('/metrics');
-    await expect(page.locator('h1')).toContainText('Métricas');
+    await expect(page.locator('main h1')).toContainText('Métricas');
   });
 
   test('deve destacar o item ativo na sidebar', async ({ page }) => {

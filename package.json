@@ -12,6 +12,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.1",
     "formidable": "^3.5.1",
     "pdf-parse": "^1.1.1"
   }
