@@ -8,6 +8,10 @@ import webhookRouter from './routes/webhook';
 import graphRouter from './routes/graph';
 import whatsappRouter from './routes/whatsapp';
 import chatRouter from './routes/chat';
+import customersRouter from './routes/customers';
+import interactionsRouter from './routes/interactions';
+import ticketsRouter from './routes/tickets';
+import ragRouter from './routes/rag';
 
 // Validar variáveis de ambiente no startup
 try {
@@ -42,6 +46,10 @@ app.use('/api/v1/webhook', webhookRouter);
 app.use('/api/v1/graph', graphRouter);
 app.use('/api/v1/whatsapp', whatsappRouter);
 app.use('/api/v1/chat', chatRouter);
+app.use('/api/v1/customers', customersRouter);
+app.use('/api/v1/interactions', interactionsRouter);
+app.use('/api/v1/tickets', ticketsRouter);
+app.use('/api/v1/rag', ragRouter);
 
 // Error handler
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -62,6 +70,10 @@ app.listen(PORT, () => {
   console.log(`🕸️  Graph API: http://localhost:${PORT}/api/v1/graph`);
   console.log(`💬 WhatsApp API: http://localhost:${PORT}/api/v1/whatsapp`);
   console.log(`🤖 Chat API: http://localhost:${PORT}/api/v1/chat`);
+  console.log(`👥 Customers API: http://localhost:${PORT}/api/v1/customers`);
+  console.log(`💬 Interactions API: http://localhost:${PORT}/api/v1/interactions`);
+  console.log(`🎫 Tickets API: http://localhost:${PORT}/api/v1/tickets`);
+  console.log(`🔍 RAG API: http://localhost:${PORT}/api/v1/rag`);
 });
 
 export default app;
