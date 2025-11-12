@@ -1,0 +1,35 @@
+{
+  "phone": "5511888888888",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Bom dia, vi o anúncio de vocês",
+      "timestamp": "2025-10-15T09:00:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Bom dia! Obrigado pelo contato. Como posso ajudar?",
+      "timestamp": "2025-10-15T09:10:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Queria saber os preços",
+      "timestamp": "2025-10-15T09:15:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Temos 3 planos: Básico (R$ 99), Profissional (R$ 199) e Premium (R$ 299). Qual se encaixa melhor para você?",
+      "timestamp": "2025-10-15T09:20:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Vou pensar e depois volto a falar com vocês",
+      "timestamp": "2025-10-15T09:25:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Sem problemas! Fico à disposição quando precisar.",
+      "timestamp": "2025-10-15T09:26:00Z"
+    }
+  ]
+}

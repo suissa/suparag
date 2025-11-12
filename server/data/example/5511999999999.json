@@ -1,0 +1,65 @@
+{
+  "phone": "5511999999999",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Olá, quero saber mais sobre o produto",
+      "timestamp": "2025-11-01T10:00:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Olá! Fico feliz em ajudar. Qual produto você tem interesse?",
+      "timestamp": "2025-11-01T10:05:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Estou interessado no plano premium. Como funciona?",
+      "timestamp": "2025-11-01T10:10:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "O plano premium inclui todas as funcionalidades avançadas, suporte prioritário e integrações ilimitadas. O valor é R$ 299/mês.",
+      "timestamp": "2025-11-01T10:12:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Interessante! Tem período de teste?",
+      "timestamp": "2025-11-01T10:15:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Sim! Oferecemos 14 dias de teste grátis, sem necessidade de cartão de crédito.",
+      "timestamp": "2025-11-01T10:16:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Perfeito! Quero fazer o teste. Como faço?",
+      "timestamp": "2025-11-01T10:20:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Vou te enviar o link para cadastro. Você receberá acesso imediato!",
+      "timestamp": "2025-11-01T10:21:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Obrigado! Vou testar e depois te dou um retorno",
+      "timestamp": "2025-11-01T10:25:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Oi! Testei o sistema e adorei. Quero contratar o plano premium",
+      "timestamp": "2025-11-05T14:30:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Que ótimo! Fico muito feliz que tenha gostado. Vou preparar a proposta para você.",
+      "timestamp": "2025-11-05T14:35:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Pode enviar! Quero fechar hoje mesmo",
+      "timestamp": "2025-11-05T14:40:00Z"
+    }
+  ]
+}

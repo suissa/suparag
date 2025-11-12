@@ -10,7 +10,9 @@
     "lint": "eslint src --ext .ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "import": "tsx scripts/run-import.ts",
+    "import:example": "tsx scripts/run-import.ts full --path ./data/example --output ./reports"
   },
   "keywords": [
     "express",
@@ -24,6 +26,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.39.3",
     "axios": "^1.13.2",
+    "commander": "^11.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
