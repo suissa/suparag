@@ -31,29 +31,42 @@ export function generateSyntheticEmbedding(text: string): number[] {
 
 /**
  * Gera embedding real usando OpenAI API
- * Descomente e use em produção
  */
-/*
-import OpenAI from 'openai';
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
-});
+import axios from 'axios';
 
 export async function generateRealEmbedding(text: string): Promise<number[]> {
   try {
-    const response = await openai.embeddings.create({
-      model: 'text-embedding-ada-002',
-      input: text,
-    });
+    // Usar OpenRouter como no resto do sistema
+    const apiKey = process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY;
+    
+    if (!apiKey) {
+      console.warn('⚠️ API Key não encontrada, usando embedding sintético');
+      return generateSyntheticEmbedding(text);
+    }
 
-    return response.data[0].embedding;
-  } catch (error) {
-    console.error('❌ Erro ao gerar embedding:', error);
-    throw error;
+    const response = await axios.post(
+      'https://openrouter.ai/api/v1/embeddings',
+      {
+        model: 'openai/text-embedding-3-small',
+        input: text
+      },
+      {
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'http://localhost:4000',
+          'X-Title': 'NeuroPgRag CRM'
+        }
+      }
+    );
+
+    return response.data.data[0].embedding;
+  } catch (error: any) {
+    console.error('❌ Erro ao gerar embedding:', error.response?.data || error.message);
+    console.warn('⚠️ Usando embedding sintético como fallback');
+    return generateSyntheticEmbedding(text);
   }
 }
-*/
 
 /**
  * Calcula a similaridade de cosseno entre dois embeddings

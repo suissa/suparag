@@ -12,6 +12,7 @@ import customersRouter from './routes/customers';
 import interactionsRouter from './routes/interactions';
 import ticketsRouter from './routes/tickets';
 import ragRouter from './routes/rag';
+import metricsRouter from './routes/metrics';
 
 // Validar variáveis de ambiente no startup
 try {
@@ -50,6 +51,7 @@ app.use('/api/v1/customers', customersRouter);
 app.use('/api/v1/interactions', interactionsRouter);
 app.use('/api/v1/tickets', ticketsRouter);
 app.use('/api/v1/rag', ragRouter);
+app.use('/api/v1/metrics', metricsRouter);
 
 // Error handler
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -76,6 +78,7 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`💬 Interactions API: http://localhost:${PORT}/api/v1/interactions`);
     console.log(`🎫 Tickets API: http://localhost:${PORT}/api/v1/tickets`);
     console.log(`🔍 RAG API: http://localhost:${PORT}/api/v1/rag`);
+    console.log(`📊 Metrics API: http://localhost:${PORT}/api/v1/metrics`);
   });
 }
 

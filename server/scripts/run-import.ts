@@ -6,8 +6,18 @@ import * as path from 'path';
 import { importWhatsAppHistory } from '../src/scripts/importWhatsAppHistory';
 import { generateLeadReport } from '../src/reports/leadReport';
 
-// Carregar variáveis de ambiente
-dotenv.config();
+// Carregar variáveis de ambiente do diretório raiz do servidor
+const envPath = path.resolve(__dirname, '../.env');
+dotenv.config({ path: envPath });
+
+// Verificar se as variáveis essenciais estão definidas
+if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_KEY) {
+  console.error('❌ Erro: Variáveis de ambiente SUPABASE_URL e SUPABASE_SERVICE_KEY são obrigatórias');
+  console.error('📝 Crie um arquivo .env no diretório server/ com:');
+  console.error('   SUPABASE_URL=https://seu-projeto.supabase.co');
+  console.error('   SUPABASE_SERVICE_KEY=sua-chave-de-servico');
+  process.exit(1);
+}
 
 const program = new Command();
 

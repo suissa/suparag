@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { readJsonFiles } from '../utils/files';
-import { generateSyntheticEmbedding } from '../utils/embeddings';
+import { generateRealEmbedding, generateSyntheticEmbedding } from '../utils/embeddings';
 import { analyzeSentiment } from '../utils/sentiment';
 
 const supabase = createClient(
@@ -73,8 +73,8 @@ export async function importWhatsAppHistory(
               timestamp: msg.timestamp
             });
 
-            // Gerar embedding sintético
-            const embedding = generateSyntheticEmbedding(mapped.message);
+            // Gerar embedding real (com fallback para sintético)
+            const embedding = await generateRealEmbedding(mapped.message);
 
             // Analisar sentimento
             const sentiment = analyzeSentiment(mapped.message);
