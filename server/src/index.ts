@@ -15,6 +15,8 @@ import ragRouter from './routes/rag';
 import metricsRouter from './routes/metrics';
 import evaluationsRouter from './routes/evaluations';
 import semanticFlagsRouter from './routes/semantic-flags';
+import audioRouter from './routes/audio';
+import chartsRouter from './routes/charts';
 
 // Validar variáveis de ambiente no startup
 try {
@@ -56,6 +58,8 @@ app.use('/api/v1/rag', ragRouter);
 app.use('/api/v1/metrics', metricsRouter);
 app.use('/api/v1/evaluations', evaluationsRouter);
 app.use('/api/v1/semantic-flags', semanticFlagsRouter);
+app.use('/api/audio', audioRouter);
+app.use('/api/charts', chartsRouter);
 
 // Error handler
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -85,6 +89,8 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`📊 Metrics API: http://localhost:${PORT}/api/v1/metrics`);
     console.log(`📝 Evaluations API: http://localhost:${PORT}/api/v1/evaluations`);
     console.log(`🚩 Semantic Flags API: http://localhost:${PORT}/api/v1/semantic-flags`);
+    console.log(`🎵 Audio API: http://localhost:${PORT}/api/audio`);
+    console.log(`📊 Charts API: http://localhost:${PORT}/api/charts`);
   });
 }
 

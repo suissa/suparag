@@ -131,5 +131,28 @@ export const env = {
   upload: {
     maxFileSize: parseInt(process.env.MAX_FILE_SIZE || '10485760', 10),
     uploadDir: process.env.UPLOAD_DIR || './uploads'
+  },
+  
+  // Audio Services
+  audio: {
+    // ElevenLabs TTS
+    elevenLabs: {
+      apiKey: process.env.ELEVENLABS_API_KEY,
+      apiUrl: process.env.ELEVENLABS_API_URL || 'https://api.elevenlabs.io/v1',
+      defaultVoiceId: process.env.ELEVENLABS_DEFAULT_VOICE_ID || '21m00Tcm4TlvDq8ikWAM',
+      defaultModel: process.env.ELEVENLABS_DEFAULT_MODEL || 'eleven_multilingual_v2'
+    },
+    // ASR Services
+    asr: {
+      provider: process.env.ASR_PROVIDER || 'elevenlabs', // elevenlabs, whisper, assemblyai
+      whisperApiKey: process.env.WHISPER_API_KEY,
+      assemblyAiApiKey: process.env.ASSEMBLYAI_API_KEY
+    },
+    // Storage
+    storage: {
+      bucket: process.env.AUDIO_STORAGE_BUCKET || 'audio-files',
+      maxDuration: parseInt(process.env.MAX_AUDIO_DURATION || '300', 10), // 5 minutos
+      allowedFormats: ['mp3', 'webm', 'ogg', 'wav', 'm4a']
+    }
   }
 };
