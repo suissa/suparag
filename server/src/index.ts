@@ -13,6 +13,8 @@ import interactionsRouter from './routes/interactions';
 import ticketsRouter from './routes/tickets';
 import ragRouter from './routes/rag';
 import metricsRouter from './routes/metrics';
+import evaluationsRouter from './routes/evaluations';
+import semanticFlagsRouter from './routes/semantic-flags';
 
 // Validar variáveis de ambiente no startup
 try {
@@ -52,6 +54,8 @@ app.use('/api/v1/interactions', interactionsRouter);
 app.use('/api/v1/tickets', ticketsRouter);
 app.use('/api/v1/rag', ragRouter);
 app.use('/api/v1/metrics', metricsRouter);
+app.use('/api/v1/evaluations', evaluationsRouter);
+app.use('/api/v1/semantic-flags', semanticFlagsRouter);
 
 // Error handler
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -79,6 +83,8 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`🎫 Tickets API: http://localhost:${PORT}/api/v1/tickets`);
     console.log(`🔍 RAG API: http://localhost:${PORT}/api/v1/rag`);
     console.log(`📊 Metrics API: http://localhost:${PORT}/api/v1/metrics`);
+    console.log(`📝 Evaluations API: http://localhost:${PORT}/api/v1/evaluations`);
+    console.log(`🚩 Semantic Flags API: http://localhost:${PORT}/api/v1/semantic-flags`);
   });
 }
 

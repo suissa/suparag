@@ -12,7 +12,10 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "import": "tsx scripts/run-import.ts",
-    "import:example": "tsx scripts/run-import.ts full --path ./data/example --output ./reports"
+    "import:example": "tsx scripts/run-import.ts full --path ./data/example --output ./reports",
+    "seed:evaluations": "tsx scripts/seed_evaluations.ts generate",
+    "seed:clean": "tsx scripts/seed_evaluations.ts clean",
+    "report:evaluations": "tsx scripts/generate-evaluation-report.ts generate"
   },
   "keywords": [
     "express",

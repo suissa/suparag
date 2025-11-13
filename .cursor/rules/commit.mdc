@@ -1,0 +1,13 @@
+---
+alwaysApply: true
+---
+
+Após finalizar as tarefas do pedido crie um commit adicionando todos os arquivos modificados e crie o commit utilizando o seguinte template:
+
+```
+[AI] {ação pedida no prompt sem passar de 60 caracteres}
+
+Prompt: {texto idêntico do prompt}
+```
+
+# não utilize o wsl para isso
