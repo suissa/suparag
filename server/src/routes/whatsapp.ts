@@ -170,7 +170,7 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
     const maxQrCodeAttempts = 20; // Tentar por até ~20 segundos
     const qrCodeInterval = 1000; // Verificar a cada 1 segundo
 
-    const qrCodeLoop = setInterval(async () => {
+    // const qrCodeLoop = setInterval(async () => {
       try {
         qrCodeAttempts++;
         logger.debug('Tentativa de obter QR code', {
@@ -202,7 +202,7 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
           });
 
           // Parar loop após obter QR code
-          clearInterval(qrCodeLoop);
+          // clearInterval(qrCodeLoop);
 
           // Iniciar StatusChecker para verificação periódica
           logger.info('Iniciando verificação periódica de status', {
@@ -256,7 +256,7 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
             attempts: qrCodeAttempts
           });
           
-          clearInterval(qrCodeLoop);
+          // clearInterval(qrCodeLoop);
 
           sseManager.sendEvent(sessionId, {
             type: 'error',
@@ -280,7 +280,7 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
           error: qrError.message
         });
       }
-    }, qrCodeInterval);
+    // }, qrCodeInterval);
 
     // Limpar interval se cliente desconectar
     res.on('close', () => {
@@ -292,7 +292,7 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
         duration: `${duration}ms`
       });
       
-      clearInterval(qrCodeLoop);
+      // clearInterval(qrCodeLoop);
       statusChecker.stopChecking(instanceName);
     });
 
