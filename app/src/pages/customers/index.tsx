@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../../layouts/DashboardLayout';
 import { Table } from '../../components/Table';
@@ -6,7 +7,7 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Modal } from '../../components/Modal';
 import { useCustomers, useCreateCustomer, useDeleteCustomer } from '../../hooks/useCustomers';
-import { Customer } from '../../services/supabaseClient';
+import type { Customer } from '../../services/supabaseClient';
 
 export default function CustomersPage() {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ export default function CustomersPage() {
     (customer.company?.toLowerCase() || '').includes(searchQuery.toLowerCase())
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       await createCustomer.mutateAsync(formData);

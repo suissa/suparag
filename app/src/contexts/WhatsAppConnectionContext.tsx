@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import api from '../services/api';
 import { WhatsAppConnectionModal } from '../components/WhatsAppConnectionModal';
@@ -56,9 +56,7 @@ const WhatsAppConnectionContext = createContext<WhatsAppConnectionContextValue |
  * </WhatsAppConnectionProvider>
  * ```
  */
-export const WhatsAppConnectionProvider: React.FC<WhatsAppConnectionProviderProps> = ({
-  children,
-}) => {
+export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProviderProps) {
   // Estado global da conexão
   const [isConnected, setIsConnected] = useState<boolean>(false);
   
@@ -66,7 +64,7 @@ export const WhatsAppConnectionProvider: React.FC<WhatsAppConnectionProviderProp
   const [showModal, setShowModal] = useState<boolean>(false);
   
   // Estado para armazenar sessionId
-  const [sessionId, setSessionId] = useState<string>(() => {
+  const [sessionId] = useState<string>(() => {
     // Tentar recuperar sessionId do localStorage
     const stored = localStorage.getItem('whatsapp_session_id');
     if (stored) {
@@ -237,7 +235,7 @@ export const WhatsAppConnectionProvider: React.FC<WhatsAppConnectionProviderProp
       />
     </WhatsAppConnectionContext.Provider>
   );
-};
+}
 
 /**
  * Hook customizado para acessar o contexto de conexão WhatsApp

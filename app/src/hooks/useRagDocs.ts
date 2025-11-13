@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase, RagDocument, SearchMatch } from '../services/supabaseClient';
+import { supabase } from '../services/supabaseClient';
+import type { RagDocument, SearchMatch } from '../services/supabaseClient';
 import axios from 'axios';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api/v1';
@@ -75,6 +76,7 @@ export const useSemanticSearch = () => {
       const embedding = Array.from({ length: 1536 }, () => Math.random() * 2 - 1);
       
       const response = await axios.post(`${API_URL}/rag/search/documents`, {
+        query,
         embedding,
         threshold,
         limit,

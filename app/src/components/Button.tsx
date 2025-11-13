@@ -1,8 +1,11 @@
-import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import type { HTMLMotionProps } from 'framer-motion';
+import type { ReactNode } from 'react';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'outline' | 'success';
+
+interface ButtonProps extends Omit<HTMLMotionProps<'button'>, 'children'> {
+  variant?: ButtonVariant;
   size?: 'sm' | 'md' | 'lg';
   icon?: string;
   children: ReactNode;
@@ -21,11 +24,13 @@ export function Button({
 }: ButtonProps) {
   const baseClasses = 'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all';
   
-  const variantClasses = {
+  const variantClasses: Record<ButtonVariant, string> = {
     primary: 'bg-primary text-white hover:bg-primary/90',
     secondary: 'bg-white/10 text-white hover:bg-white/20',
     danger: 'bg-red-500 text-white hover:bg-red-600',
     ghost: 'text-white hover:bg-white/10',
+    outline: 'border border-white/20 text-white hover:bg-white/10',
+    success: 'bg-emerald-500 text-white hover:bg-emerald-600',
   };
   
   const sizeClasses = {

@@ -111,7 +111,7 @@ export default function MetricsPage() {
                     fill="#8884d8"
                     dataKey="value"
                   >
-                    {ticketsData.map((entry, index) => (
+                    {ticketsData.map((_, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>
@@ -147,7 +147,7 @@ export default function MetricsPage() {
                     fill="#8884d8"
                     dataKey="value"
                   >
-                    {interactionsData.map((entry, index) => (
+                    {interactionsData.map((_, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>

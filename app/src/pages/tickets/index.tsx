@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { motion } from 'framer-motion';
 import { DashboardLayout } from '../../layouts/DashboardLayout';
 import { Table } from '../../components/Table';
@@ -7,7 +8,7 @@ import { Input } from '../../components/Input';
 import { Modal } from '../../components/Modal';
 import { useTickets, useCreateTicket, useUpdateTicket, useDeleteTicket } from '../../hooks/useTickets';
 import { useCustomers } from '../../hooks/useCustomers';
-import { Ticket } from '../../services/supabaseClient';
+import type { Ticket } from '../../services/supabaseClient';
 
 export default function TicketsPage() {
   const { data: tickets = [], isLoading } = useTickets();
@@ -32,7 +33,7 @@ export default function TicketsPage() {
     return matchesSearch && matchesStatus;
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       await createTicket.mutateAsync(formData);

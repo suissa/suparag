@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
+import type { ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ModalConfig } from './specs/WhatsAppModal.spec';
+import type { ModalConfig } from './specs/WhatsAppModal.spec';
 
 interface GenericModalProps {
   open: boolean;
   onClose: () => void;
   config: ModalConfig;
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export default function GenericModal({ open, onClose, config, children }: GenericModalProps) {

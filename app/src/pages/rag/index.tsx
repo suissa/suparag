@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { DashboardLayout } from '../../layouts/DashboardLayout';
 import { Table } from '../../components/Table';
 import { Button } from '../../components/Button';
@@ -6,7 +7,7 @@ import { Input } from '../../components/Input';
 import { Modal } from '../../components/Modal';
 import { Card } from '../../components/Card';
 import { useRagDocuments, useCreateRagDocument, useDeleteRagDocument, useSemanticSearch } from '../../hooks/useRagDocs';
-import { RagDocument, SearchMatch } from '../../services/supabaseClient';
+import type { RagDocument, SearchMatch } from '../../services/supabaseClient';
 
 export default function RagPage() {
   const { data: documents = [], isLoading } = useRagDocuments();
@@ -28,7 +29,7 @@ export default function RagPage() {
     doc.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     try {
       // Gerar embedding sintético

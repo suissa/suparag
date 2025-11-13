@@ -18,6 +18,11 @@ import TicketsPage from './pages/tickets/index';
 import RagPage from './pages/rag/index';
 import MetricsPage from './pages/metrics/index';
 
+// Novas páginas de avaliação
+import EvaluationsPage from './pages/evaluations/index';
+import EvaluationLivePage from './pages/evaluations/live';
+import SemanticFlagsPage from './pages/semantic-flags/index';
+
 import { DashboardLayout } from './layouts/DashboardLayout';
 
 const queryClient = new QueryClient({
@@ -46,6 +51,11 @@ function App() {
               <Route path="/tickets" element={<TicketsPage />} />
               <Route path="/rag" element={<RagPage />} />
               <Route path="/metrics" element={<MetricsPage />} />
+
+              {/* Rotas de Avaliação */}
+              <Route path="/evaluations" element={<EvaluationsPage />} />
+              <Route path="/evaluations/live" element={<EvaluationLivePage />} />
+              <Route path="/semantic-flags" element={<SemanticFlagsPage />} />
               
               {/* Rotas existentes */}
               <Route path="/upload" element={

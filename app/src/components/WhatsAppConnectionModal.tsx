@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ConfigurableModal } from './ConfigurableModal';
 import { whatsAppModalConfig } from './specs/whatsAppModalConfig.spec';
 import { useSSE } from '../hooks/useSSE';
@@ -29,21 +29,6 @@ export interface ConnectionState {
 }
 
 /**
- * Evento SSE recebido do backend
- */
-interface SSEEvent {
-  type: 'qrcode' | 'status' | 'error';
-  data: {
-    qrcode?: string;
-    connected?: boolean;
-    instanceName?: string;
-    code?: string;
-    message?: string;
-    timestamp?: string;
-  };
-}
-
-/**
  * Componente modal para gerenciar conexão WhatsApp
  * 
  * Este componente:
@@ -55,11 +40,11 @@ interface SSEEvent {
  * @see {@link ConfigurableModal} para detalhes sobre o modal base
  * @see {@link whatsAppModalConfig} para configuração de aparência
  */
-export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = ({
+export const WhatsAppConnectionModal = ({
   open,
   onClose,
   sessionId,
-}) => {
+}: WhatsAppConnectionModalProps) => {
   // Estado local da conexão
   const [connectionState, setConnectionState] = useState<ConnectionState>({
     status: 'idle',
@@ -71,7 +56,7 @@ export const WhatsAppConnectionModal: React.FC<WhatsAppConnectionModalProps> = (
   const [shouldConnectSSE, setShouldConnectSSE] = useState(false);
   
   // Ref para o timeout de 5 minutos
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // URL base da API
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api/v1';

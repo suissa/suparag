@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { MouseEvent, ReactNode } from 'react';
 import type { ModalConfig } from '../types/modal.types';
 
 /**
@@ -13,19 +14,19 @@ export interface ConfigurableModalProps {
   /** Callback chamado quando o modal deve fechar */
   onClose: () => void;
   /** Conteúdo a ser exibido dentro do modal */
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 /**
  * Componente modal genérico e configurável com animações Framer Motion
  * Suporta temas claro/escuro e é totalmente personalizável via config
  */
-export const ConfigurableModal: React.FC<ConfigurableModalProps> = ({
+export const ConfigurableModal = ({
   open,
   config,
   onClose,
   children,
-}) => {
+}: ConfigurableModalProps) => {
   // Listener para tecla ESC
   useEffect(() => {
     const escClose = config.behavior?.escClose ?? true;
@@ -95,7 +96,7 @@ export const ConfigurableModal: React.FC<ConfigurableModalProps> = ({
   };
 
   // Prevenir propagação do click no modal
-  const handleModalClick = (e: React.MouseEvent) => {
+  const handleModalClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
   };
 

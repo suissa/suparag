@@ -1,5 +1,6 @@
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import type { ReactNode } from 'react';
 
 interface ModalProps {
   isOpen: boolean;

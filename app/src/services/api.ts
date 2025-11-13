@@ -61,4 +61,20 @@ export const chatAPI = {
     api.post('/chat', { message, conversationId }),
 };
 
+// Evaluations
+export const evaluationsAPI = {
+  list: (params?: any) => api.get('/evaluations', { params }),
+  get: (id: string) => api.get(`/evaluations/${id}`),
+  create: (data: any) => api.post('/evaluations', data),
+  getStats: () => api.get('/evaluations/stats/overview'),
+};
+
+// Semantic Flags
+export const semanticFlagsAPI = {
+  list: (params?: any) => api.get('/semantic-flags', { params }),
+  get: (id: string) => api.get(`/semantic-flags/${id}`),
+  updateStatus: (id: string, data: any) => api.patch(`/semantic-flags/${id}/status`, data),
+  getStats: () => api.get('/semantic-flags/stats/overview'),
+};
+
 export default api;

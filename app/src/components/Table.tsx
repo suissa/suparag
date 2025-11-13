@@ -1,13 +1,13 @@
-import { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { motion } from 'framer-motion';
 
-interface Column<T> {
+export interface Column<T> {
   key: keyof T | string;
   label: string;
   render?: (item: T) => ReactNode;
 }
 
-interface TableProps<T> {
+export interface TableProps<T> {
   data: T[];
   columns: Column<T>[];
   onRowClick?: (item: T) => void;
