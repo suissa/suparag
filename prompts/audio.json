@@ -1,0 +1,250 @@
+{
+  "title": "Pipeline de Jobs Assíncronos de Áudio com Supabase (Jobs Table + Edge Functions + EvolutionAPI + Webhook de Status)",
+  "goal": "Implementar um sistema de filas assíncronas para processamento de áudio (transcrição e TTS) usando apenas recursos do Supabase (tabela de jobs, triggers, pg_net, pg_cron, Edge Functions) + integração com EvolutionAPI e webhook externo para status do job.",
+  "context": {
+    "environment": {
+      "platform": "Supabase (Postgres + pg_net + pg_cron + Edge Functions)",
+      "language": "TypeScript / Deno",
+      "backend": "Node.js/TypeScript com EvolutionAPI",
+      "storage": "Supabase Storage"
+    },
+    "supabase_features": [
+      "Tabela jobs como fila",
+      "Triggers",
+      "pg_net para chamadas HTTP",
+      "pg_cron para re-drive",
+      "Edge Functions para dispatcher e workers"
+    ],
+    "audio_providers": {
+      "asr": "Groq Whisper",
+      "tts": "ElevenLabs"
+    },
+    "settings_keys": [
+      "groq-apikey",
+      "elevenlabs-apikey",
+      "elevenlabs-voice-id",
+      "JOB_WEBHOOK"
+    ],
+    "job_payload_schema": {
+      "run_location": "supabase | external",
+      "task_type": "string",
+      "data": "objeto JSON com os parâmetros necessários"
+    },
+    "webhook_schema": {
+      "job_name": "string",
+      "startedAt": "timestamp",
+      "finishedAt": "timestamp | null",
+      "status": "pending | processing | completed | failed",
+      "data": "object"
+    },
+    "requirements": [
+      "Usar a tabela jobs como fila central.",
+      "Usar FOR UPDATE SKIP LOCKED no dispatcher.",
+      "Usar pg_net + pg_cron para disparar job-dispatcher.",
+      "Implementar transcribe-audio e text-to-speech.",
+      "Validar API keys antes de processar.",
+      "Integrar EvolutionAPI para enviar texto/áudio ao WhatsApp.",
+      "Criar webhook externo para notificar início e fim do job.",
+      "Dispatcher deve enviar POST para JOB_WEBHOOK com JSON padronizado.",
+      "Agent deve gerar o SQL e pedir confirmação antes de executar."
+    ]
+  },
+  "instructions": [
+    {
+      "step": "Definir tabela jobs + extensões",
+      "description": "Criar tabela jobs e habilitar pg_net/pg_cron.",
+      "logic": {
+        "table_name": "jobs",
+        "columns": [
+          { "name": "id", "type": "uuid", "constraints": ["primary key", "default gen_random_uuid()"] },
+          { "name": "payload", "type": "jsonb", "constraints": ["not null"] },
+          { "name": "status", "type": "text", "constraints": ["not null", "default 'pending'"] },
+          { "name": "run_at", "type": "timestamptz", "constraints": ["default now()"] },
+          { "name": "attempts", "type": "integer", "constraints": ["default 0"] },
+          { "name": "last_error", "type": "text" },
+          { "name": "created_at", "type": "timestamptz", "constraints": ["default now()"] },
+          { "name": "updated_at", "type": "timestamptz", "constraints": ["default now()"] }
+        ],
+        "extensions": [
+          "pg_net",
+          "pg_cron"
+        ]
+      },
+      "notes": [
+        "Agent deve gerar o SQL e AGUARDAR confirmação do usuário."
+      ]
+    },
+    {
+      "step": "Criar trigger notify_job_dispatcher",
+      "description": "Agendar via pg_cron um net.http_post para job-dispatcher.",
+      "logic": {
+        "trigger_name": "notify_job_dispatcher",
+        "trigger_action": "Após INSERT em jobs, chamar função SQL que agenda net.http_post(now()).",
+        "cron_logic": {
+          "target": "Edge Function job-dispatcher",
+          "timing": "imediato"
+        }
+      },
+      "notes": [
+        "Respeitar a política de confirmação antes de criar."
+      ]
+    },
+    {
+      "step": "pg_cron de re-drive",
+      "description": "A cada 1 minuto verificar jobs pending e agendar dispatcher.",
+      "logic": {
+        "interval": "1 minuto",
+        "condition": "SELECT COUNT(*) FROM jobs WHERE status='pending'",
+        "action": "net.http_post → job-dispatcher"
+      }
+    },
+    {
+      "step": "Edge Function job-dispatcher",
+      "description": "Selecionar job pending, travar, marcar processing, executar, marcar completed/failed.",
+      "logic": {
+        "fetch_job": {
+          "status": "pending",
+          "lock": "FOR UPDATE SKIP LOCKED",
+          "limit": 1
+        },
+        "state_flow": [
+          "pending → processing",
+          "processing → completed",
+          "processing → failed"
+        ],
+        "dispatch_supabase": "invoke(payload.task_type, { body: payload.data })",
+        "dispatch_external": "POST para EXTERNAL_WORKER_URL com Authorization e job inteiro"
+      },
+      "webhook": {
+        "on_start": "POST para JOB_WEBHOOK enviando { job_name, startedAt, finishedAt: null, status: 'processing', data: payload }",
+        "on_finish": "POST para JOB_WEBHOOK enviando { job_name, startedAt, finishedAt, status: 'completed'|'failed', data: payload }"
+      },
+      "notes": [
+        "Se JOB_WEBHOOK não estiver definido → job falha imediatamente.",
+        "Registrar attempts e last_error."
+      ]
+    },
+    {
+      "step": "Supabase Function transcribe-audio",
+      "description": "Baixar áudio → enviar para Groq Whisper → salvar texto → retornar.",
+      "logic": {
+        "input": ["audio_bucket", "audio_path", "result_table", "result_row_id", "result_column", "id_sender"],
+        "validations": ["groq-apikey deve existir"],
+        "actions": [
+          "download do Storage",
+          "POST para API Groq Whisper",
+          "receber texto",
+          "update result_table.result_row_id[result_column]"
+        ],
+        "job_payload_example": {
+          "run_location": "supabase",
+          "task_type": "transcribe-audio",
+          "data": {
+            "audio_bucket": "audio-uploads",
+            "audio_path": "user-123/audio.mp3",
+            "result_table": "messages",
+            "result_row_id": "uuid",
+            "result_column": "text",
+            "id_sender": "5511999999999"
+          }
+        }
+      }
+    },
+    {
+      "step": "Supabase Function text-to-speech",
+      "description": "Enviar texto → ElevenLabs → gravar mp3 → retornar path.",
+      "logic": {
+        "input": ["text_to_convert", "output_bucket", "output_path", "id_sender"],
+        "validations": ["elevenlabs-apikey", "elevenlabs-voice-id"],
+        "actions": [
+          "POST para ElevenLabs",
+          "upload para Storage",
+          "retornar { output_bucket, output_path }"
+        ],
+        "job_payload_example": {
+          "run_location": "supabase",
+          "task_type": "text-to-speech",
+          "data": {
+            "text_to_convert": "Olá!",
+            "output_bucket": "generated-audio",
+            "output_path": "user-123/12345.mp3",
+            "id_sender": "5511999999999"
+          }
+        }
+      }
+    },
+    {
+      "step": "Backend: rotas /audio/tts/publish e /audio/asr/publish",
+      "description": "Backend insere job e responde imediatamente.",
+      "logic": {
+        "routes": [
+          {
+            "path": "/audio/tts/publish",
+            "method": "POST",
+            "input": ["id_sender", "text", "output_bucket?", "output_path_template"],
+            "action": "montar job → inserir em jobs → retornar job_id"
+          },
+          {
+            "path": "/audio/asr/publish",
+            "method": "POST",
+            "input": ["id_sender", "audio_bucket", "audio_path", "result_table", "result_row_id", "result_column"],
+            "action": "montar job → inserir → retornar job_id"
+          }
+        ]
+      }
+    },
+    {
+      "step": "EvolutionService",
+      "description": "Enviar texto/áudio para o WhatsApp via EvolutionAPI.",
+      "logic": {
+        "functions": [
+          {
+            "name": "sendTranscriptionToUser",
+            "signature": "(id_sender, text)",
+            "action": "client.messages.sendText({ number: id_sender, text })",
+            "logic": "use a função sendText da lib sdk-evolution-chatbot"
+          },
+          {
+            "name": "sendAudioToUser",
+            "signature": "(id_sender, audio_path)",
+            "action": "client.messages.sendAudio({ number: id_sender, audio: audio_path })",
+            "logic": "use a função sendAudio da lib sdk-evolution-chatbot"
+          }
+        ]
+      }
+    },
+    {
+      "step": "Webhook externo da nossa API",
+      "description": "Dispatcher envia notificações de start/finish.",
+      "logic": {
+        "webhook_url_source": "JOB_WEBHOOK (settings)",
+        "payload": {
+          "job_name": "payload.task_type",
+          "startedAt": "timestamp",
+          "finishedAt": "timestamp|null",
+          "status": "processing|completed|failed",
+          "data": "payload.data"
+        },
+        "on_start": "enviar finishedAt = null",
+        "on_finish": "enviar finishedAt = now()"
+      }
+    }
+  ],
+  "output": {
+    "expect": [
+      "Fila de jobs 100% funcional",
+      "Notificação em real-time via webhook",
+      "Envio automático de áudio e texto ao WhatsApp",
+      "Edge Functions robustas"
+    ],
+    "deliverables": [
+      "DDL da tabela jobs (aguardando confirmação)",
+      "Trigger + pg_cron + pg_net (aguardando confirmação)",
+      "job-dispatcher completo com webhook",
+      "Funções transcribe-audio e text-to-speech",
+      "Rotas publish",
+      "EvolutionService",
+      "Documentação final"
+    ]
+  }
+}
