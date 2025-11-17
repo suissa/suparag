@@ -1,9 +1,12 @@
-import { supabase } from '../config/supabase';
+import { createClient } from '@supabase/supabase-js';
 import { readJsonFiles } from '../utils/files';
 import { generateRealEmbedding, generateSyntheticEmbedding } from '../utils/embeddings';
 import { analyzeSentiment } from '../utils/sentiment';
 
-
+const supabase = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY!
+);
 
 interface WhatsAppMessage {
   from: string;

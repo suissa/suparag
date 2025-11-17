@@ -4,30 +4,21 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
-const SERVICE_ROLE_KEY =
-process.env.SERVICE_ROLE_KEY ||
-process.env.SUPABASE_SERVICE_KEY ||
-process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+const supabaseKey =
+  process.env.SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_ROLE_KEY ||
+  process.env.SUPABASE_SERVICE_KEY ||
+  process.env.SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error('SUPABASE_URL e SUPABASE_ANON_KEY devem estar definidos no .env');
+  throw new Error('SUPABASE_URL e uma chave (SERVICE_ROLE_KEY/SUPABASE_SERVICE_ROLE_KEY/SUPABASE_SERVICE_KEY ou SUPABASE_ANON_KEY) devem estar definidos nas variáveis de ambiente (.env).');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
-// Cliente admin (bypass RLS) usando SERVICE_ROLE_KEY sem prefixo, com fallbacks.
-export const supabaseAdmin = SERVICE_ROLE_KEY
-? createClient(supabaseUrl, SERVICE_ROLE_KEY)
-: undefined;
+export const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: { persistSession: false, autoRefreshToken: false },
+});
 
-export function requireSupabaseAdmin() {
-  if (!supabaseAdmin) {
-    throw new Error(
-    'Falta SERVICE_ROLE_KEY (ou SUPABASE_SERVICE_KEY/SUPABASE_SERVICE_ROLE_KEY) para criar o cliente admin.'
-    );
-  }
-  return supabaseAdmin;
-}
 // Tipos para a tabela documents
 export interface Document {
   id?: string;
