@@ -51,6 +51,47 @@ router.post('/connect', async (req: Request, res: Response) => {
       ip: req.ip
     });
 
+    // Verificar se já existe uma instância para este sessionId
+    const existingInstanceName = evolutionService.getInstanceName(sessionId);
+    
+    if (existingInstanceName) {
+      logger.info('Instância já existe, verificando status', {
+        operation: 'POST /connect',
+        sessionId,
+        instanceName: existingInstanceName
+      });
+
+      // Verificar status da instância existente
+      try {
+        const status = await evolutionService.checkStatus(existingInstanceName);
+        
+        if (status.connected) {
+          logger.info('Instância já está conectada', {
+            operation: 'POST /connect',
+            sessionId,
+            instanceName: existingInstanceName,
+            status: status.status
+          });
+
+          // Retornar que já está conectada (não retornar QR code)
+          return res.status(200).json({
+            sessionId,
+            instanceName: existingInstanceName,
+            alreadyConnected: true,
+            message: 'Instância WhatsApp já está conectada',
+            status: status.status,
+            timestamp: new Date().toISOString()
+          });
+        }
+      } catch (statusError) {
+        logger.warn('Erro ao verificar status da instância existente, criando nova', {
+          operation: 'POST /connect',
+          sessionId,
+          error: statusError
+        });
+      }
+    }
+
     // Chamar evolutionService.createInstance(sessionId)
     const instanceName = await evolutionService.createInstance(sessionId);
 
@@ -66,6 +107,7 @@ router.post('/connect', async (req: Request, res: Response) => {
     return res.status(200).json({
       sessionId,
       instanceName,
+      alreadyConnected: false,
       message: 'Instância WhatsApp criada com sucesso',
       timestamp: new Date().toISOString()
     });
