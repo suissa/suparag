@@ -170,7 +170,7 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
 
   /**
    * Efeito para verificar status ao montar o Provider
-   * Verifica a conexão e abre o modal automaticamente se desconectado
+   * Apenas verifica a conexão, SEM abrir o modal automaticamente
    */
   useEffect(() => {
     const initializeConnection = async () => {
@@ -180,17 +180,13 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
         // Verificar status da conexão
         await checkConnection();
         
-        // Se não estiver conectado, abrir modal automaticamente
-        if (!isConnected) {
-          console.log('[WhatsAppConnectionContext] WhatsApp desconectado, abrindo modal...');
-          setShowModal(true);
-        }
+        // NÃO abrir modal automaticamente - modal será aberto apenas via método connect()
+        console.log('[WhatsAppConnectionContext] Status verificado. Modal não será aberto automaticamente.');
         
       } catch (error) {
         console.error('[WhatsAppConnectionContext] Erro ao inicializar conexão:', error);
         
-        // Em caso de erro, abrir modal para permitir conexão
-        setShowModal(true);
+        // NÃO abrir modal em caso de erro - usuário deve solicitar conexão explicitamente
       }
     };
     
@@ -229,7 +225,7 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
       
       {/* Modal de conexão WhatsApp */}
       <WhatsAppConnectionModal
-        open={showModal && !isConnected}
+        open={showModal}
         onClose={handleCloseModal}
         sessionId={sessionId}
       />
