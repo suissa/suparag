@@ -32,7 +32,8 @@
   - Implementar prop onConnect para callback de conexão
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 6.1, 6.2, 6.3, 6.4, 6.5_
 
-- [ ] 5. Modificar WhatsAppConnectionContext para remover modal automático
+- [-] 5. Modificar WhatsAppConnectionContext para remover modal automático
+
 
 
 
