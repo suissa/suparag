@@ -117,10 +117,14 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
 
   /**
    * Inicia o processo de conexão
-   * Abre o modal de conexão WhatsApp
    * 
-   * Este método apenas controla a exibição do modal.
-   * A lógica de conexão real está no WhatsAppConnectionModal.
+   * Abre o modal de conexão WhatsApp sob demanda (apenas quando chamado explicitamente).
+   * Este é o ÚNICO método que pode abrir o modal.
+   * 
+   * A lógica de conexão real (QR code, SSE, etc.) está no WhatsAppConnectionModal.
+   * 
+   * Requisito implementado:
+   * - 5.4: Método connect() abre modal sob demanda
    */
   const connect = async (): Promise<void> => {
     console.log('[WhatsAppConnectionContext] Abrindo modal de conexão...');
@@ -170,23 +174,32 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
 
   /**
    * Efeito para verificar status ao montar o Provider
-   * Apenas verifica a conexão, SEM abrir o modal automaticamente
+   * 
+   * IMPORTANTE: Este efeito APENAS verifica o status da conexão existente.
+   * O modal NÃO é aberto automaticamente em nenhuma circunstância.
+   * O modal só abre quando o usuário chama explicitamente o método connect().
+   * 
+   * Requisitos implementados:
+   * - 5.1: Verificação de status sem abertura automática do modal
+   * - 5.2: Estado isConnected atualizado, showModal permanece false
+   * - 5.3: Modal não abre mesmo se WhatsApp estiver desconectado
    */
   useEffect(() => {
     const initializeConnection = async () => {
       try {
         console.log('[WhatsAppConnectionContext] Inicializando verificação de conexão...');
         
-        // Verificar status da conexão
+        // Verificar status da conexão (atualiza apenas isConnected)
         await checkConnection();
         
-        // NÃO abrir modal automaticamente - modal será aberto apenas via método connect()
-        console.log('[WhatsAppConnectionContext] Status verificado. Modal não será aberto automaticamente.');
+        // showModal permanece false - modal só abre via connect()
+        console.log('[WhatsAppConnectionContext] Status verificado. Modal permanece fechado.');
         
       } catch (error) {
         console.error('[WhatsAppConnectionContext] Erro ao inicializar conexão:', error);
         
-        // NÃO abrir modal em caso de erro - usuário deve solicitar conexão explicitamente
+        // Mesmo em caso de erro, modal não abre automaticamente
+        // Usuário deve solicitar conexão explicitamente via connect()
       }
     };
     
@@ -198,12 +211,17 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
 
   /**
    * Efeito para fechar modal automaticamente quando conectar
-   * Monitora mudanças no estado isConnected
+   * 
+   * Monitora mudanças no estado isConnected e fecha o modal automaticamente
+   * após conexão bem-sucedida, dando tempo para o usuário ver a mensagem de sucesso.
+   * 
+   * Requisito implementado:
+   * - 5.5: Fechamento automático do modal após conexão bem-sucedida
    */
   useEffect(() => {
     if (isConnected && showModal) {
       console.log('[WhatsAppConnectionContext] Conexão estabelecida, fechando modal...');
-      // Aguardar um pouco para o usuário ver a mensagem de sucesso
+      // Aguardar 1.5s para o usuário ver a mensagem de sucesso
       setTimeout(() => {
         setShowModal(false);
       }, 1500);
@@ -223,7 +241,14 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
     <WhatsAppConnectionContext.Provider value={contextValue}>
       {children}
       
-      {/* Modal de conexão WhatsApp */}
+      {/* 
+        Modal de conexão WhatsApp
+        
+        Requisito implementado:
+        - 5.6: Condição do modal é apenas open={showModal}
+        - Não há verificação de !isConnected, permitindo que o modal
+          seja controlado exclusivamente pelo estado showModal
+      */}
       <WhatsAppConnectionModal
         open={showModal}
         onClose={handleCloseModal}

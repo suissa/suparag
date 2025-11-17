@@ -40,6 +40,7 @@
 
 
 
+
   - Remover lógica de abertura automática do modal no useEffect de inicialização
   - Manter apenas verificação de status (checkConnection)
   - Garantir que showModal permanece false após checkConnection
@@ -118,3 +119,10 @@
   - Validar que modal não abre automaticamente em nenhum cenário
   - Testar fluxo completo: primeira visita → onboarding → conexão → importação → documentos
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, Todos_
+
+- [ ] Executar a a analise de cada lead
+  - calculateLeadStatus(customerId)
+  - detectAbandonmentPoints(customerId)
+  - analyzeConversionIntent(customerId)
+  - computeEngagementMetrics(customerId)
+  - 
