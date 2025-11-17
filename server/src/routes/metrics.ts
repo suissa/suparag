@@ -29,10 +29,19 @@ router.get('/', async (req: Request, res: Response) => {
 
     const { data: tickets, error: ticketsError } = await supabase
       .from('tickets')
-      .select('id, status, priority, created_at');
+      .select('id, status, created_at');
 
-    if (customersError || interactionsError || ticketsError) {
-      throw new Error('Erro ao buscar dados');
+    if (customersError) {
+      console.error('Erro ao buscar customers:', customersError);
+      throw customersError;
+    }
+    if (interactionsError) {
+      console.error('Erro ao buscar interactions:', interactionsError);
+      throw interactionsError;
+    }
+    if (ticketsError) {
+      console.error('Erro ao buscar tickets:', ticketsError);
+      throw ticketsError;
     }
 
     // Calcular métricas

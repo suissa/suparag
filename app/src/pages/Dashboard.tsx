@@ -98,53 +98,7 @@ export default function Dashboard() {
     <DashboardLayout> 
     <div className="relative flex h-screen w-full flex-row overflow-hidden">
       {/* Sidebar */}
-      <aside className="flex h-full w-64 flex-col bg-[#111c22] p-4">
-        <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-3 px-2">
-            <div className="bg-primary rounded-full size-10 flex items-center justify-center text-white font-bold">
-              DC
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-white text-base font-medium leading-normal">DocuChat AI</h1>
-              <p className="text-gray-400 dark:text-[#92b7c9] text-sm font-normal leading-normal">RAG Assistant</p>
-            </div>
-          </div>
-          <nav className="mt-4 flex flex-col gap-2">
-            <Link
-              to="/"
-              className="flex items-center gap-3 rounded-lg bg-primary/20 dark:bg-[#233c48] px-3 py-2"
-            >
-              <LayoutDashboard size={20} className="text-primary dark:text-white" />
-              <p className="text-primary dark:text-white text-sm font-medium leading-normal">Dashboard</p>
-            </Link>
-            <Link
-              to="/settings"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-200 dark:hover:bg-[#233c48]/50"
-            >
-              <Settings size={20} className="text-gray-600 dark:text-white" />
-              <p className="text-gray-800 dark:text-white text-sm font-medium leading-normal">Settings</p>
-            </Link>
-            <a
-              href="#"
-              className="flex items-center gap-3 rounded-lg px-3 py-2 hover:bg-gray-200 dark:hover:bg-[#233c48]/50"
-            >
-              <HelpCircle size={20} className="text-gray-600 dark:text-white" />
-              <p className="text-gray-800 dark:text-white text-sm font-medium leading-normal">Help</p>
-            </a>
-          </nav>
-        </div>
-        <div className="mt-auto">
-          <div className="flex items-center gap-3 p-2">
-            <div className="bg-gray-500 rounded-full size-10 flex items-center justify-center text-white font-bold">
-              AT
-            </div>
-            <div className="flex flex-col">
-              <p className="text-white text-sm font-medium leading-normal">Alex Turner</p>
-              <p className="text-gray-400 dark:text-[#92b7c9] text-xs font-normal leading-normal">alex.t@example.com</p>
-            </div>
-          </div>
-        </div>
-      </aside>
+      
 
       {/* Document Management Panel */}
       <div className="flex h-full flex-col border-r border-gray-200 dark:border-[#325567] bg-white dark:bg-[#111c22] w-full lg:w-1/2">
