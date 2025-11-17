@@ -1,0 +1,394 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Relatório de Leads - WhatsApp CRM</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .timestamp {
+      opacity: 0.9;
+      font-size: 0.9em;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 40px;
+      background: #f8f9fa;
+    }
+
+    .summary-card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .summary-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .summary-card h3 {
+      color: #667eea;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .summary-card .value {
+      font-size: 2.5em;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .charts {
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 30px;
+    }
+
+    .chart-container {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .chart-container h2 {
+      margin-bottom: 20px;
+      color: #667eea;
+    }
+
+    .leads-table {
+      padding: 40px;
+    }
+
+    .leads-table h2 {
+      margin-bottom: 20px;
+      color: #667eea;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    thead {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f8f9fa;
+    }
+
+    tbody tr:hover {
+      background: #e9ecef;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    .status-quente { background: #ff6b6b; color: white; }
+    .status-em_negociacao { background: #ff922b; color: white; }
+    .status-ativo { background: #51cf66; color: white; }
+    .status-novo { background: #4dabf7; color: white; }
+    .status-frio { background: #868e96; color: white; }
+
+    .probability {
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    .probability.high { color: #51cf66; }
+    .probability.medium { color: #ff922b; }
+    .probability.low { color: #868e96; }
+
+    footer {
+      background: #f8f9fa;
+      padding: 20px;
+      text-align: center;
+      color: #666;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📊 Relatório de Leads WhatsApp</h1>
+      <p class="timestamp">Gerado em: 17/11/2025, 13:22:08</p>
+    </header>
+
+    <div class="summary">
+      <div class="summary-card">
+        <h3>Total de Leads</h3>
+        <div class="value">34</div>
+      </div>
+      <div class="summary-card">
+        <h3>Leads Quentes</h3>
+        <div class="value">0</div>
+      </div>
+      <div class="summary-card">
+        <h3>Leads Ativos</h3>
+        <div class="value">30</div>
+      </div>
+      <div class="summary-card">
+        <h3>Leads Frios</h3>
+        <div class="value">0</div>
+      </div>
+      <div class="summary-card">
+        <h3>Prob. Conversão Média</h3>
+        <div class="value">12.5%</div>
+      </div>
+    </div>
+
+    <div class="charts">
+      <div class="chart-container">
+        <h2>Distribuição por Status</h2>
+        <canvas id="statusChart"></canvas>
+      </div>
+      <div class="chart-container">
+        <h2>Top 10 Leads por Conversão</h2>
+        <canvas id="conversionChart"></canvas>
+      </div>
+    </div>
+
+    <div class="leads-table">
+      <h2>🔥 Top 10 Leads Prioritários</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Posição</th>
+            <th>Cliente ID</th>
+            <th>Status</th>
+            <th>Mensagens</th>
+            <th>Sentimento</th>
+            <th>Prob. Conversão</th>
+            <th>Última Interação</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+            <tr>
+              <td><strong>#1</strong></td>
+              <td>64641eba...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>6</td>
+              <td>😊 0.38</td>
+              <td><span class="probability low">40%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+            <tr>
+              <td><strong>#2</strong></td>
+              <td>0c544c39...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>6</td>
+              <td>😞 -0.03</td>
+              <td><span class="probability low">15%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+            <tr>
+              <td><strong>#3</strong></td>
+              <td>2dffdb0f...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>7</td>
+              <td>😊 0.24</td>
+              <td><span class="probability low">15%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+            <tr>
+              <td><strong>#4</strong></td>
+              <td>ab2d4865...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>8</td>
+              <td>😊 0.22</td>
+              <td><span class="probability low">15%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+            <tr>
+              <td><strong>#5</strong></td>
+              <td>ea5dfb1b...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>9</td>
+              <td>😞 -0.06</td>
+              <td><span class="probability low">15%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+            <tr>
+              <td><strong>#6</strong></td>
+              <td>9435eaef...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>10</td>
+              <td>😊 0.03</td>
+              <td><span class="probability low">15%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+            <tr>
+              <td><strong>#7</strong></td>
+              <td>a85c48aa...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>6</td>
+              <td>😞 -0.14</td>
+              <td><span class="probability low">15%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+            <tr>
+              <td><strong>#8</strong></td>
+              <td>9dfe19a2...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>7</td>
+              <td>😞 -0.19</td>
+              <td><span class="probability low">15%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+            <tr>
+              <td><strong>#9</strong></td>
+              <td>d5c7ec2a...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>8</td>
+              <td>😞 -0.09</td>
+              <td><span class="probability low">15%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+            <tr>
+              <td><strong>#10</strong></td>
+              <td>a723e956...</td>
+              <td><span class="status-badge status-ativo">ativo</span></td>
+              <td>9</td>
+              <td>😊 0.07</td>
+              <td><span class="probability low">15%</span></td>
+              <td>4.9 dias</td>
+            </tr>
+          
+        </tbody>
+      </table>
+    </div>
+
+    <footer>
+      <p>Relatório gerado automaticamente pelo NeuroPgRag CRM</p>
+      <p>© 2025 - Todos os direitos reservados</p>
+    </footer>
+  </div>
+
+  <script>
+    // Gráfico de Status
+    const statusData = {"labels":["ativo","novo"],"values":[30,4]};
+    new Chart(document.getElementById('statusChart'), {
+      type: 'doughnut',
+      data: {
+        labels: statusData.labels,
+        datasets: [{
+          data: statusData.values,
+          backgroundColor: [
+            '#ff6b6b',
+            '#ff922b',
+            '#51cf66',
+            '#4dabf7',
+            '#868e96'
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom'
+          }
+        }
+      }
+    });
+
+    // Gráfico de Conversão
+    const conversionData = {"labels":["Lead #1","Lead #2","Lead #3","Lead #4","Lead #5","Lead #6","Lead #7","Lead #8","Lead #9","Lead #10"],"values":[40,15,15,15,15,15,15,15,15,15]};
+    new Chart(document.getElementById('conversionChart'), {
+      type: 'bar',
+      data: {
+        labels: conversionData.labels,
+        datasets: [{
+          label: 'Probabilidade de Conversão (%)',
+          data: conversionData.values,
+          backgroundColor: 'rgba(102, 126, 234, 0.8)',
+          borderColor: 'rgba(102, 126, 234, 1)',
+          borderWidth: 2
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            max: 100
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+  
