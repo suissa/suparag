@@ -3,6 +3,7 @@
 - [-] 1. Criar componente FirstVisitGuard
 
 
+
   - Implementar HOC que detecta primeira visita via localStorage
   - Adicionar lógica de redirecionamento para /customers
   - Criar e armazenar token 'neuroPgRag_hasVisited' no localStorage

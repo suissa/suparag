@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { CRMProvider } from './contexts/CRMContext';
 import { WhatsAppConnectionProvider } from './contexts/WhatsAppConnectionContext';
+import { FirstVisitGuard } from './guards/FirstVisitGuard';
 
 // Páginas existentes
 import Dashboard from './pages/Dashboard';
@@ -41,7 +42,8 @@ function App() {
       <CRMProvider>
         <WhatsAppConnectionProvider>
           <BrowserRouter>
-            <Routes>
+            <FirstVisitGuard>
+              <Routes>
               <Route index element={<Dashboard />} />
               
               {/* Rotas CRM */}
@@ -88,7 +90,8 @@ function App() {
                   <div className="text-center py-12 text-white">Analytics em desenvolvimento...</div>
                 </DashboardLayout>
               } />
-            </Routes>
+              </Routes>
+            </FirstVisitGuard>
           </BrowserRouter>
         </WhatsAppConnectionProvider>
       </CRMProvider>
