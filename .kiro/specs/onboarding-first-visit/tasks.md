@@ -18,7 +18,8 @@
   - Adicionar logs de erro apropriados
   - _Requirements: 3.4, 3.5_
 
-- [-] 4. Criar componente OnboardingView
+- [x] 4. Criar componente OnboardingView
+
 
 
   - Criar arquivo app/src/components/OnboardingView.tsx
