@@ -2,11 +2,11 @@
 
 ## Introduction
 
-Este documento especifica os requisitos para a integração completa entre o dashboard NeuroPgRag e a Evolution API para gerenciamento de conexões WhatsApp. O sistema deve fornecer uma interface visual configurável (modal) que monitora o status da conexão WhatsApp, gerencia a criação de instâncias na Evolution API, exibe QR codes para autenticação e mantém sincronização em tempo real do status de conexão através de Server-Sent Events (SSE) e verificações periódicas.
+Este documento especifica os requisitos para a integração completa entre o dashboard SUPARAG e a Evolution API para gerenciamento de conexões WhatsApp. O sistema deve fornecer uma interface visual configurável (modal) que monitora o status da conexão WhatsApp, gerencia a criação de instâncias na Evolution API, exibe QR codes para autenticação e mantém sincronização em tempo real do status de conexão através de Server-Sent Events (SSE) e verificações periódicas.
 
 ## Glossary
 
-- **Dashboard**: Interface React do usuário para gerenciamento do sistema NeuroPgRag
+- **Dashboard**: Interface React do usuário para gerenciamento do sistema SUPARAG
 - **Evolution API**: Serviço externo para gerenciamento de instâncias WhatsApp
 - **WhatsApp Modal**: Componente React configurável que exibe o status e QR code da conexão WhatsApp
 - **Instance**: Representação de uma conexão WhatsApp na Evolution API

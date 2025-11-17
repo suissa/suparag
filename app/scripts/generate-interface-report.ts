@@ -130,7 +130,7 @@ function generateHTMLReport(playwrightResults: PlaywrightResult, supabaseSnapsho
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Interface - Avaliação de Respostas | NeuroPgRag</title>
+    <title>Relatório de Interface - Avaliação de Respostas | SUPARAG</title>
     <style>
         * {
             margin: 0;
@@ -646,7 +646,7 @@ ${JSON.stringify({
 
         <div class="footer">
             <p>🎭 Relatório gerado automaticamente pelos testes Playwright + Snapshot Supabase</p>
-            <p>⚡ NeuroPgRag - Sistema de Chat AI com RAG + Avaliação de Qualidade</p>
+            <p>⚡ SUPARAG - Sistema de Chat AI com RAG + Avaliação de Qualidade</p>
             <p style="margin-top: 10px; font-size: 0.8em;">
                 🧪 Testes executados com Playwright | 📊 Dados coletados do Supabase | 📄 Relatório gerado dinamicamente
             </p>

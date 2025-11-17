@@ -437,7 +437,7 @@ EVOLUTION_API_URL=https://evolution-api.example.com
 EVOLUTION_API_KEY=your-api-key-here
 
 # Optional
-EVOLUTION_INSTANCE_PREFIX=neuropgrag
+EVOLUTION_INSTANCE_PREFIX=SUPARAG
 EVOLUTION_CHECK_INTERVAL=30000  # 30s in ms
 EVOLUTION_TIMEOUT=300000        # 5min in ms
 ```

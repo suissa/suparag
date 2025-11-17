@@ -1,4 +1,4 @@
-# Database Schema - NeuroPgRag
+# Database Schema - SUPARAG
 
 Documentação completa do schema do banco de dados PostgreSQL + pgvector.
 

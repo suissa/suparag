@@ -1,5 +1,5 @@
 -- ============================================
--- NeuroPgRag Database Schema
+-- SUPARAG Database Schema
 -- Sistema de Chat AI com RAG + WhatsApp
 -- ============================================
 

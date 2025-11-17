@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2025-11-17T16:22:08.545Z",
+  "generatedAt": "2025-11-17T17:58:23.889Z",
   "summary": {
-    "totalLeads": 34,
+    "totalLeads": 36,
     "hotLeads": 0,
     "activeLeads": 30,
     "coldLeads": 0,
-    "avgConversionProbability": 12.5
+    "avgConversionProbability": 11.805555555555555
   },
   "leads": [
     {
@@ -16,7 +16,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 48,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 40
     },
     {
@@ -27,7 +27,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 42,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -38,7 +38,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 48,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -49,7 +49,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 49,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -60,7 +60,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 47,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -71,7 +71,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 51,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -82,7 +82,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 40,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -93,7 +93,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 41,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -104,7 +104,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 45,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -115,7 +115,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 49,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -126,7 +126,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 51,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -137,7 +137,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 46,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -148,7 +148,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 46,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -158,8 +158,8 @@
       "avgSentiment": -0.04,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 48,
-      "lastInteractionDays": 4.9,
+      "leadActivityScore": 47,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -170,7 +170,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 51,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -181,7 +181,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 39,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -192,7 +192,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 43,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -203,7 +203,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 48,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -214,7 +214,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 50,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -225,7 +225,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 51,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -236,7 +236,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 45,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -247,7 +247,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 42,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -258,7 +258,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 45,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -269,7 +269,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 47,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -280,7 +280,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 51,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 15
     },
     {
@@ -291,7 +291,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 42,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 5
     },
     {
@@ -302,7 +302,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 42,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 5
     },
     {
@@ -313,7 +313,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 35,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 5
     },
     {
@@ -324,7 +324,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 44,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 5
     },
     {
@@ -335,7 +335,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 37,
-      "lastInteractionDays": 4.9,
+      "lastInteractionDays": 5,
       "conversionProbability": 5
     },
     {
@@ -373,6 +373,28 @@
     },
     {
       "customerId": "6efb6fa4-b104-4d9f-92d6-7ec7ecc21769",
+      "status": "novo",
+      "totalMessages": 0,
+      "avgSentiment": 0,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 0,
+      "lastInteractionDays": 999,
+      "conversionProbability": 0
+    },
+    {
+      "customerId": "b8fc3b89-a68f-4b95-a597-af8a092b2332",
+      "status": "novo",
+      "totalMessages": 0,
+      "avgSentiment": 0,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 0,
+      "lastInteractionDays": 999,
+      "conversionProbability": 0
+    },
+    {
+      "customerId": "902fc98d-6598-4285-ad39-7f4079423c6b",
       "status": "novo",
       "totalMessages": 0,
       "avgSentiment": 0,

@@ -85,21 +85,33 @@ router.post('/', async (req: Request, res: Response) => {
   try {
     const { customer_id, channel, message, sentiment, embedding } = req.body;
 
-    if (!customer_id || !channel || !message) {
+    if (!customer_id || !message) {
       return res.status(400).json({
         success: false,
-        message: 'Campos "customer_id", "channel" e "message" são obrigatórios'
+        message: 'Campos "customer_id" e "message" são obrigatórios'
       });
     }
 
-    const { data, error } = await supabase
+    // Gerar metadata automaticamente no backend
+    const metadata = {
+      source: 'api',
+      channel: channel || 'whatsapp',
+      ip: req.ip || req.socket.remoteAddress || 'unknown',
+      userAgent: req.headers['user-agent'] || 'unknown',
+      timestamp: new Date().toISOString(),
+      method: req.method,
+      endpoint: req.originalUrl
+    };
+
+    const { data, error} = await supabase
       .from('interactions')
       .insert({
         customer_id,
-        channel,
-        message,
+        channel: channel || 'whatsapp',
+        message: message,
         sentiment: sentiment || 0,
-        embedding
+        embedding,
+        metadata
       })
       .select()
       .single();
@@ -114,7 +126,13 @@ router.post('/', async (req: Request, res: Response) => {
 
     return res.status(201).json({
       success: true,
-      data: { interaction: data }
+      data: { 
+        interaction: data,
+        metadata: {
+          message: 'Metadata gerada automaticamente no backend',
+          fields: Object.keys(metadata)
+        }
+      }
     });
   } catch (error: any) {
     console.error('Erro ao criar interação:', error);

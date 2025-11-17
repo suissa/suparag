@@ -434,4 +434,4 @@ Para dúvidas ou problemas:
 
 ---
 
-**Desenvolvido com ❤️ para o NeuroPgRag CRM**
+**Desenvolvido com ❤️ para o SUPARAG CRM**

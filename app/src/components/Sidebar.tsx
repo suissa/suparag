@@ -30,7 +30,7 @@ const Sidebar = () => {
             <span className="material-symbols-outlined text-white">description</span>
           </div>
           <div className="flex flex-col">
-            <h1 className="text-white text-base font-medium leading-normal">NeuroPgRag</h1>
+            <h1 className="text-white text-base font-medium leading-normal">SUPARAG</h1>
             <p className="text-[#92b7c9] text-sm font-normal leading-normal">RAG Assistant</p>
           </div>
         </div>

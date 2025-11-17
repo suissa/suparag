@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2025-11-17T16:37:56.787Z",
+  "generatedAt": "2025-11-17T16:52:08.785Z",
   "summary": {
-    "totalLeads": 34,
+    "totalLeads": 36,
     "hotLeads": 0,
     "activeLeads": 30,
     "coldLeads": 0,
-    "avgConversionProbability": 12.5
+    "avgConversionProbability": 11.805555555555555
   },
   "leads": [
     {
@@ -373,6 +373,28 @@
     },
     {
       "customerId": "6efb6fa4-b104-4d9f-92d6-7ec7ecc21769",
+      "status": "novo",
+      "totalMessages": 0,
+      "avgSentiment": 0,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 0,
+      "lastInteractionDays": 999,
+      "conversionProbability": 0
+    },
+    {
+      "customerId": "b8fc3b89-a68f-4b95-a597-af8a092b2332",
+      "status": "novo",
+      "totalMessages": 0,
+      "avgSentiment": 0,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 0,
+      "lastInteractionDays": 999,
+      "conversionProbability": 0
+    },
+    {
+      "customerId": "902fc98d-6598-4285-ad39-7f4079423c6b",
       "status": "novo",
       "totalMessages": 0,
       "avgSentiment": 0,

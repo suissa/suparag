@@ -3,6 +3,7 @@ import { Upload as UploadIcon, Search, Eye, Trash2, LayoutDashboard, Settings, H
 import { documentsAPI } from '../services/api';
 import { Link } from 'react-router-dom';
 import ChatPanel from '../components/ChatPanel';
+import { DashboardLayout } from '../layouts/DashboardLayout';
 
 interface Document {
   id: string;
@@ -94,6 +95,7 @@ export default function Dashboard() {
   );
 
   return (
+    <DashboardLayout> 
     <div className="relative flex h-screen w-full flex-row overflow-hidden">
       {/* Sidebar */}
       <aside className="flex h-full w-64 flex-col bg-[#111c22] p-4">
@@ -265,5 +267,6 @@ export default function Dashboard() {
         <ChatPanel />
       </div>
     </div>
+    </DashboardLayout>
   );
 }

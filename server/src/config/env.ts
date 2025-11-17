@@ -12,6 +12,7 @@ interface RequiredEnvVars {
   SUPABASE_ANON_KEY: string;
   EVOLUTION_API_URL: string;
   EVOLUTION_API_KEY: string;
+  OPENROUTER_API_KEY: string;
 }
 
 /**
@@ -24,7 +25,8 @@ export function validateEnv(): void {
     'SUPABASE_URL',
     'SUPABASE_ANON_KEY',
     'EVOLUTION_API_URL',
-    'EVOLUTION_API_KEY'
+    'EVOLUTION_API_KEY',
+    'OPENROUTER_API_KEY'
   ];
 
   const missingVars: string[] = [];
@@ -117,7 +119,7 @@ export const env = {
   evolution: {
     apiUrl: process.env.EVOLUTION_API_URL!,
     apiKey: process.env.EVOLUTION_API_KEY!,
-    instancePrefix: process.env.EVOLUTION_INSTANCE_PREFIX || 'neuropgrag',
+    instancePrefix: process.env.EVOLUTION_INSTANCE_PREFIX || 'SUPARAG',
     checkInterval: parseInt(process.env.EVOLUTION_CHECK_INTERVAL || '30000', 10),
     timeout: parseInt(process.env.EVOLUTION_TIMEOUT || '300000', 10)
   },

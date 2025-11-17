@@ -208,7 +208,7 @@ function generateHTMLReport(snapshot: SupabaseSnapshot, outputPath: string) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Avaliação de Respostas - NeuroPgRag</title>
+    <title>Relatório de Avaliação de Respostas - SUPARAG</title>
     <style>
         * {
             margin: 0;
@@ -632,7 +632,7 @@ ${JSON.stringify(snapshot, null, 2)}
 
         <div class="footer">
             <p>🔬 Relatório gerado automaticamente pelo sistema de avaliação de respostas</p>
-            <p>⚡ NeuroPgRag - Sistema de Chat AI com RAG + Qualidade de Respostas</p>
+            <p>⚡ SUPARAG - Sistema de Chat AI com RAG + Qualidade de Respostas</p>
         </div>
     </div>
 </body>

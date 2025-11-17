@@ -1,4 +1,4 @@
-# Sistema de Busca - NeuroPgRag
+# Sistema de Busca - SUPARAG
 
 Documentação completa do sistema de busca com suporte a fuzzy search (pg_trgm).
 

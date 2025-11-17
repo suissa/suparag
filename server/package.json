@@ -1,7 +1,7 @@
 {
-  "name": "neuropgrag-server",
+  "name": "SUPARAG-server",
   "version": "1.0.0",
-  "description": "API Server for NeuroPgRag - Chat AI with RAG + WhatsApp",
+  "description": "API Server for SUPARAG - Chat AI with RAG + WhatsApp",
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",

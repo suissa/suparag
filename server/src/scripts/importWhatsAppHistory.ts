@@ -79,7 +79,7 @@ export async function importWhatsAppHistory(
             interactions.push({
               customer_id: customer.id,
               channel: 'whatsapp',
-              content: mapped.message,
+              message: mapped.message,
               sentiment: sentiment,
               embedding: embedding,
               created_at: mapped.timestamp,
@@ -157,7 +157,6 @@ async function findOrCreateCustomer(phone: string) {
         phone: phone,
         email: `${phone}@whatsapp.temp`,
         company: 'WhatsApp Import',
-        position: 'Lead'
       })
       .select()
       .single();

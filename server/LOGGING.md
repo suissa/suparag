@@ -94,7 +94,7 @@ logger.debug('Detalhes da operação', {
 
 ```
 ℹ️ [2025-01-15T10:30:45.123Z] [INFO] [EvolutionService] [createInstance] Instância criada com sucesso
-   Context: sessionId=abc-123, instanceName=neuropgrag_1234567890_abc, duration=1234ms, totalInstances=5
+   Context: sessionId=abc-123, instanceName=SUPARAG_1234567890_abc, duration=1234ms, totalInstances=5
 ```
 
 ## Próximos Passos

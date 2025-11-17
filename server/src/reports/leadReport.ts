@@ -311,7 +311,7 @@ function generateHTML(data: ReportData): string {
     </div>
 
     <footer>
-      <p>Relatório gerado automaticamente pelo NeuroPgRag CRM</p>
+      <p>Relatório gerado automaticamente pelo SUPARAG CRM</p>
       <p>© 2025 - Todos os direitos reservados</p>
     </footer>
   </div>

@@ -30,7 +30,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
               <span className="material-symbols-outlined text-white">description</span>
             </div>
             <div className="flex flex-col">
-              <h1 className="text-white text-base font-medium leading-normal">NeuroPgRag CRM</h1>
+              <h1 className="text-white text-base font-medium leading-normal">SUPARAG CRM</h1>
               <p className="text-[#92b7c9] text-sm font-normal leading-normal">RAG + CRM</p>
             </div>
           </div>

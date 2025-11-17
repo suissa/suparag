@@ -1,4 +1,4 @@
-# Testes - NeuroPgRag Server
+# Testes - SUPARAG Server
 
 Testes automatizados usando Jest e Supertest.
 

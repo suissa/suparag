@@ -4,6 +4,10 @@
  * NOTA: Em produção, use a API da OpenAI (text-embedding-ada-002)
  * Esta é uma implementação sintética para desenvolvimento/testes
  */
+
+import dotenv from 'dotenv';
+dotenv.config();
+
 export function generateSyntheticEmbedding(text: string): number[] {
   const dimensions = 1536;
   const embedding: number[] = [];
@@ -55,7 +59,7 @@ export async function generateRealEmbedding(text: string): Promise<number[]> {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
           'HTTP-Referer': 'http://localhost:4000',
-          'X-Title': 'NeuroPgRag CRM'
+          'X-Title': 'SUPARAG CRM'
         }
       }
     );

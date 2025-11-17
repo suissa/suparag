@@ -13,7 +13,7 @@ Devido a limitações do npm com caminhos UNC do WSL (`\\wsl.localhost\...`), os
 wsl
 
 # Navegue até o diretório do projeto:
-cd ~/projetos/novos/NeuroPgRag/server
+cd ~/projetos/novos/SUPARAG/server
 ```
 
 ### 2. Execute os Testes

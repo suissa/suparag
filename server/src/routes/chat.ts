@@ -95,7 +95,7 @@ router.post('/', async (req: Request, res: Response) => {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
           'HTTP-Referer': 'http://localhost:5173',
-          'X-Title': 'NeuroPgRag'
+          'X-Title': 'SUPARAG'
         }
       }
     );
@@ -147,7 +147,7 @@ async function getEmbedding(text: string, apiKey: string): Promise<number[]> {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
           'HTTP-Referer': 'http://localhost:5173',
-          'X-Title': 'NeuroPgRag'
+          'X-Title': 'SUPARAG'
         }
       }
     );

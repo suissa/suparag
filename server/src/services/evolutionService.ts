@@ -11,6 +11,8 @@ interface InstanceData {
   sessionId: string;
   createdAt: Date;
   status: string;
+  clientIp?: string;
+  host?: string;
 }
 
 /**
@@ -19,6 +21,8 @@ interface InstanceData {
 export interface ConnectionStatus {
   connected: boolean;
   status: string;
+  clientIp?: string;
+  host?: string;
   instanceName?: string;
 }
 
@@ -41,7 +45,7 @@ export class EvolutionService {
     this.client = new EvolutionClient({
       serverUrl: env.evolution.apiUrl,
       token: env.evolution.apiKey,
-      instance: 'NeuroPgRag'
+      instance: 'SUPARAG'
     });
 
     // Criar Map para armazenar instâncias ativas
@@ -61,7 +65,7 @@ export class EvolutionService {
    * @returns instanceName - Nome único da instância criada
    * @throws Error se a criação falhar
    */
-  async createInstance(sessionId: string): Promise<string> {
+  async createInstance(sessionId: string, clientIp?: string, host?: string): Promise<string> {
     const startTime = Date.now();
     
     try {

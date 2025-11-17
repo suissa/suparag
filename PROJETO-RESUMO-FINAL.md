@@ -1,4 +1,4 @@
-# 📊 NeuroPgRag CRM - Resumo Final Completo
+# 📊 SUPARAG CRM - Resumo Final Completo
 
 ## 🎯 Status do Projeto: ✅ COMPLETO E TESTADO (30/30 TESTES)
 
@@ -30,7 +30,7 @@
 
 ## 🎯 Visão Geral
 
-O **NeuroPgRag CRM** é um sistema completo de gerenciamento de relacionamento com clientes (CRM) que integra:
+O **SUPARAG CRM** é um sistema completo de gerenciamento de relacionamento com clientes (CRM) que integra:
 
 - ✅ **Gestão de Clientes** - CRUD completo com busca e filtros
 - ✅ **Interações** - Histórico de comunicações multicanal
@@ -125,7 +125,7 @@ O **NeuroPgRag CRM** é um sistema completo de gerenciamento de relacionamento c
 ## 📁 Estrutura do Projeto
 
 ```
-NeuroPgRag/
+SUPARAG/
 ├── app/                          # Frontend React
 │   ├── src/
 │   │   ├── components/           # Componentes reutilizáveis
@@ -383,7 +383,7 @@ NeuroPgRag/
 
 ```bash
 git clone <url-do-repositorio>
-cd NeuroPgRag
+cd SUPARAG
 ```
 
 ### 2. Configurar Variáveis de Ambiente
@@ -978,7 +978,7 @@ Este projeto está sob a licença MIT.
 
 ## 🎉 Conclusão
 
-O **NeuroPgRag CRM** está **100% completo, funcional e testado**!
+O **SUPARAG CRM** está **100% completo, funcional e testado**!
 
 ### ✅ Entregas
 

@@ -1,4 +1,4 @@
-# NeuroPgRag - Dashboard
+# SUPARAG - Dashboard
 
 Interface web para o sistema de Chat AI com RAG + WhatsApp.
 

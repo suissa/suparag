@@ -1,4 +1,4 @@
-# 🎯 CRM Frontend - NeuroPgRag
+# 🎯 CRM Frontend - SUPARAG
 
 Interface completa do CRM com RAG integrada ao Supabase, construída com React + TypeScript + TailwindCSS.
 

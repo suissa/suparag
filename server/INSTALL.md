@@ -1,4 +1,4 @@
-# 🚀 Guia de Instalação - NeuroPgRag Server
+# 🚀 Guia de Instalação - SUPARAG Server
 
 ## Pré-requisitos
 

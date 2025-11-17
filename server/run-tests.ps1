@@ -4,7 +4,7 @@ param([string]$Command = "test")
 Write-Host "Executando testes no WSL..." -ForegroundColor Cyan
 
 # Caminho fixo conhecido
-$linuxPath = "/home/suissa/projetos/novos/NeuroPgRag/server"
+$linuxPath = "/home/suissa/projetos/novos/SUPARAG/server"
 
 # Mapear comandos
 $npmCommand = switch ($Command) {
