@@ -9,12 +9,12 @@
   "visual": {
     "theme": "equal",
     "size": {
-      "w": "100vw",
-      "md:max-x": "800px",
-      "y": "100vh",
-      "md:max-y": "600px"
+      "w": "100%",
+      "md:max-x": "none",
+      "y": "100%",
+      "md:max-y": "none"
     },
-    "position": "center.all"
+    "position": "none"
   },
   "behavior": {
     "in": {
@@ -22,21 +22,21 @@
       "animation": {
         "start": {
           "opacity": 0,
-          "scale": 0
+          "scale": 0.95
         },
         "end": {
-          "opacity": 0.8,
-          "scale": 1.2
+          "opacity": 1,
+          "scale": 1
         },
-        "duration": 2000,
-        "easing": "easeIn"
+        "duration": 300,
+        "easing": "easeOut"
       }
     },
     "events": {
       "focus": {
         "scale": 1,
         "opacity": 1,
-        "duration": 1000
+        "duration": 200
       }
     }
   }
