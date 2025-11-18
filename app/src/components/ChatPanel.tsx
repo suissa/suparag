@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Plus, Send, Loader2, AlertCircle } from 'lucide-react';
+import { MessageSquare, Plus, Loader2, AlertCircle } from 'lucide-react';
 import { chatAPI } from '../services/api';
 import { useChatbotFactory } from '../lib/chatbotFactory';
 import chatbotConfig from '../config/chatbot.config.json';
+import { ChatInputFactory } from './ChatInputFactory';
 
 interface Message {
   id: string;
@@ -22,9 +23,7 @@ export default function ChatPanel() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAnimated, setIsAnimated] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Usar o ChatbotFactory para processar a configuração
   const chatbotStyle = useChatbotFactory(chatbotConfig as any);
@@ -47,13 +46,14 @@ export default function ChatPanel() {
     }
   }, [chatbotStyle.animationEvent]);
 
-  const handleSend = async () => {
-    if (!input.trim() || loading) return;
+  const handleSend = async (messageText?: string) => {
+    const message = messageText || input;
+    if (!message.trim() || loading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       role: 'user',
-      content: input,
+      content: message,
       timestamp: new Date(),
     };
 
@@ -63,7 +63,7 @@ export default function ChatPanel() {
     setError(null);
 
     try {
-      const response = await chatAPI.sendMessage(input);
+      const response = await chatAPI.sendMessage(message);
       
       console.log('📥 Response from API:', JSON.stringify(response.data, null, 2));
       console.log('📚 Sources:', JSON.stringify(response.data.sources, null, 2));
@@ -95,13 +95,6 @@ export default function ChatPanel() {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
-    }
-  };
-
   const handleNewChat = () => {
     setMessages([]);
     setError(null);
@@ -111,8 +104,6 @@ export default function ChatPanel() {
     <div 
       className={`h-full flex flex-col bg-background-light dark:bg-background-dark ${chatbotStyle.containerClasses}`}
       style={isAnimated ? chatbotStyle.finalStyle : chatbotStyle.initialStyle}
-      onFocus={() => setIsFocused(true)}
-      onBlur={() => setIsFocused(false)}
     >
       {/* Header */}
       <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#325567] p-4">
@@ -134,7 +125,7 @@ export default function ChatPanel() {
               <MessageSquare size={32} />
             </div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-              Welcome to suparag!
+              <img src="/logo-full-top.png" className='w-[60%] h-auto block mx-auto' />
             </h3>
             <p className="max-w-xs">
               Ask me anything about the documents in your knowledge base to get started.
@@ -182,7 +173,7 @@ export default function ChatPanel() {
                   {msg.role === 'assistant' && (!msg.sources || msg.sources.length === 0) && (
                     <div className="mt-2 pt-2 border-t border-yellow-300 dark:border-yellow-600">
                       <p className="text-xs text-yellow-600 dark:text-yellow-400">
-                        ⚠️ No documents found for this query
+                        ⚠️ Nenhum documento enontrado
                       </p>
                     </div>
                   )}
@@ -214,25 +205,11 @@ export default function ChatPanel() {
 
       {/* Input */}
       <div className="border-t border-gray-200 dark:border-[#325567] p-4">
-        <div className="relative">
-          <textarea
-            ref={textareaRef}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            disabled={loading}
-            className="form-input w-full resize-none rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-[#233c48] pr-12 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary focus:ring-primary disabled:opacity-50"
-            placeholder="Ask a question about your documents..."
-            rows={1}
-          />
-          <button
-            onClick={handleSend}
-            disabled={loading || !input.trim()}
-            className="absolute bottom-2 right-2 flex size-8 items-center justify-center rounded-md bg-primary text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? <Loader2 className="animate-spin" size={20} /> : <Send size={20} />}
-          </button>
-        </div>
+        <ChatInputFactory
+          onSend={(message: string) => handleSend(message)}
+          disabled={loading}
+          placeholder="Faça uma pergunta sobre algum documento..."
+        />
       </div>
     </div>
   );
