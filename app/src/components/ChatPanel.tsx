@@ -65,6 +65,9 @@ export default function ChatPanel() {
     try {
       const response = await chatAPI.sendMessage(input);
       
+      console.log('📥 Response from API:', JSON.stringify(response.data, null, 2));
+      console.log('📚 Sources:', JSON.stringify(response.data.sources, null, 2));
+      
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',

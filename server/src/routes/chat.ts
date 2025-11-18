@@ -180,14 +180,18 @@ router.post('/', async (req: Request, res: Response) => {
       });
     }
 
+    const sourcesResponse = chunks?.map((c: any) => ({
+      documentId: c.id || c.document_id,
+      content: c.content ? c.content.substring(0, 200) + '...' : '',
+      similarity: c.score || c.similarity || c.combined_score || 0
+    })) || [];
+
+    console.log('📤 Sending sources to frontend:', JSON.stringify(sourcesResponse, null, 2));
+
     return res.json({
       success: true,
       message: assistantMessage,
-      sources: chunks?.map((c: any) => ({
-        documentId: c.id || c.document_id,
-        content: c.content ? c.content.substring(0, 200) + '...' : '',
-        similarity: c.score || c.similarity || c.combined_score || 0
-      })) || []
+      sources: sourcesResponse
     });
 
   } catch (error: any) {
