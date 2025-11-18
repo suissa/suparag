@@ -29,13 +29,13 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             {/* Aumentei para h-12 (aprox 48px). Se ainda achar pequeno, tente h-14 ou h-16 */}
             <img 
                 src="/logo-symbol.png" 
-                className="block h-12 w-auto object-contain group-hover:translate-x-12 group-hover:scale-[200%] transition duration-[1200]" 
+                className="block h-12 w-auto object-contain group-hover:translate-y-12 group-hover:scale-[170%] transition-all duration-700" 
                 alt="Símbolo"
             />
             
             <img 
                 src="/logo-text-full.png" 
-                className="block h-12 w-auto object-contain group-hover:opacity-[0.4] group-hover:scale-[0.5] group-hover:blur-2xl
+                className="block h-12 w-auto object-contain group-hover:opacity-[0.4] group-hover:scale-[0.5] group-hover:blur-2xl transition-all duration-300
                  transition" 
                 alt="Texto"
             />

@@ -68,3 +68,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body a {
+  color: #fff !important;
+}
