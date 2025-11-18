@@ -813,6 +813,7 @@ export const PromptInputBox = React.forwardRef((props: PromptInputBoxProps, ref:
 });
 PromptInputBox.displayName = "PromptInputBox";
 
+export { PromptInputBox };
 
 // import { PromptInputBox } from "@/components/ui/ai-prompt-box";
 

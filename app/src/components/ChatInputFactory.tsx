@@ -1,4 +1,4 @@
-import { PromptInputBox } from "@/components/ui/ai-prompt-box";
+import { PromptInputBox } from "./AIPromptBox";
 
 interface ChatInputFactoryProps {
   onSend: (message: string, files?: File[]) => void;

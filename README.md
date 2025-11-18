@@ -87,3 +87,6 @@ export const listCustomers = async () <Customer[] | []> =>
         .select('*')
         .order('created_at', { ascending: false });
 ```
+
+
+## CRM - Sugestões
