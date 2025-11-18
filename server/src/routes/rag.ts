@@ -4,7 +4,7 @@ import { supabase } from '../config/supabase';
 const router = Router();
 
 // GET /api/v1/rag/documents - Listar documentos RAG
-router.get('/documents', async (req: Request, res: Response) => {
+router.get('/documents', async (_req: Request, res: Response) => {
   try {
     const { data, error } = await supabase
       .from('documents')

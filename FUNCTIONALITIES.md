@@ -203,8 +203,8 @@ Esta referência mapeia todos os módulos sob `server/src`, descrevendo cada fun
 ### server/src/routes/rag.ts
 | Endpoint | O que faz | Tabelas/Procedures |
 | --- | --- | --- |
-| `GET/POST /api/v1/rag/documents` (listar/criar) | Manipula documentos específicos para o workflow RAG. | `rag_documents` |
-| `GET /api/v1/rag/documents/:id` | Busca documento completo. | `rag_documents` |
+| `GET/POST /api/v1/rag/documents` (listar/criar) | Manipula documentos específicos para o workflow RAG. | `documents` |
+| `GET /api/v1/rag/documents/:id` | Busca documento completo. | `documents` |
 | `POST /api/v1/rag/search/documents` | Chama `match_documents` para recuperar passagens relevantes. | `rpc match_documents` |
 | `POST /api/v1/rag/search/interactions` | Usa `match_interactions` para encontrar conversas semelhantes. | `rpc match_interactions` |
 

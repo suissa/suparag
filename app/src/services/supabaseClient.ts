@@ -56,6 +56,8 @@ export interface RagDocument {
   title: string;
   content: string;
   source?: string;
+  section?: string;
+  metadata?: Record<string, any>;
   embedding?: number[];
   created_at: string;
   updated_at: string;
