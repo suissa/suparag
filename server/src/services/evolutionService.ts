@@ -174,6 +174,94 @@ export class EvolutionService {
   }
 
   /**
+   * Vincula uma instância existente a um sessionId
+   * Útil quando a instância já existe na Evolution API mas não está no Map local
+   * 
+   * @param sessionId - ID da sessão do usuário
+   * @param instanceName - Nome da instância existente
+   */
+  linkInstanceToSession(sessionId: string, instanceName: string): void {
+    const instanceData: InstanceData = {
+      instanceName,
+      sessionId,
+      createdAt: new Date(),
+      status: 'linked'
+    };
+
+    this.instances.set(sessionId, instanceData);
+
+    this.logger.info('Instância vinculada ao sessionId', {
+      operation: 'linkInstanceToSession',
+      sessionId,
+      instanceName,
+      totalInstances: this.instances.size
+    });
+  }
+
+  /**
+   * Tenta encontrar uma instância conectada para um sessionId
+   * Verifica se há alguma instância com nome similar ao sessionId
+   * 
+   * @param sessionId - ID da sessão do usuário
+   * @returns instanceName se encontrado, undefined caso contrário
+   */
+  async findInstanceBySessionId(sessionId: string): Promise<string | undefined> {
+    const startTime = Date.now();
+    
+    try {
+      this.logger.info('Procurando instância para sessionId', {
+        operation: 'findInstanceBySessionId',
+        sessionId
+      });
+
+      // Tentar verificar status de possíveis nomes de instância
+      // Formato: SUPARAG_{timestamp}_{uuid}
+      // Vamos tentar com o prefixo do sessionId
+      const sessionPrefix = sessionId.split('-')[0];
+      const possibleInstanceName = `${env.evolution.instancePrefix}_${sessionPrefix}`;
+
+      try {
+        const status = await this.checkStatus(possibleInstanceName);
+        if (status.connected) {
+          const duration = Date.now() - startTime;
+          this.logger.info('Instância encontrada e conectada', {
+            operation: 'findInstanceBySessionId',
+            sessionId,
+            instanceName: possibleInstanceName,
+            duration: `${duration}ms`
+          });
+          return possibleInstanceName;
+        }
+      } catch (error) {
+        // Instância não existe com esse nome
+        this.logger.debug('Instância não encontrada com nome padrão', {
+          operation: 'findInstanceBySessionId',
+          sessionId,
+          triedName: possibleInstanceName
+        });
+      }
+
+      const duration = Date.now() - startTime;
+      this.logger.warn('Nenhuma instância encontrada para sessionId', {
+        operation: 'findInstanceBySessionId',
+        sessionId,
+        duration: `${duration}ms`
+      });
+
+      return undefined;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      this.logger.error('Erro ao procurar instância', {
+        operation: 'findInstanceBySessionId',
+        sessionId,
+        duration: `${duration}ms`
+      }, error as Error);
+      
+      return undefined;
+    }
+  }
+
+  /**
    * Verifica o status de conexão de uma instância WhatsApp
    * 
    * @param instanceName - Nome da instância a verificar

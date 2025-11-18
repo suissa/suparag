@@ -52,7 +52,35 @@ router.post('/connect', async (req: Request, res: Response) => {
     });
 
     // Verificar se já existe uma instância para este sessionId
-    const existingInstanceName = evolutionService.getInstanceName(sessionId);
+    let existingInstanceName = evolutionService.getInstanceName(sessionId);
+    
+    // Se não encontrou no Map local, tentar encontrar na API
+    if (!existingInstanceName) {
+      logger.info('Verificando se existe instância conectada na API', {
+        operation: 'POST /connect',
+        sessionId
+      });
+
+      try {
+        const foundInstanceName = await evolutionService.findInstanceBySessionId(sessionId);
+        
+        if (foundInstanceName) {
+          logger.info('Instância encontrada na API, vinculando ao sessionId', {
+            operation: 'POST /connect',
+            sessionId,
+            instanceName: foundInstanceName
+          });
+
+          evolutionService.linkInstanceToSession(sessionId, foundInstanceName);
+          existingInstanceName = foundInstanceName;
+        }
+      } catch (findError) {
+        logger.debug('Nenhuma instância encontrada na API', {
+          operation: 'POST /connect',
+          sessionId
+        });
+      }
+    }
     
     if (existingInstanceName) {
       logger.info('Instância já existe, verificando status', {
@@ -66,25 +94,32 @@ router.post('/connect', async (req: Request, res: Response) => {
         const status = await evolutionService.checkStatus(existingInstanceName);
         
         if (status.connected) {
-          logger.info('Instância já está conectada', {
+          logger.info('Instância já está conectada - PROIBIDO criar nova', {
             operation: 'POST /connect',
             sessionId,
             instanceName: existingInstanceName,
             status: status.status
           });
 
-          // Retornar que já está conectada (não retornar QR code)
+          // Retornar que já está conectada (não criar nova)
           return res.status(200).json({
             sessionId,
             instanceName: existingInstanceName,
             alreadyConnected: true,
-            message: 'Instância WhatsApp já está conectada',
+            message: 'Instância WhatsApp já está conectada. Use a instância existente.',
             status: status.status,
             timestamp: new Date().toISOString()
           });
+        } else {
+          logger.info('Instância existe mas não está conectada, pode criar nova', {
+            operation: 'POST /connect',
+            sessionId,
+            instanceName: existingInstanceName,
+            status: status.status
+          });
         }
       } catch (statusError) {
-        logger.warn('Erro ao verificar status da instância existente, criando nova', {
+        logger.warn('Erro ao verificar status da instância existente', {
           operation: 'POST /connect',
           sessionId,
           error: statusError
@@ -179,8 +214,39 @@ router.get('/connect/stream', async (req: Request, res: Response): Promise<void>
     sseManager.addConnection(sessionId, res);
 
     // Buscar instanceName do sessionId
-    const instanceName = evolutionService.getInstanceName(sessionId);
+    let instanceName = evolutionService.getInstanceName(sessionId);
 
+    // Se não encontrou no Map local, tentar encontrar na API
+    if (!instanceName) {
+      logger.info('Instância não encontrada localmente, procurando na API', {
+        operation: 'GET /connect/stream',
+        sessionId
+      });
+
+      try {
+        // Tentar encontrar instância conectada para este sessionId
+        const foundInstanceName = await evolutionService.findInstanceBySessionId(sessionId);
+        
+        if (foundInstanceName) {
+          logger.info('Instância encontrada na API, vinculando ao sessionId', {
+            operation: 'GET /connect/stream',
+            sessionId,
+            instanceName: foundInstanceName
+          });
+
+          // Vincular instância ao sessionId
+          evolutionService.linkInstanceToSession(sessionId, foundInstanceName);
+          instanceName = foundInstanceName;
+        }
+      } catch (syncError) {
+        logger.error('Erro ao procurar instância', {
+          operation: 'GET /connect/stream',
+          sessionId
+        }, syncError as Error);
+      }
+    }
+
+    // Se ainda não encontrou, enviar erro
     if (!instanceName) {
       logger.warn('Instância não encontrada para sessionId', {
         operation: 'GET /connect/stream',
@@ -422,8 +488,39 @@ router.get('/status', async (req: Request, res: Response) => {
     });
 
     // Buscar instanceName do sessionId
-    const instanceName = evolutionService.getInstanceName(sessionId);
+    let instanceName = evolutionService.getInstanceName(sessionId);
 
+    // Se não encontrou no Map local, tentar encontrar na API
+    if (!instanceName) {
+      logger.info('Instância não encontrada localmente, procurando na API', {
+        operation: 'GET /status',
+        sessionId
+      });
+
+      try {
+        // Tentar encontrar instância conectada para este sessionId
+        const foundInstanceName = await evolutionService.findInstanceBySessionId(sessionId);
+        
+        if (foundInstanceName) {
+          logger.info('Instância encontrada na API, vinculando ao sessionId', {
+            operation: 'GET /status',
+            sessionId,
+            instanceName: foundInstanceName
+          });
+
+          // Vincular instância ao sessionId
+          evolutionService.linkInstanceToSession(sessionId, foundInstanceName);
+          instanceName = foundInstanceName;
+        }
+      } catch (syncError) {
+        logger.error('Erro ao procurar instância', {
+          operation: 'GET /status',
+          sessionId
+        }, syncError as Error);
+      }
+    }
+
+    // Se ainda não encontrou, retornar erro
     if (!instanceName) {
       logger.warn('Instância não encontrada para sessionId', {
         operation: 'GET /status',
