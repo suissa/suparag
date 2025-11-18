@@ -158,9 +158,9 @@ export default function ChatPanel() {
                       </p>
                       {msg.sources.map((source, idx) => (
                         <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 mb-1.5 pl-2 border-l-2 border-primary/30">
-                          <span className="font-medium">Doc {idx + 1}:</span> {source.documentId.substring(0, 12)}...
+                          <span className="font-medium">Doc {idx + 1}:</span> {source.documentId ? source.documentId.substring(0, 12) : 'N/A'}...
                           <span className="ml-2 text-primary font-semibold">
-                            {(source.similarity * 100).toFixed(1)}% relevance
+                            {source.similarity ? (source.similarity * 100).toFixed(1) : 'N/A'}% relevance
                           </span>
                         </div>
                       ))}
