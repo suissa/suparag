@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { MessageSquare, Plus, Send, Loader2, AlertCircle } from 'lucide-react';
 import { chatAPI } from '../services/api';
+import { useChatbotFactory } from '../lib/chatbotFactory';
+import chatbotConfig from '../config/chatbot.config.json';
 
 interface Message {
   id: string;
@@ -19,8 +21,13 @@ export default function ChatPanel() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isAnimated, setIsAnimated] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Usar o ChatbotFactory para processar a configuração
+  const chatbotStyle = useChatbotFactory(chatbotConfig as any);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -29,6 +36,16 @@ export default function ChatPanel() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Animação de entrada quando o componente monta
+  useEffect(() => {
+    if (chatbotStyle.animationEvent === 'page.load.full') {
+      // Aguardar um frame para garantir que o DOM está pronto
+      requestAnimationFrame(() => {
+        setIsAnimated(true);
+      });
+    }
+  }, [chatbotStyle.animationEvent]);
 
   const handleSend = async () => {
     if (!input.trim() || loading) return;
@@ -78,7 +95,12 @@ export default function ChatPanel() {
   };
 
   return (
-    <div className="flex h-full flex-col bg-background-light dark:bg-background-dark">
+    <div 
+      className={`flex flex-col bg-background-light dark:bg-background-dark ${chatbotStyle.containerClasses}`}
+      style={isAnimated ? chatbotStyle.finalStyle : chatbotStyle.initialStyle}
+      onFocus={() => setIsFocused(true)}
+      onBlur={() => setIsFocused(false)}
+    >
       {/* Header */}
       <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#325567] p-4">
         <h2 className="text-xl font-bold text-gray-900 dark:text-white">Chat Assistant</h2>
@@ -110,7 +132,11 @@ export default function ChatPanel() {
             {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex ${msg.role === 'user' ? 'justify-end' : 'items-start'} gap-3`}
+                className={`flex ${
+                  msg.role === 'user' 
+                    ? chatbotStyle.userMessageClasses 
+                    : chatbotStyle.botMessageClasses
+                } gap-3 items-start`}
               >
                 {msg.role === 'assistant' && (
                   <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">

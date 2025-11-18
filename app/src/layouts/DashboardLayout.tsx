@@ -35,7 +35,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             
             <img 
                 src="/logo-text-full.png" 
-                className="block h-12 w-auto object-contain group-hover:opacity-0 group-hover:scale-0 group-hover:filter
+                className="block h-12 w-auto object-contain group-hover:opacity-[0.4] group-hover:scale-[0.5] group-hover:blur-2xl
                  transition" 
                 alt="Texto"
             />

@@ -1,0 +1,43 @@
+{
+  "name": "chatbot",
+  "bot": {
+    "side": "left"
+  }, 
+  "user": {
+    "side": "left"
+  },
+  "visual": {
+    "theme": "equal",
+    "size": {
+      "w": "100vw",
+      "md:max-x": "800px",
+      "y": "100vh",
+      "md:max-y": "600px"
+    },
+    "positioln": "center.a,ll"
+  },
+  "behavior": {
+    "in": {
+      "event": "page.load.full",
+      "animation": {
+        "start": {
+          "opacity": 0,
+          "scale": 0
+        },
+        "end": {
+          "opacity": 0.8,
+          "scale": 1.2
+        },
+        "duration": 2000,
+        "easing": "easeIn"
+      }
+    },
+    "events": {
+      "focus": {
+        "scale": 1,
+        "opacity": 1,
+        "duration": 1
+      }
+    }
+  }
+}
