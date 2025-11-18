@@ -67,10 +67,14 @@ PROBLEMA: Nunca tinha usado o Supabase nem o pgvector diretamente, apenas via Lo
 - PROBLEMA: ele comentava que o banco retornava um valor mas a API outra, até ele falar que podia esta r em cache, ai me liguei que a API estava sem hot-reaload
 - SUGESTÃO: mesmo com hot-reload, definir que ele deve reiniciar o servidor para confirmar a mudança
 
+- PROBLEMA: pedir coisas simples de frontend aproveitando que ele está usando o MCP do Playwright
+- SUGESTÃO: corrigir na mão com algumas classes do Tailwind que é bem mais rápido, porpem o mais correto é eu finalizar toda a interface com dados mockados para deixar tudo do jeito certo e só trabalhar com os dados e iknterações.
+
 ## Melhorias necessárias
 
 - rerank
 - rerank human-in-the-loop
+- métricas do RAG
 
 ## Mudança no meu Vibe Coding
 

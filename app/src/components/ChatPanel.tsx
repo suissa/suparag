@@ -109,7 +109,7 @@ export default function ChatPanel() {
 
   return (
     <div 
-      className={`flex flex-col bg-background-light dark:bg-background-dark ${chatbotStyle.containerClasses}`}
+      className={`h-full flex flex-col bg-background-light dark:bg-background-dark ${chatbotStyle.containerClasses}`}
       style={isAnimated ? chatbotStyle.finalStyle : chatbotStyle.initialStyle}
       onFocus={() => setIsFocused(true)}
       onBlur={() => setIsFocused(false)}
