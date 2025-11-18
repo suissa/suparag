@@ -193,6 +193,15 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     const sourcesResponse = chunks?.map((c: any) => {
+      // Log detalhado do chunk
+      console.log('📦 Chunk completo:', JSON.stringify({
+        id: c.id?.substring(0, 8),
+        score: c.score,
+        similarity: c.similarity,
+        combined_score: c.combined_score,
+        source: c.source
+      }));
+      
       // Converter para número e validar
       const parseScore = (value: any): number => {
         const num = Number(value);
@@ -200,6 +209,8 @@ router.post('/', async (req: Request, res: Response) => {
       };
       
       const similarity = parseScore(c.score) || parseScore(c.similarity) || parseScore(c.combined_score) || 0;
+      
+      console.log(`✅ Similarity final: ${similarity}`);
       
       return {
         documentId: c.id || c.document_id,
