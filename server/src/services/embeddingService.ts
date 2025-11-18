@@ -4,17 +4,42 @@ import { env } from '../config/env';
  * Serviço para gerar embeddings usando OpenRouter API
  */
 export class EmbeddingService {
-  private apiKey: string | undefined;
   private apiUrl: string;
   private model: string;
 
   constructor() {
-    this.apiKey = env.openrouter.apiKey;
     this.apiUrl = 'https://openrouter.ai/api/v1/embeddings';
     this.model = 'openai/text-embedding-3-small'; // Modelo de embedding
     
     console.log('[EmbeddingService] Inicializado');
-    console.log(`[EmbeddingService] API Key do env: ${this.apiKey ? '✅ Encontrada' : '❌ Não encontrada'}`);
+  }
+
+  /**
+   * Busca API key do env
+   */
+  private getApiKeyFromEnv(): string | undefined {
+    try {
+      // Tentar pegar diretamente do process.env primeiro
+      const apiKey = process.env.OPENROUTER_API_KEY;
+      
+      if (apiKey) {
+        console.log('[EmbeddingService] ✅ API key encontrada no env');
+        return apiKey;
+      }
+
+      // Tentar pegar do objeto env (se já foi carregado)
+      const { env } = require('../config/env');
+      if (env?.openRouter?.apiKey) {
+        console.log('[EmbeddingService] ✅ API key encontrada no env.openRouter');
+        return env.openRouter.apiKey;
+      }
+
+      console.warn('[EmbeddingService] ❌ API key não encontrada no env');
+      return undefined;
+    } catch (error) {
+      console.error('[EmbeddingService] Erro ao buscar API key do env:', error);
+      return undefined;
+    }
   }
 
   /**
@@ -52,7 +77,7 @@ export class EmbeddingService {
       console.log(`[EmbeddingService] Gerando embedding para texto de ${text.length} caracteres`);
 
       // Tentar pegar API key do env primeiro, depois do banco
-      let apiKey = this.apiKey;
+      let apiKey = this.getApiKeyFromEnv();
       
       if (!apiKey) {
         console.log('[EmbeddingService] API key não encontrada no env, buscando no banco...');
