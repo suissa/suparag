@@ -1,6 +1,5 @@
 import request from 'supertest';
 import app from '../index';
-import { mcp_supabase_execute_sql } from '../../../mcp-tools';
 
 describe('Metrics Validation', () => {
   it('should return correct metrics from API', async () => {
