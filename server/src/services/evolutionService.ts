@@ -347,7 +347,8 @@ export class EvolutionService {
 
       // Procurar primeira instância conectada não vinculada
       for (const instance of allInstances) {
-        const instanceName = instance.instance?.instanceName || instance.instanceName;
+        // A Evolution API retorna: { name, connectionStatus, ... }
+        const instanceName = instance.name || instance.instance?.instanceName || instance.instanceName;
         
         if (!instanceName) continue;
 
@@ -361,8 +362,9 @@ export class EvolutionService {
         }
 
         // Verificar se está conectada
-        const state = instance.instance?.state || instance.state;
-        const isConnected = state === 'open' || state === 'OPEN';
+        // A Evolution API usa connectionStatus: "open" | "close"
+        const connectionStatus = instance.connectionStatus || instance.instance?.state || instance.state;
+        const isConnected = connectionStatus === 'open' || connectionStatus === 'OPEN';
 
         if (isConnected) {
           const duration = Date.now() - startTime;
@@ -370,7 +372,7 @@ export class EvolutionService {
             operation: 'findInstanceBySessionId',
             sessionId,
             instanceName,
-            state,
+            connectionStatus,
             duration: `${duration}ms`
           });
           return instanceName;
