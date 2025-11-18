@@ -99,10 +99,22 @@ router.post('/', async (req: Request, res: Response) => {
 
     // 4. Combinar e deduplicar resultados
     const allResults = [
-      ...(vectorialResult.data || []).map((d: any) => ({ ...d, source: 'vectorial', score: d.similarity })),
-      ...(hybridResult.data || []).map((d: any) => ({ ...d, source: 'hybrid', score: d.combined_score })),
-      ...(fuzzyResult.data || []).map((d: any) => ({ ...d, source: 'fuzzy', score: d.score })),
-      ...(ilikeResult.data || []).map((d: any) => ({ ...d, source: 'ilike', score: d.score || 1 }))
+      ...(vectorialResult.data || []).map((d: any) => {
+        console.log('🔵 Vectorial result:', { id: d.id?.substring(0, 8), similarity: d.similarity, type: typeof d.similarity });
+        return { ...d, source: 'vectorial', score: d.similarity };
+      }),
+      ...(hybridResult.data || []).map((d: any) => {
+        console.log('🟣 Hybrid result:', { id: d.id?.substring(0, 8), combined_score: d.combined_score, type: typeof d.combined_score });
+        return { ...d, source: 'hybrid', score: d.combined_score };
+      }),
+      ...(fuzzyResult.data || []).map((d: any) => {
+        console.log('🟡 Fuzzy result:', { id: d.id?.substring(0, 8), score: d.score, type: typeof d.score });
+        return { ...d, source: 'fuzzy', score: d.score };
+      }),
+      ...(ilikeResult.data || []).map((d: any) => {
+        console.log('🟢 ILIKE result:', { id: d.id?.substring(0, 8), score: d.score, type: typeof d.score });
+        return { ...d, source: 'ilike', score: d.score || 1 };
+      })
     ];
 
     // Deduplicar por ID e manter o melhor score
