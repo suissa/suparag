@@ -208,9 +208,10 @@ router.post('/', async (req: Request, res: Response) => {
         return Number.isFinite(num) ? num : 0;
       };
       
-      const similarity = parseScore(c.score) || parseScore(c.similarity) || parseScore(c.combined_score) || 0;
+      // Priorizar similarity (da busca vetorial), depois score (já normalizado)
+      const similarity = parseScore(c.similarity) || parseScore(c.score) || parseScore(c.combined_score) || 0;
       
-      console.log(`✅ Similarity final: ${similarity}`);
+      console.log(`✅ Similarity final: ${similarity} (source: ${c.source})`);
       
       return {
         documentId: c.id || c.document_id,
