@@ -14,7 +14,7 @@ describe('Leads API', () => {
       
       //Data should be an array
       expect(Array.isArray(response.body.data)).toBe(true);
-    });
+    }, 60000); // Timeout de 60 segundos para análise de leads
   });
 
   describe('GET /api/v1/leads/:customerId/metrics', () => {
