@@ -49,21 +49,80 @@ router.post('/', async (req: Request, res: Response) => {
     const embedding = await embeddingService.generateEmbedding(message);
     console.log(`✅ Embedding gerado: ${embedding.length} dimensões`);
 
-    // 3. Buscar contexto relevante usando busca HÍBRIDA (vetorial + full-text)
-    console.log('🔍 Buscando documentos relevantes (busca híbrida)...');
-    const { data: chunks, error: searchError } = await supabase
-      .rpc('search_documents_hybrid_simple', {
+    // 3. BUSCA MULTI-ESTRATÉGIA: Executar todas as 4 funções em paralelo
+    console.log('🔍 Executando busca multi-estratégia (4 métodos)...');
+    
+    const [
+      vectorialResult,
+      hybridResult,
+      fuzzyResult,
+      ilikeResult
+    ] = await Promise.all([
+      // 3.1. Busca vetorial pura (cosine similarity)
+      supabase.rpc('match_documents', {
+        query_embedding: embedding,
+        match_threshold: 0.5,
+        match_count: 5
+      }).then(r => ({ method: 'vectorial', ...r })),
+      
+      // 3.2. Busca híbrida (vetorial + trigram)
+      supabase.rpc('search_documents_hybrid_simple', {
         search_term: message,
         search_embedding: embedding,
         trigram_limit: 50,
         final_limit: 5
-      });
+      }).then(r => ({ method: 'hybrid', ...r })),
+      
+      // 3.3. Busca fuzzy (trigram)
+      supabase.rpc('search_documents_fuzzy', {
+        search_term: message
+      }).then(r => ({ method: 'fuzzy', ...r })),
+      
+      // 3.4. Busca ILIKE (pattern matching)
+      supabase.rpc('search_documents_ilike', {
+        search_term: message
+      }).then(r => ({ method: 'ilike', ...r }))
+    ]);
 
-    if (searchError) {
-      console.error('Erro na busca semântica:', searchError);
-    }
+    // Log dos resultados de cada método
+    console.log(`📊 Resultados da busca multi-estratégia:`);
+    console.log(`  - Vetorial: ${vectorialResult.data?.length || 0} docs`);
+    console.log(`  - Híbrida: ${hybridResult.data?.length || 0} docs`);
+    console.log(`  - Fuzzy: ${fuzzyResult.data?.length || 0} docs`);
+    console.log(`  - ILIKE: ${ilikeResult.data?.length || 0} docs`);
 
-    console.log(`📊 Busca retornou ${chunks?.length || 0} chunks relevantes`);
+    // Verificar erros
+    if (vectorialResult.error) console.error('❌ Erro busca vetorial:', vectorialResult.error);
+    if (hybridResult.error) console.error('❌ Erro busca híbrida:', hybridResult.error);
+    if (fuzzyResult.error) console.error('❌ Erro busca fuzzy:', fuzzyResult.error);
+    if (ilikeResult.error) console.error('❌ Erro busca ILIKE:', ilikeResult.error);
+
+    // 4. Combinar e deduplicar resultados
+    const allResults = [
+      ...(vectorialResult.data || []).map((d: any) => ({ ...d, source: 'vectorial', score: d.similarity })),
+      ...(hybridResult.data || []).map((d: any) => ({ ...d, source: 'hybrid', score: d.combined_score })),
+      ...(fuzzyResult.data || []).map((d: any) => ({ ...d, source: 'fuzzy', score: d.score })),
+      ...(ilikeResult.data || []).map((d: any) => ({ ...d, source: 'ilike', score: d.score || 1 }))
+    ];
+
+    // Deduplicar por ID e manter o melhor score
+    const uniqueResults = new Map<string, any>();
+    allResults.forEach(doc => {
+      const existing = uniqueResults.get(doc.id);
+      if (!existing || doc.score > existing.score) {
+        uniqueResults.set(doc.id, doc);
+      }
+    });
+
+    // Ordenar por score e pegar top 5
+    const chunks = Array.from(uniqueResults.values())
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
+
+    console.log(`✅ Total após deduplicação: ${chunks.length} documentos únicos`);
+    chunks.forEach((doc, i) => {
+      console.log(`  ${i + 1}. [${doc.source}] Score: ${doc.score?.toFixed(3)} - ${doc.title?.substring(0, 50)}...`);
+    });
 
     // 4. Construir contexto
     let context = '';
