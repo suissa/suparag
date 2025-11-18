@@ -47,7 +47,7 @@ router.post('/', async (req: Request, res: Response) => {
 
     // 3. Buscar contexto relevante usando busca semântica
     const { data: chunks, error: searchError } = await supabase
-      .rpc('match_chunks', {
+      .rpc('match_documents', {
         query_embedding: embedding,
         match_threshold: 0.5,
         match_count: 5

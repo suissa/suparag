@@ -206,7 +206,7 @@ export class MCPService {
       
       // Search for relevant chunks using the embedding
       const { data: chunks, error } = await supabase
-        .rpc('match_chunks', {
+        .rpc('match_documents', {
           query_embedding: dummyEmbedding,
           match_threshold: 0.5,
           match_count: 5

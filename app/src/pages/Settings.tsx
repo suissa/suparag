@@ -9,7 +9,8 @@ interface SettingsState {
 }
 
 const AVAILABLE_MODELS = [
-  { id: 'openai/gpt-4-turbo', name: 'GPT-4 Turbo', provider: 'OpenAI' },
+  { id: 'google/gemini-2.5-flash-lite-preview-09-2025', name: 'Gemini 2.5 Flash Lite Preview', provider: 'Google' },
+  { id: 'google/gemini-pro', name: 'Gemini Pro', provider: 'Google' },
   { id: 'openai/gpt-4', name: 'GPT-4', provider: 'OpenAI' },
   { id: 'openai/gpt-3.5-turbo', name: 'GPT-3.5 Turbo', provider: 'OpenAI' },
   { id: 'anthropic/claude-3-opus', name: 'Claude 3 Opus', provider: 'Anthropic' },
@@ -17,7 +18,6 @@ const AVAILABLE_MODELS = [
   { id: 'anthropic/claude-3-haiku', name: 'Claude 3 Haiku', provider: 'Anthropic' },
   { id: 'meta-llama/llama-3-70b-instruct', name: 'Llama 3 70B', provider: 'Meta' },
   { id: 'meta-llama/llama-3-8b-instruct', name: 'Llama 3 8B', provider: 'Meta' },
-  { id: 'google/gemini-pro', name: 'Gemini Pro', provider: 'Google' },
   { id: 'mistralai/mistral-large', name: 'Mistral Large', provider: 'Mistral AI' },
 ];
 
