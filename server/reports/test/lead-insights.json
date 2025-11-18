@@ -1,13 +1,24 @@
 {
-  "generatedAt": "2025-11-17T17:58:23.889Z",
+  "generatedAt": "2025-11-18T00:42:02.702Z",
   "summary": {
-    "totalLeads": 36,
+    "totalLeads": 54,
     "hotLeads": 0,
-    "activeLeads": 30,
-    "coldLeads": 0,
-    "avgConversionProbability": 11.805555555555555
+    "activeLeads": 34,
+    "coldLeads": 6,
+    "avgConversionProbability": 15.462962962962964
   },
   "leads": [
+    {
+      "customerId": "666ba701-a75b-4f61-97b1-4e2577fa3261",
+      "status": "frio",
+      "totalMessages": 12,
+      "avgSentiment": 0.33,
+      "avgResponseTimeSec": 15200,
+      "conversationDurationMin": 5622,
+      "leadActivityScore": 64,
+      "lastInteractionDays": 34.5,
+      "conversionProbability": 45
+    },
     {
       "customerId": "64641eba-a321-4807-ae6b-ac86013b2fcc",
       "status": "ativo",
@@ -15,20 +26,97 @@
       "avgSentiment": 0.38,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 48,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 47,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 40
+    },
+    {
+      "customerId": "a530b5e4-5e66-4c43-8482-296b911d9ec5",
+      "status": "novo",
+      "totalMessages": 1,
+      "avgSentiment": 0.5,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 44,
+      "lastInteractionDays": 0.1,
+      "conversionProbability": 40
+    },
+    {
+      "customerId": "f700dddf-8e98-4b16-8179-bcae0da65983",
+      "status": "novo",
+      "totalMessages": 1,
+      "avgSentiment": 0.5,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 44,
+      "lastInteractionDays": 0.1,
+      "conversionProbability": 40
+    },
+    {
+      "customerId": "60806ebf-5886-450d-94d4-dc2f89755c70",
+      "status": "novo",
+      "totalMessages": 1,
+      "avgSentiment": 0.5,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 45,
+      "lastInteractionDays": -0.1,
+      "conversionProbability": 40
+    },
+    {
+      "customerId": "c40a96aa-6f04-410c-b77d-8fa28a067994",
+      "status": "frio",
+      "totalMessages": 8,
+      "avgSentiment": 0.63,
+      "avgResponseTimeSec": 10877,
+      "conversationDurationMin": 1269,
+      "leadActivityScore": 60,
+      "lastInteractionDays": 45.5,
+      "conversionProbability": 35
+    },
+    {
+      "customerId": "afa5d247-0b55-46b7-9d18-a47f72d923d7",
+      "status": "ativo",
+      "totalMessages": 8,
+      "avgSentiment": 0.38,
+      "avgResponseTimeSec": 5871,
+      "conversationDurationMin": 685,
+      "leadActivityScore": 48,
+      "lastInteractionDays": 24.1,
+      "conversionProbability": 35
+    },
+    {
+      "customerId": "b33a4225-6d10-481a-a737-05ca4e98e1cb",
+      "status": "frio",
+      "totalMessages": 8,
+      "avgSentiment": 0.38,
+      "avgResponseTimeSec": 11717,
+      "conversationDurationMin": 1367,
+      "leadActivityScore": 57,
+      "lastInteractionDays": 32.5,
+      "conversionProbability": 35
+    },
+    {
+      "customerId": "9b7d4098-02bf-4f42-9184-b3eea53eb36f",
+      "status": "frio",
+      "totalMessages": 10,
+      "avgSentiment": 0.5,
+      "avgResponseTimeSec": 11443,
+      "conversationDurationMin": 4760,
+      "leadActivityScore": 63,
+      "lastInteractionDays": 40.2,
+      "conversionProbability": 35
     },
     {
       "customerId": "0c544c39-3d20-468d-81d1-e0aec0154bb7",
       "status": "ativo",
-      "totalMessages": 6,
-      "avgSentiment": -0.03,
-      "avgResponseTimeSec": 0,
-      "conversationDurationMin": 0,
-      "leadActivityScore": 42,
-      "lastInteractionDays": 5,
-      "conversionProbability": 15
+      "totalMessages": 9,
+      "avgSentiment": -0.02,
+      "avgResponseTimeSec": 217,
+      "conversationDurationMin": 7442,
+      "leadActivityScore": 73,
+      "lastInteractionDays": 0.1,
+      "conversionProbability": 25
     },
     {
       "customerId": "2dffdb0f-dd0a-4a94-a714-19587cdaecf4",
@@ -37,8 +125,8 @@
       "avgSentiment": 0.24,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 48,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 47,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -49,7 +137,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 49,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -60,7 +148,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 47,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -70,8 +158,8 @@
       "avgSentiment": 0.03,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 51,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 50,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -82,7 +170,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 40,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -93,7 +181,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 41,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -103,8 +191,8 @@
       "avgSentiment": -0.09,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 45,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 44,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -115,7 +203,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 49,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -125,8 +213,8 @@
       "avgSentiment": 0.03,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 51,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 50,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -137,7 +225,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 46,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -147,8 +235,8 @@
       "avgSentiment": -0.02,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 46,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 45,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -159,7 +247,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 47,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -169,8 +257,8 @@
       "avgSentiment": 0.03,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 51,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 50,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -180,8 +268,8 @@
       "avgSentiment": -0.23,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 39,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 38,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -192,7 +280,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 43,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -202,8 +290,8 @@
       "avgSentiment": 0.11,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 48,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 47,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -214,7 +302,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 50,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -224,8 +312,8 @@
       "avgSentiment": 0.03,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 51,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 50,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -236,7 +324,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 45,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -247,7 +335,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 42,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -258,7 +346,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 45,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -269,7 +357,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 47,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
     },
     {
@@ -279,9 +367,97 @@
       "avgSentiment": 0.03,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 51,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 50,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 15
+    },
+    {
+      "customerId": "5cb3e9c0-30b8-4f31-b329-656ae665b8e7",
+      "status": "novo",
+      "totalMessages": 1,
+      "avgSentiment": 0,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 37,
+      "lastInteractionDays": 0.1,
+      "conversionProbability": 15
+    },
+    {
+      "customerId": "a98945ca-b1d5-4209-aebc-ccf865fe3c17",
+      "status": "novo",
+      "totalMessages": 1,
+      "avgSentiment": 0,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 37,
+      "lastInteractionDays": 0.1,
+      "conversionProbability": 15
+    },
+    {
+      "customerId": "aa7e6788-a4ab-4187-9a6d-f5de3dc33f4a",
+      "status": "novo",
+      "totalMessages": 1,
+      "avgSentiment": 0,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 37,
+      "lastInteractionDays": -0.1,
+      "conversionProbability": 15
+    },
+    {
+      "customerId": "8e6730fc-fb37-4440-b3bc-52db70d9ebb3",
+      "status": "ativo",
+      "totalMessages": 10,
+      "avgSentiment": 0.2,
+      "avgResponseTimeSec": 11467,
+      "conversationDurationMin": 1720,
+      "leadActivityScore": 58,
+      "lastInteractionDays": 25.3,
+      "conversionProbability": 10
+    },
+    {
+      "customerId": "aa85dd8e-9474-47eb-9790-28b7a7a9ac20",
+      "status": "ativo",
+      "totalMessages": 8,
+      "avgSentiment": 0.25,
+      "avgResponseTimeSec": 2486,
+      "conversationDurationMin": 290,
+      "leadActivityScore": 40,
+      "lastInteractionDays": 27.1,
+      "conversionProbability": 10
+    },
+    {
+      "customerId": "de1742b7-c9e6-4175-9df4-f390b0780d89",
+      "status": "ativo",
+      "totalMessages": 10,
+      "avgSentiment": 0.2,
+      "avgResponseTimeSec": 16400,
+      "conversationDurationMin": 2460,
+      "leadActivityScore": 58,
+      "lastInteractionDays": 27.5,
+      "conversionProbability": 10
+    },
+    {
+      "customerId": "33b9fec2-5364-4ace-a458-74e86f86b68f",
+      "status": "frio",
+      "totalMessages": 8,
+      "avgSentiment": 0.13,
+      "avgResponseTimeSec": 10689,
+      "conversationDurationMin": 1247,
+      "leadActivityScore": 53,
+      "lastInteractionDays": 30.4,
+      "conversionProbability": 10
+    },
+    {
+      "customerId": "3d99bfd5-ac63-4ba4-863a-a84b9a03be91",
+      "status": "frio",
+      "totalMessages": 6,
+      "avgSentiment": 0.17,
+      "avgResponseTimeSec": 1404,
+      "conversationDurationMin": 117,
+      "leadActivityScore": 31,
+      "lastInteractionDays": 39.2,
+      "conversionProbability": 10
     },
     {
       "customerId": "f27b2cd6-7aa8-4ecf-8910-060f867e2a2e",
@@ -290,8 +466,8 @@
       "avgSentiment": 0.11,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 42,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 41,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 5
     },
     {
@@ -302,7 +478,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 42,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 5
     },
     {
@@ -312,8 +488,8 @@
       "avgSentiment": -0.36,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 35,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 34,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 5
     },
     {
@@ -324,7 +500,7 @@
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
       "leadActivityScore": 44,
-      "lastInteractionDays": 5,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 5
     },
     {
@@ -334,8 +510,8 @@
       "avgSentiment": -0.22,
       "avgResponseTimeSec": 0,
       "conversationDurationMin": 0,
-      "leadActivityScore": 37,
-      "lastInteractionDays": 5,
+      "leadActivityScore": 36,
+      "lastInteractionDays": 5.3,
       "conversionProbability": 5
     },
     {
@@ -395,6 +571,28 @@
     },
     {
       "customerId": "902fc98d-6598-4285-ad39-7f4079423c6b",
+      "status": "novo",
+      "totalMessages": 0,
+      "avgSentiment": 0,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 0,
+      "lastInteractionDays": 999,
+      "conversionProbability": 0
+    },
+    {
+      "customerId": "336f108e-bbbc-465c-bfce-785607eadf2b",
+      "status": "novo",
+      "totalMessages": 0,
+      "avgSentiment": 0,
+      "avgResponseTimeSec": 0,
+      "conversationDurationMin": 0,
+      "leadActivityScore": 0,
+      "lastInteractionDays": 999,
+      "conversionProbability": 0
+    },
+    {
+      "customerId": "852fe5d8-97aa-41af-9941-dffd3a35805e",
       "status": "novo",
       "totalMessages": 0,
       "avgSentiment": 0,

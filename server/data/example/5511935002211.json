@@ -1,0 +1,46 @@
+{
+  "phone": "5511935002211",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Oi! Aqui é o André da ONG Vozes Urbanas. Procuramos um atendimento mais humano para doadores.",
+      "timestamp": "2025-10-17T14:55:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Oi André, conseguimos configurar personas específicas e medir sentimento em tempo real.",
+      "timestamp": "2025-10-17T15:00:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Vocês integram com Pix e registram recibos automaticamente?",
+      "timestamp": "2025-10-17T15:08:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Sim! Validamos o comprovante e enviamos o recibo em PDF com assinatura digital.",
+      "timestamp": "2025-10-17T15:15:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Temos só 1 produto para rodar esse fim de ano. Ele comporta 800 mensagens/mês?",
+      "timestamp": "2025-10-18T11:05:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "O plano Solidário cobre 1 fluxo completo com até 1.200 mensagens e métricas de recorrência.",
+      "timestamp": "2025-10-18T11:12:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Fechamos via Pix agora pouco. Confirmação cai ainda hoje?",
+      "timestamp": "2025-10-18T11:40:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Pagamento identificado e 1 produto ativado. Já vinculei o texto institucional fornecido.",
+      "timestamp": "2025-10-18T11:42:00Z"
+    }
+  ]
+}
+

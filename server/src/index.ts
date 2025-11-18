@@ -17,6 +17,8 @@ import evaluationsRouter from './routes/evaluations';
 import semanticFlagsRouter from './routes/semantic-flags';
 import audioRouter from './routes/audio';
 import chartsRouter from './routes/charts';
+import leadsRouter from './routes/leads';
+import mcpRouter from './routes/mcp';
 
 // Validar variáveis de ambiente no startup
 try {
@@ -58,6 +60,8 @@ app.use('/api/v1/rag', ragRouter);
 app.use('/api/v1/metrics', metricsRouter);
 app.use('/api/v1/evaluations', evaluationsRouter);
 app.use('/api/v1/semantic-flags', semanticFlagsRouter);
+app.use('/api/v1/leads', leadsRouter);
+app.use('/api/v1/mcp', mcpRouter);
 app.use('/api/audio', audioRouter);
 app.use('/api/charts', chartsRouter);
 
@@ -89,6 +93,8 @@ if (process.env.NODE_ENV !== 'test') {
     console.log(`📊 Metrics API: http://localhost:${PORT}/api/v1/metrics`);
     console.log(`📝 Evaluations API: http://localhost:${PORT}/api/v1/evaluations`);
     console.log(`🚩 Semantic Flags API: http://localhost:${PORT}/api/v1/semantic-flags`);
+    console.log(`👥 Leads API: http://localhost:${PORT}/api/v1/leads`);
+    console.log(`🎛️  MCP API: http://localhost:${PORT}/api/v1/mcp`);
     console.log(`🎵 Audio API: http://localhost:${PORT}/api/audio`);
     console.log(`📊 Charts API: http://localhost:${PORT}/api/charts`);
   });

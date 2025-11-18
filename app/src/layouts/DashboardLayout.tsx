@@ -25,15 +25,20 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="flex min-h-screen bg-[#101c22]">
       <aside className="w-64 flex-shrink-0 bg-[#111c22] p-4 flex flex-col justify-between h-screen sticky top-0">
         <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-3 px-2">
-            <div className="bg-primary rounded-full size-10 flex items-center justify-center">
-              <span className="material-symbols-outlined text-white">description</span>
-            </div>
-            <div className="flex flex-col">
-              <h1 className="text-white text-base font-medium leading-normal">SUPARAG CRM</h1>
-              <p className="text-[#92b7c9] text-sm font-normal leading-normal">RAG + CRM</p>
-            </div>
-          </div>
+          <div className="group flex items-center justify-start gap-2 px-2 w-full h-[100px] overflow-hidden">
+            {/* Aumentei para h-12 (aprox 48px). Se ainda achar pequeno, tente h-14 ou h-16 */}
+            <img 
+                src="/logo-symbol.png" 
+                className="h-12 w-auto object-contain group-hover:translate-x-12 group-hover:scale-[200%] transition duration-[1200]" 
+                alt="Símbolo"
+            />
+            
+            <img 
+                src="/logo-text.png" 
+                className="h-12 w-auto object-contain group-hover:opacity-0 group-hover:scale-0 transition" 
+                alt="Texto"
+            />
+        </div>
           <nav className="flex flex-col gap-2">
             {navItems.map((item) => {
               const active = item.exact 

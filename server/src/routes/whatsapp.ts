@@ -608,5 +608,146 @@ router.delete('/disconnect', async (req: Request, res: Response) => {
   }
 });
 
+/**
+ * POST /api/v1/whatsapp/import
+ * 
+ * Importa contatos e mensagens do WhatsApp após conexão bem-sucedida
+ * 
+ * Body:
+ *   - sessionId: string (obrigatório) - ID da sessão
+ * 
+ * Response:
+ *   - 200: { success: true, message: string, timestamp: string }
+ *   - 400: { error: string, message: string }
+ *   - 404: { error: string, message: string }
+ *   - 500: { error: string, message: string }
+ */
+router.post('/import', async (req: Request, res: Response) => {
+  const startTime = Date.now();
+  
+  try {
+    // Extrair sessionId do body
+    const { sessionId } = req.body;
+
+    if (!sessionId) {
+      logger.warn('Tentativa de importação sem sessionId', {
+        operation: 'POST /import',
+        ip: req.ip
+      });
+      
+      return res.status(400).json({
+        error: 'MISSING_SESSION_ID',
+        message: 'sessionId é obrigatório no body da requisição',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    logger.info('POST /import - Iniciando importação de contatos e mensagens', {
+      operation: 'POST /import',
+      sessionId,
+      ip: req.ip
+    });
+
+    // Buscar instanceName do sessionId
+    const instanceName = evolutionService.getInstanceName(sessionId);
+
+    if (!instanceName) {
+      logger.warn('Instância não encontrada para sessionId', {
+        operation: 'POST /import',
+        sessionId
+      });
+      
+      return res.status(404).json({
+        error: 'INSTANCE_NOT_FOUND',
+        message: 'Instância não encontrada para este sessionId',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Verificar se a instância está conectada
+    const status = await evolutionService.checkStatus(instanceName);
+    
+    if (!status.connected) {
+      logger.warn('Instância não está conectada para importação', {
+        operation: 'POST /import',
+        sessionId,
+        instanceName,
+        status: status.status
+      });
+      
+      return res.status(400).json({
+        error: 'NOT_CONNECTED',
+        message: 'Instância WhatsApp não está conectada. Conecte primeiro.',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Importar contatos
+    logger.info('Iniciando importação de contatos', {
+      operation: 'POST /import.contacts',
+      sessionId,
+      instanceName
+    });
+    
+    const contacts = await evolutionService.importContacts(instanceName);
+    
+    logger.info('Contatos importados com sucesso', {
+      operation: 'POST /import.contacts',
+      sessionId,
+      instanceName,
+      contactsCount: contacts.length
+    });
+
+    // Importar mensagens
+    logger.info('Iniciando importação de mensagens', {
+      operation: 'POST /import.messages',
+      sessionId,
+      instanceName
+    });
+    
+    const messages = await evolutionService.importMessages(instanceName);
+    
+    logger.info('Mensagens importadas com sucesso', {
+      operation: 'POST /import.messages',
+      sessionId,
+      instanceName,
+      messagesCount: messages.length
+    });
+
+    const duration = Date.now() - startTime;
+    logger.info('Importação concluída com sucesso', {
+      operation: 'POST /import',
+      sessionId,
+      instanceName,
+      totalContacts: contacts.length,
+      totalMessages: messages.length,
+      duration: `${duration}ms`
+    });
+
+    // Retornar 200 com sucesso
+    return res.status(200).json({
+      success: true,
+      message: `Importação concluída: ${contacts.length} contatos e ${messages.length} mensagens importados`,
+      contactsCount: contacts.length,
+      messagesCount: messages.length,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error: any) {
+    const duration = Date.now() - startTime;
+    logger.error('Erro ao importar contatos e mensagens', {
+      operation: 'POST /import',
+      duration: `${duration}ms`,
+      ip: req.ip
+    }, error);
+
+    return res.status(500).json({
+      error: 'IMPORT_FAILED',
+      message: error.message || 'Falha ao importar contatos e mensagens',
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
 // Exportar router
 export default router;

@@ -1,0 +1,36 @@
+{
+  "phone": "5511967779900",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Oi, aqui é a Lívia da Clínica OdontoArte. Preciso responder pacientes que pedem orçamento depois das 22h.",
+      "timestamp": "2025-10-09T14:10:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Oi Lívia! Podemos treinar o assistente com tabela de procedimentos e enviar follow-up humanizado no horário comercial.",
+      "timestamp": "2025-10-09T14:12:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Quero 1 produto só para a unidade de Moema. Ele entende fotos de radiografia?",
+      "timestamp": "2025-10-09T14:20:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Interpretamos texto das legendas e guardamos os anexos no Supabase Storage com link seguro para o dentista.",
+      "timestamp": "2025-10-09T14:25:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Fechei o pagamento agora. Pode liberar 1 produto com limite de 1.500 mensagens?",
+      "timestamp": "2025-10-09T16:05:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Plano ativado! Em até 15 minutos o chatbot começa a responder no número da unidade de Moema.",
+      "timestamp": "2025-10-09T16:07:00Z"
+    }
+  ]
+}
+

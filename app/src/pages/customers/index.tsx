@@ -8,10 +8,13 @@ import { Input } from '../../components/Input';
 import { Modal } from '../../components/Modal';
 import { useCustomers, useCreateCustomer, useDeleteCustomer } from '../../hooks/useCustomers';
 import type { Customer } from '../../services/supabaseClient';
+import { OnboardingView } from '../../components/OnboardingView';
+import { useWhatsAppConnection } from '../../contexts/WhatsAppConnectionContext';
 
 export default function CustomersPage() {
   const navigate = useNavigate();
-  const { data: customers = [], isLoading } = useCustomers();
+  const { data: customers = [], isLoading, error } = useCustomers();
+  const { connect } = useWhatsAppConnection();
   const createCustomer = useCreateCustomer();
   const deleteCustomer = useDeleteCustomer();
   
@@ -24,6 +27,9 @@ export default function CustomersPage() {
     company: '',
     segment: '',
   });
+
+  // Determinar se deve mostrar onboarding (customers.length === 0 e não está carregando)
+  const shouldShowOnboarding = !isLoading && customers.length === 0;
 
   const filteredCustomers = customers.filter(customer =>
     customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -102,6 +108,32 @@ export default function CustomersPage() {
       ),
     },
   ];
+
+  // Renderizar OnboardingView quando não há contatos
+  if (shouldShowOnboarding) {
+    return (
+      <DashboardLayout>
+        <OnboardingView onConnect={connect} />
+      </DashboardLayout>
+    );
+  }
+
+  // Fallback para erro ao carregar customers
+  if (error) {
+    return (
+      <DashboardLayout>
+        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-4">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-white mb-4">Erro ao carregar clientes</h1>
+            <p className="text-white/70 mb-6">Ocorreu um erro ao carregar a lista de clientes.</p>
+            <Button onClick={() => window.location.reload()}>
+              Tentar Novamente
+            </Button>
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>

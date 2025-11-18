@@ -1,0 +1,46 @@
+{
+  "phone": "5511974501122",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Oi, sou a Camila e tenho uma cafeteria em Pinheiros. Quero automatizar os pedidos recorrentes pelo WhatsApp.",
+      "timestamp": "2025-10-02T12:03:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Oi Camila! Nosso orquestrador consegue treinar o cardápio e responder às dúvidas sobre estoque em segundos.",
+      "timestamp": "2025-10-02T12:05:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Preciso só de 1 licença do assistente para validar com a equipe ainda este mês.",
+      "timestamp": "2025-10-02T12:09:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Perfeito. O plano Starter cobre 1 produto com limite de 2 mil mensagens e custa R$ 149/mês.",
+      "timestamp": "2025-10-02T12:15:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Gostei. Pode mandar o link com o contrato resumido?",
+      "timestamp": "2025-10-02T12:21:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Enviei por e-mail o link de checkout e o guia de onboarding em vídeo.",
+      "timestamp": "2025-10-02T12:30:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Bom dia! Paguei agora cedo e confirmei 1 produto. Consegue validar pra mim?",
+      "timestamp": "2025-10-03T09:10:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Tudo certo, Camila. Recebemos o pagamento e ativamos 1 licença vinculada à sua conta.",
+      "timestamp": "2025-10-03T09:12:00Z"
+    }
+  ]
+}
+

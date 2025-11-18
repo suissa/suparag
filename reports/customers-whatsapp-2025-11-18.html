@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Resumo de Clientes WhatsApp - 18/11/2025</title>
+    <style>
+      :root {
+        color-scheme: light;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 24px;
+        background: #fff;
+        color: #111;
+      }
+      h1 {
+        font-size: 1.75rem;
+        margin-bottom: 0.25rem;
+      }
+      p {
+        color: #444;
+        line-height: 1.5;
+      }
+      .grid {
+        display: grid;
+        gap: 12px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        margin: 24px 0;
+      }
+      .card {
+        border: 1px solid #e1e1e1;
+        border-radius: 8px;
+        padding: 16px;
+        background: #fff;
+        box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+      }
+      .card span {
+        color: #6b7280;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .card strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 1.8rem;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 12px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      th, td {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f0f0f0;
+        text-align: left;
+      }
+      th {
+        background: #f9fafb;
+        font-weight: 600;
+        color: #374151;
+      }
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.85rem;
+        padding: 4px 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(37, 99, 235, 0.4);
+        color: #2563eb;
+        background: rgba(37, 99, 235, 0.08);
+      }
+      @media (max-width: 640px) {
+        table, thead, tbody, th, td, tr {
+          display: block;
+        }
+        th {
+          position: sticky;
+          top: 0;
+        }
+        tr {
+          margin-bottom: 12px;
+          border: 1px solid #f0f0f0;
+          border-radius: 8px;
+        }
+        td {
+          border-bottom: 1px solid #f5f5f5;
+        }
+        td::before {
+          content: attr(data-label);
+          font-weight: 600;
+          display: block;
+          margin-bottom: 4px;
+          color: #6b7280;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Resumo dos 10 Clientes Importados</h1>
+      <p>Análise manual dos diálogos adicionados em <strong>server/data/example</strong>, cada um concluindo a compra de 1 produto com embeddings reais ao importar.</p>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <span>Total de clientes</span>
+        <strong>10</strong>
+      </article>
+      <article class="card">
+        <span>Mensagens registradas</span>
+        <strong>88</strong>
+      </article>
+      <article class="card">
+        <span>Média de mensagens por cliente</span>
+        <strong>8,8</strong>
+      </article>
+      <article class="card">
+        <span>Tempo médio até compra</span>
+        <strong>32,6 h</strong>
+      </article>
+    </section>
+
+    <section>
+      <table>
+        <thead>
+          <tr>
+            <th>Telefone</th>
+            <th>Perfil</th>
+            <th>Mensagens</th>
+            <th>Duração até compra</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td data-label="Telefone">5511974501122</td>
+            <td data-label="Perfil">Cafeteria artesanal</td>
+            <td data-label="Mensagens">8</td>
+            <td data-label="Duração">21h 09m</td>
+            <td data-label="Status"><span class="tag">1 produto ativo</span></td>
+          </tr>
+          <tr>
+            <td data-label="Telefone">5511980023344</td>
+            <td data-label="Perfil">Logística urbana</td>
+            <td data-label="Mensagens">10</td>
+            <td data-label="Duração">79h 20m</td>
+            <td data-label="Status"><span class="tag">Hub SP fechado</span></td>
+          </tr>
+          <tr>
+            <td data-label="Telefone">5511967779900</td>
+            <td data-label="Perfil">Clínica odontológica</td>
+            <td data-label="Mensagens">6</td>
+            <td data-label="Duração">1h 57m</td>
+            <td data-label="Status"><span class="tag">Unidade Moema</span></td>
+          </tr>
+          <tr>
+            <td data-label="Telefone">5511956665544</td>
+            <td data-label="Perfil">Agência de marketing</td>
+            <td data-label="Mensagens">12</td>
+            <td data-label="Duração">93h 42m</td>
+            <td data-label="Status"><span class="tag">Conta EcoSolar</span></td>
+          </tr>
+          <tr>
+            <td data-label="Telefone">5511941238899</td>
+            <td data-label="Perfil">Arquitetura boutique</td>
+            <td data-label="Mensagens">8</td>
+            <td data-label="Duração">22h 47m</td>
+            <td data-label="Status"><span class="tag">Plano Boutique</span></td>
+          </tr>
+          <tr>
+            <td data-label="Telefone">5511935002211</td>
+            <td data-label="Perfil">ONG Vozes Urbanas</td>
+            <td data-label="Mensagens">8</td>
+            <td data-label="Duração">20h 47m</td>
+            <td data-label="Status"><span class="tag">Fluxo solidário</span></td>
+          </tr>
+          <tr>
+            <td data-label="Telefone">5511924100788</td>
+            <td data-label="Perfil">Moda &amp; varejo</td>
+            <td data-label="Mensagens">10</td>
+            <td data-label="Duração">41h 00m</td>
+            <td data-label="Status"><span class="tag">Catálogo feminino</span></td>
+          </tr>
+          <tr>
+            <td data-label="Telefone">5511913006677</td>
+            <td data-label="Perfil">Imobiliária</td>
+            <td data-label="Mensagens">8</td>
+            <td data-label="Duração">4h 50m</td>
+            <td data-label="Status"><span class="tag">Funil renda mínima</span></td>
+          </tr>
+          <tr>
+            <td data-label="Telefone">5511902205566</td>
+            <td data-label="Perfil">EdTech</td>
+            <td data-label="Mensagens">10</td>
+            <td data-label="Duração">28h 40m</td>
+            <td data-label="Status"><span class="tag">3 filiais SP</span></td>
+          </tr>
+          <tr>
+            <td data-label="Telefone">5511998704455</td>
+            <td data-label="Perfil">Operadora de viagens</td>
+            <td data-label="Mensagens">8</td>
+            <td data-label="Duração">11h 25m</td>
+            <td data-label="Status"><span class="tag">Roteiro híbrido</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </body>
+</html>
+

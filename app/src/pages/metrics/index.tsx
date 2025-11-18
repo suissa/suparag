@@ -1,11 +1,15 @@
 import { DashboardLayout } from '../../layouts/DashboardLayout';
 import { Card } from '../../components/Card';
 import { useMetrics } from '../../hooks/useMetrics';
+import { useLeadAnalysis } from '../../hooks/useLeads';
 import { motion } from 'framer-motion';
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from 'recharts';
 
 export default function MetricsPage() {
-  const { data: metrics, isLoading } = useMetrics();
+  const { data: metrics, isLoading: isMetricsLoading } = useMetrics();
+  const { data: leadAnalysis, isLoading: isLeadsLoading } = useLeadAnalysis();
+
+  const isLoading = isMetricsLoading || isLeadsLoading;
 
   if (isLoading) {
     return (
@@ -17,7 +21,7 @@ export default function MetricsPage() {
     );
   }
 
-  if (!metrics) {
+  if (!metrics || !leadAnalysis) {
     return (
       <DashboardLayout>
         <div className="text-center py-12 text-white/60">
@@ -38,6 +42,30 @@ export default function MetricsPage() {
     name: name.charAt(0).toUpperCase() + name.slice(1),
     value,
   }));
+
+  // Preparar dados para gráficos de leads
+  const statusDistribution = leadAnalysis.reduce((acc, lead) => {
+    acc[lead.status] = (acc[lead.status] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const statusDistributionData = Object.entries(statusDistribution).map(([name, value]) => ({
+    name: name === 'novo' ? 'Novo' : 
+          name === 'ativo' ? 'Ativo' : 
+          name === 'quente' ? 'Quente' : 
+          name === 'em_negociacao' ? 'Em Negociação' : 
+          name === 'convertido' ? 'Convertido' : 'Frio',
+    value,
+  }));
+
+  // Top 5 leads por probabilidade de conversão
+  const topLeads = [...leadAnalysis]
+    .sort((a, b) => b.conversionProbability - a.conversionProbability)
+    .slice(0, 5)
+    .map(lead => ({
+      name: `Lead ${lead.customerId.substring(0, 8)}`,
+      probability: lead.conversionProbability
+    }));
 
   const COLORS = ['#13a4ec', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
 
@@ -166,6 +194,87 @@ export default function MetricsPage() {
               </ResponsiveContainer>
             ) : (
               <p className="text-white/60 text-center py-12">Nenhuma interação registrada</p>
+            )}
+          </Card>
+        </div>
+
+        {/* Seção de Análise de Leads */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card title="Distribuição de Status dos Leads" icon="leaderboard">
+            {statusDistributionData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={statusDistributionData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, percent = 0 }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {statusDistributionData.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#111c22', 
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '8px',
+                      color: '#fff'
+                    }}
+                  />
+                  <Legend 
+                    wrapperStyle={{ color: '#fff' }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <p className="text-white/60 text-center py-12">Nenhum lead registrado</p>
+            )}
+          </Card>
+
+          <Card title="Top Leads por Probabilidade de Conversão" icon="trending_up">
+            {topLeads.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart
+                  data={topLeads}
+                  layout="vertical"
+                  margin={{ top: 5, right: 30, left: 60, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                  <XAxis 
+                    type="number" 
+                    domain={[0, 100]} 
+                    tick={{ fill: '#fff' }} 
+                    tickFormatter={(value) => `${value}%`}
+                  />
+                  <YAxis 
+                    dataKey="name" 
+                    type="category" 
+                    scale="band" 
+                    tick={{ fill: '#fff' }} 
+                  />
+                  <Tooltip 
+                    contentStyle={{ 
+                      backgroundColor: '#111c22', 
+                      border: '1px solid rgba(255,255,255,0.1)',
+                      borderRadius: '8px',
+                      color: '#fff'
+                    }}
+                    formatter={(value) => [`${value}%`, 'Probabilidade']}
+                  />
+                  <Bar dataKey="probability" fill="#13a4ec" name="Probabilidade de Conversão">
+                    {topLeads.map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <p className="text-white/60 text-center py-12">Nenhum lead registrado</p>
             )}
           </Card>
         </div>

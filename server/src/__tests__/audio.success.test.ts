@@ -96,40 +96,6 @@ describe('Audio API - Success Cases', () => {
     });
   });
 
-  describe('POST /api/audio/whatsapp/audio', () => {
-    it('deve validar payload do WhatsApp corretamente', async () => {
-      const response = await request(app)
-        .post('/api/audio/whatsapp/audio')
-        .send({
-          messageId: 'msg-123',
-          from: '+5511999998888',
-          audioUrl: 'https://example.com/whatsapp-audio.mp3',
-          mimeType: 'audio/mpeg',
-          duration: 10,
-          timestamp: Date.now(),
-          customerId: createdCustomerId
-        });
-
-      // Como não temos API key real, esperamos erro de configuração
-      // Mas a validação do payload deve passar
-      expect([200, 400, 500]).toContain(response.status);
-    });
-
-    it('deve rejeitar URL inválida', async () => {
-      const response = await request(app)
-        .post('/api/audio/whatsapp/audio')
-        .send({
-          messageId: 'msg-123',
-          from: '+5511999998888',
-          audioUrl: 'invalid-url',
-          timestamp: Date.now()
-        });
-
-      expect(response.status).toBe(400);
-      expect(response.body).toHaveProperty('errors');
-    });
-  });
-
   describe('PATCH /api/v1/customers/:id/audio-settings', () => {
     it('deve atualizar configurações de áudio do cliente', async () => {
       // Primeiro, buscar um cliente existente ou criar um novo

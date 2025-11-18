@@ -1,0 +1,46 @@
+{
+  "phone": "5511998704455",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Oi, sou o Otávio da operadora BoraViajar. Preciso responder dúvidas sobre roteiros combinados.",
+      "timestamp": "2025-10-24T07:50:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Bom dia! Conseguimos montar sugestões automáticas com base no perfil do viajante e nas tabelas de tarifa.",
+      "timestamp": "2025-10-24T07:55:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Vocês calculam câmbio e avisam quando uma tarifa sobe?",
+      "timestamp": "2025-10-24T08:05:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Sim, importamos as cotações e disparamos alertas no próprio WhatsApp.",
+      "timestamp": "2025-10-24T08:12:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Minha meta é validar 1 produto no roteiro Patagônia + Atacama.",
+      "timestamp": "2025-10-24T10:30:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Esse plano cobre 1 rota híbrida e permite enviar vouchers digitais.",
+      "timestamp": "2025-10-24T10:34:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Acabei de pagar o link que vocês mandaram. Ativa o 1 produto ainda hoje?",
+      "timestamp": "2025-10-24T19:10:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Pagamento confirmado. Os fluxos para Patagônia + Atacama foram publicados e já respondem automaticamente.",
+      "timestamp": "2025-10-24T19:15:00Z"
+    }
+  ]
+}
+

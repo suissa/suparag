@@ -1,0 +1,46 @@
+{
+  "phone": "5511941238899",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Olá, sou a Helena e trabalho com projetos residenciais boutique. Quero um bot para capturar briefing inicial.",
+      "timestamp": "2025-10-15T10:18:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Oi Helena! Podemos criar roteiros com fotos de referência e salvar tudo nos documentos do cliente.",
+      "timestamp": "2025-10-15T10:22:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Preciso que ele reconheça bairro e metragem e depois dispare formulário.",
+      "timestamp": "2025-10-15T10:40:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Incluímos campos obrigatórios e o assistente já valida CEP usando embeddings reais do histórico.",
+      "timestamp": "2025-10-15T10:45:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Vou contratar 1 produto para testar com 5 leads premium.",
+      "timestamp": "2025-10-15T12:05:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Enviei link com o plano Boutique e o passo a passo para treinar as referências.",
+      "timestamp": "2025-10-15T12:10:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Pagamento concluído, confirma se o 1 produto já ficou ativo?",
+      "timestamp": "2025-10-16T09:00:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Sim! Ativamos seu fluxo e o WhatsApp vai começar a responder em até 5 minutos.",
+      "timestamp": "2025-10-16T09:05:00Z"
+    }
+  ]
+}
+

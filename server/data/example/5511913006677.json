@@ -1,0 +1,46 @@
+{
+  "phone": "5511913006677",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Olá, Bruno da imobiliária Horizonte. Preciso que o bot filtre renda mínima antes do corretor ligar.",
+      "timestamp": "2025-10-21T13:35:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Oi Bruno! Configuramos funis com perguntas condicionais e já categorizamos por tipo de imóvel.",
+      "timestamp": "2025-10-21T13:38:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Se fechar 1 produto, consigo anexar PDF do empreendimento e validar assinatura?",
+      "timestamp": "2025-10-21T13:45:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Sim, os documentos ficam protegidos e liberamos assinatura via link único.",
+      "timestamp": "2025-10-21T13:50:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Então manda o contrato porque o diretor pediu urgência.",
+      "timestamp": "2025-10-21T15:05:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Enviei assinatura eletrônica e estamos aguardando o comprovante.",
+      "timestamp": "2025-10-21T15:10:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Acabei de pagar, confirma a ativação do 1 produto para hoje ainda?",
+      "timestamp": "2025-10-21T18:20:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Pagamento confirmado e chatbot liberado nos números comerciais.",
+      "timestamp": "2025-10-21T18:25:00Z"
+    }
+  ]
+}
+

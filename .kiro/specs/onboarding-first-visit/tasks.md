@@ -33,13 +33,7 @@
   - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 6.1, 6.2, 6.3, 6.4, 6.5_
 
 - [-] 5. Modificar WhatsAppConnectionContext para remover modal automático
-
-
-
-
-
-
-
+  
 
   - Remover lógica de abertura automática do modal no useEffect de inicialização
   - Manter apenas verificação de status (checkConnection)
@@ -88,21 +82,27 @@
   - Rota está configurada em App.tsx
   - _Requirements: 8.2, 8.3, 8.4, 8.5_
 
-- [ ]* 10. Criar testes unitários
+- [ ] 10. Criar testes unitários
+
+
   - Escrever testes para FirstVisitGuard (redirecionamento, token, visitas subsequentes)
   - Escrever testes para OnboardingView (renderização, animação, callback)
   - Escrever testes para CustomersPage (renderização condicional)
   - Escrever testes para WhatsAppConnectionContext (modal não automático)
   - _Requirements: Todos_
 
-- [ ]* 11. Criar testes de integração E2E
+- [ ] 11. Criar testes de integração E2E
+
+
   - Implementar teste de fluxo completo de onboarding
   - Testar redirecionamento → onboarding → conexão → importação
   - Validar que botão desaparece após importação
   - Testar visitas subsequentes não mostram onboarding
   - _Requirements: Todos_
 
-- [ ]* 12. Testar funcionalidade RAG com documentos
+- [ ] 12. Testar funcionalidade RAG com documentos
+
+
   - Fazer upload de documento de teste com conteúdo conhecido
   - Fazer perguntas específicas sobre o conteúdo no chat
   - Validar que respostas incluem informações corretas do documento
@@ -111,7 +111,9 @@
   - Documentar casos de teste e resultados
   - _Requirements: 9.1, 9.2, 9.3, 9.4, 9.5_
 
-- [ ]* 13. Validação e ajustes finais
+- [ ] 13. Validação e ajustes finais
+
+
   - Testar responsividade em diferentes tamanhos de tela
   - Validar animações em diferentes navegadores
   - Verificar acessibilidade (keyboard navigation, screen readers)
@@ -121,8 +123,9 @@
   - _Requirements: 6.1, 6.2, 6.3, 6.4, 6.5, Todos_
 
 - [ ] Executar a a analise de cada lead
+
   - calculateLeadStatus(customerId)
   - detectAbandonmentPoints(customerId)
   - analyzeConversionIntent(customerId)
   - computeEngagementMetrics(customerId)
-  - 
+  - adicione esses gráficos na página de métricas

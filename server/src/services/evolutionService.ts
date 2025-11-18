@@ -27,6 +27,28 @@ export interface ConnectionStatus {
 }
 
 /**
+ * Interface para dados de contato do WhatsApp
+ */
+export interface WhatsAppContact {
+  id: string;
+  name: string;
+  phone: string;
+  profilePicUrl?: string;
+}
+
+/**
+ * Interface para dados de mensagem do WhatsApp
+ */
+export interface WhatsAppMessage {
+  id: string;
+  from: string;
+  to: string;
+  body: string;
+  timestamp: number;
+  type: string;
+}
+
+/**
  * Serviço para gerenciar instâncias WhatsApp através da Evolution API
  * 
  * Responsabilidades:
@@ -34,6 +56,7 @@ export interface ConnectionStatus {
  * - Consultar status de conexão
  * - Obter QR codes para autenticação
  * - Gerenciar lifecycle de instâncias
+ * - Importar contatos e mensagens
  */
 export class EvolutionService {
   private client: EvolutionClient;
@@ -349,5 +372,92 @@ export class EvolutionService {
       throw new Error(`Falha ao deletar instância: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     }
   }
-}
 
+  /**
+   * Importa contatos do WhatsApp para o sistema
+   * 
+   * @param instanceName - Nome da instância conectada
+   * @returns Array de contatos importados
+   * @throws Error se a importação falhar
+   */
+  async importContacts(instanceName: string): Promise<WhatsAppContact[]> {
+    const startTime = Date.now();
+    
+    try {
+      this.logger.info('Iniciando importação de contatos do WhatsApp', {
+        operation: 'importContacts',
+        instanceName
+      });
+
+      // Placeholder para chamada real à API
+      // Na implementação real, isso chamaria um método da SDK para buscar contatos
+      // Exemplo: const response = await this.client.contacts.list({ instanceName });
+      
+      // Por enquanto, retornar array vazio como placeholder
+      const contacts: WhatsAppContact[] = [];
+      
+      const duration = Date.now() - startTime;
+      this.logger.info('Importação de contatos concluída', {
+        operation: 'importContacts',
+        instanceName,
+        contactsCount: contacts.length,
+        duration: `${duration}ms`
+      });
+
+      return contacts;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      this.logger.error('Erro ao importar contatos do WhatsApp', {
+        operation: 'importContacts',
+        instanceName,
+        duration: `${duration}ms`
+      }, error as Error);
+      
+      throw new Error(`Falha ao importar contatos: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+    }
+  }
+
+  /**
+   * Importa mensagens do WhatsApp para o sistema
+   * 
+   * @param instanceName - Nome da instância conectada
+   * @returns Array de mensagens importadas
+   * @throws Error se a importação falhar
+   */
+  async importMessages(instanceName: string): Promise<WhatsAppMessage[]> {
+    const startTime = Date.now();
+    
+    try {
+      this.logger.info('Iniciando importação de mensagens do WhatsApp', {
+        operation: 'importMessages',
+        instanceName
+      });
+
+      // Placeholder para chamada real à API
+      // Na implementação real, isso chamaria um método da SDK para buscar mensagens
+      // Exemplo: const response = await this.client.messages.list({ instanceName });
+      
+      // Por enquanto, retornar array vazio como placeholder
+      const messages: WhatsAppMessage[] = [];
+      
+      const duration = Date.now() - startTime;
+      this.logger.info('Importação de mensagens concluída', {
+        operation: 'importMessages',
+        instanceName,
+        messagesCount: messages.length,
+        duration: `${duration}ms`
+      });
+
+      return messages;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      this.logger.error('Erro ao importar mensagens do WhatsApp', {
+        operation: 'importMessages',
+        instanceName,
+        duration: `${duration}ms`
+      }, error as Error);
+      
+      throw new Error(`Falha ao importar mensagens: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+    }
+  }
+}

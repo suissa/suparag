@@ -1,0 +1,56 @@
+{
+  "phone": "5511924100788",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Boa tarde, sou a Paula da loja online SetaFit. Busco reduzir abandono de carrinho pelo WhatsApp.",
+      "timestamp": "2025-10-19T16:20:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Oi Paula! Temos gatilhos automáticos com cupons dinâmicos e rastreamento do pedido depois da compra.",
+      "timestamp": "2025-10-19T16:25:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "O bot consegue entender tamanho e preferências com base no catálogo?",
+      "timestamp": "2025-10-19T16:32:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Sim, usamos embeddings reais do catálogo e sugerimos peças similares.",
+      "timestamp": "2025-10-19T16:40:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Testamos 48h e vimos aumento de 9% em respostas. Falta só validar integração com Shopify.",
+      "timestamp": "2025-10-20T14:10:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Integração confirmada, inclusive com atualização de estoque e envio automático do comprovante.",
+      "timestamp": "2025-10-20T14:18:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Então vamos fechar 1 produto para o catálogo feminino. O restante fica para a Black Friday.",
+      "timestamp": "2025-10-20T18:55:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Plano Commerce ativado e contrato enviado para assinatura eletrônica.",
+      "timestamp": "2025-10-20T19:05:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Assinado! Acabei de pagar o boleto e preciso do 1 produto liberado até amanhã.",
+      "timestamp": "2025-10-21T09:15:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Tudo certo, Paula. Fluxo já disponível e disparos programados para 8h.",
+      "timestamp": "2025-10-21T09:20:00Z"
+    }
+  ]
+}
+

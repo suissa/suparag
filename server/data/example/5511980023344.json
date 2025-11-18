@@ -1,0 +1,56 @@
+{
+  "phone": "5511980023344",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Bom dia, sou o Renato da TransLog e preciso controlar SLAs de coleta com IA para nossos motoristas.",
+      "timestamp": "2025-10-05T08:45:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Olá Renato! Conseguimos conectar o WhatsApp corporativo e gerar alertas automáticos para cada rota atrasada.",
+      "timestamp": "2025-10-05T08:50:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "O assistente consegue cruzar o ETA do TMS e responder aos clientes finais?",
+      "timestamp": "2025-10-05T09:10:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Sim, basta enviar a API do seu TMS e configuramos as consultas com embeddings reais para contextualizar cada entrega.",
+      "timestamp": "2025-10-05T09:20:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Rodamos o piloto e gostamos. Preciso garantir que 1 produto cubra o hub de São Paulo inteiro.",
+      "timestamp": "2025-10-06T13:05:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "O plano Logistics cobre 1 hub completo com até 5 mil conversas e inclui dashboards de ocupação.",
+      "timestamp": "2025-10-06T13:20:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Show. Minha diretoria pediu confirmação sobre LGPD e armazenamento das conversas.",
+      "timestamp": "2025-10-07T18:40:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Todos os dados ficam no Supabase com retenção configurável e encrypt-at-rest. Envio o relatório de conformidade ainda hoje.",
+      "timestamp": "2025-10-07T18:55:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Perfeito, conselho aprovou. Vamos fechar 1 produto para o hub SP ainda nesta semana.",
+      "timestamp": "2025-10-08T16:00:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Contrato emitido e link enviado. Assim que o pagamento cair ativamos o hub com o mesmo ID do piloto.",
+      "timestamp": "2025-10-08T16:05:00Z"
+    }
+  ]
+}
+

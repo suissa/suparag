@@ -1,0 +1,66 @@
+{
+  "phone": "5511956665544",
+  "messages": [
+    {
+      "from": "cliente",
+      "text": "Fala, sou o Diego da agência Vibe. Preciso provar para um cliente que o bot gera leads qualificados.",
+      "timestamp": "2025-10-10T11:00:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Oi Diego! Temos dashboards de conversão que cruzam sentimento, origem da campanha e fechamento.",
+      "timestamp": "2025-10-10T11:04:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Vocês salvam cada embedding para consultas futuras? Quero reclassificar intents.",
+      "timestamp": "2025-10-10T11:20:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Sim, armazenamos vetores em pgvector e dá pra recalcular clusters depois.",
+      "timestamp": "2025-10-10T11:30:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Rodamos ontem um teste com 30 leads e o gerente pediu comparativo com atendimento humano.",
+      "timestamp": "2025-10-11T09:45:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Mando um relatório com tempo médio de resposta e taxa de follow-up concluído.",
+      "timestamp": "2025-10-11T10:00:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Outra dúvida: consigo travar respostas quando o cliente fala de concorrência?",
+      "timestamp": "2025-10-12T15:10:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Temos guardrails e filtros usando classificadores, dá para redirecionar para humano.",
+      "timestamp": "2025-10-12T15:18:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Equipe aprovou. Preciso só de 1 produto para a conta da EcoSolar.",
+      "timestamp": "2025-10-13T17:50:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Fecho por aqui e envio o contrato com vigência trimestral ainda hoje.",
+      "timestamp": "2025-10-14T08:32:00Z"
+    },
+    {
+      "from": "cliente",
+      "text": "Transferência confirmada, manda a nota fiscal assim que o 1 produto estiver liberado.",
+      "timestamp": "2025-10-14T08:40:00Z"
+    },
+    {
+      "from": "atendente",
+      "text": "Nota emitida e conta da EcoSolar já aparece como ativa no painel.",
+      "timestamp": "2025-10-14T08:42:00Z"
+    }
+  ]
+}
+
