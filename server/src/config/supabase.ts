@@ -17,16 +17,19 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
-// Tipos para a tabela documents
-export interface Document {
+// Tipos para a tabela rag_documents
+export interface RagDocument {
   id?: string;
   title: string;
   content: string;
-  metadata: {
-    filename: string;
-    type: string;
-    size: number;
-    characterCount: number;
+  embedding?: number[]; // Vector para busca semântica
+  source?: string;
+  metadata?: {
+    filename?: string;
+    type?: string;
+    size?: number;
+    characterCount?: number;
+    [key: string]: any;
   };
   created_at?: string;
   updated_at?: string;

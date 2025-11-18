@@ -7,7 +7,7 @@ const router = Router();
 router.get('/documents', async (_req: Request, res: Response) => {
   try {
     const { data, error } = await supabase
-      .from('documents')
+      .from('rag_documents')
       .select('id, title, content, metadata, source, created_at, updated_at')
       .order('created_at', { ascending: false });
 
@@ -39,7 +39,7 @@ router.get('/documents/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const { data, error} = await supabase
-      .from('documents')
+      .from('rag_documents')
       .select('id, title, content, metadata, source, section, created_at, updated_at')
       .eq('id', id)
       .single();
@@ -85,7 +85,7 @@ router.post('/documents', async (req: Request, res: Response) => {
     }
 
     const { data, error } = await supabase
-      .from('documents')
+      .from('rag_documents')
       .insert({
         title,
         content,
@@ -205,7 +205,7 @@ router.delete('/documents/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const { error } = await supabase
-      .from('documents')
+      .from('rag_documents')
       .delete()
       .eq('id', id);
 

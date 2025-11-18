@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import multer from 'multer';
 import pdfParse from 'pdf-parse';
 import fs from 'fs/promises';
-import { supabase, Document } from '../config/supabase';
+import { supabase, RagDocument } from '../config/supabase';
 import { embeddingService } from '../services/embeddingService';
 
 const router = Router();
@@ -164,9 +164,9 @@ router.post('/', upload.single('file'), async (req: Request, res: Response) => {
       }
     };
 
-    // Salvar no Supabase
+    // Salvar no Supabase (tabela rag_documents)
     const { data, error } = await supabase
-      .from('documents')
+      .from('rag_documents')
       .insert([documentData])
       .select()
       .single();
@@ -233,7 +233,7 @@ router.get('/', async (req: Request, res: Response) => {
         console.log('Função RPC não encontrada, usando busca SQL direta');
         
         const { data: sqlData, error: sqlError } = await supabase
-          .from('documents')
+          .from('rag_documents')
           .select('id, title, content, metadata, created_at, updated_at')
           .ilike('content', `%${searchTerm}%`)
           .order('created_at', { ascending: false })
@@ -288,7 +288,7 @@ router.get('/', async (req: Request, res: Response) => {
 
     // Busca normal (sem fuzzy)
     const { data, error } = await supabase
-      .from('documents')
+      .from('rag_documents')
       .select('id, title, metadata, created_at, updated_at')
       .order('created_at', { ascending: false });
 
@@ -327,7 +327,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const { data, error } = await supabase
-      .from('documents')
+      .from('rag_documents')
       .select('*')
       .eq('id', id)
       .single();
@@ -368,7 +368,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const { error } = await supabase
-      .from('documents')
+      .from('rag_documents')
       .delete()
       .eq('id', id);
 
