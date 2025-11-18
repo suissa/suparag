@@ -24,21 +24,21 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <div className="flex min-h-screen bg-[#101c22]">
       <aside className="w-64 flex-shrink-0 bg-[#111c22] p-4 flex flex-col justify-between h-screen sticky top-0">
-        <div className="flex flex-col gap-8">
-          <div className="group flex flex-col items-center justify-start gap-2 px-2 w-full h-[100px] overflow-hidden">
+        <div className="flex flex-col gap-2">
+          <div className="group flex flex-row items-center justify-center gap-2 px-2 w-full h-[80px] overflow-hidden">
             {/* Aumentei para h-12 (aprox 48px). Se ainda achar pequeno, tente h-14 ou h-16 */}
             <img 
                 src="/logo-symbol.png" 
-                className="block h-12 w-auto object-contain group-hover:translate-y-12 group-hover:scale-[170%] transition-all duration-700" 
+                className="block w-auto object-contain h-[70px]" 
                 alt="Símbolo"
             />
             
-            <img 
+            {/* <img 
                 src="/logo-text-full.png" 
                 className="block h-12 w-auto object-contain group-hover:opacity-[0.4] group-hover:scale-[0.5] group-hover:blur-2xl transition-all duration-300
                  transition" 
                 alt="Texto"
-            />
+            /> */}
         </div>
           <nav className="flex flex-col gap-2">
             {navItems.map((item) => {

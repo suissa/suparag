@@ -106,14 +106,13 @@ export default function ChatPanel() {
       style={isAnimated ? chatbotStyle.finalStyle : chatbotStyle.initialStyle}
     >
       {/* Header */}
-      <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#325567] p-4">
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white">Chat Assistant</h2>
+      <div className="flex items-center justify-between dark:border-[#325567] p-4">
         <button
           onClick={handleNewChat}
           className="flex items-center justify-center gap-2 rounded-lg h-9 px-3 text-gray-700 dark:text-white text-sm font-medium hover:bg-gray-200 dark:hover:bg-white/10"
         >
           <Plus size={18} />
-          <span className="truncate">New Chat</span>
+          <span className="truncate">Nova Conversa</span>
         </button>
       </div>
 
@@ -121,15 +120,14 @@ export default function ChatPanel() {
       <div className="flex-1 overflow-y-auto p-6 space-y-4">
         {messages.length === 0 ? (
           <div className="flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 gap-4 h-full">
-            <div className="flex items-center justify-center size-16 rounded-full bg-primary/10 dark:bg-primary/20 text-primary">
-              <MessageSquare size={32} />
-            </div>
+            
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-              <img src="/logo-full-top.png" className='w-[60%] h-auto block mx-auto' />
+              <img src="/logo-full-top.png" className='w-[60%] h-auto block mx-auto duration-700 transition-all hover:blur-3xl hover:opacity-0' />
             </h3>
             <p className="max-w-xs">
-              Ask me anything about the documents in your knowledge base to get started.
-            </p>
+            
+Para começar, pergunte-me qualquer coisa sobre os documentos da sua base de conhecimento.
+</p>
           </div>
         ) : (
           <>
@@ -204,7 +202,7 @@ export default function ChatPanel() {
       )}
 
       {/* Input */}
-      <div className="border-t border-gray-200 dark:border-[#325567] p-4">
+      <div className="w-[95%] md:w-[600px] p-4">
         <ChatInputFactory
           onSend={(message: string) => handleSend(message)}
           disabled={loading}
