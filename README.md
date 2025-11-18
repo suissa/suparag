@@ -52,26 +52,34 @@ Busca e filtros nas conversas
 Exportação de conversas (PDF/JSON)
 Sistema de avaliação de respostas
 
-## Como foi feito
 
-Este ciclo começou mapeando as histórias de clientes reais que chegam pelo WhatsApp pedindo demonstrações rápidas. Extraí as dúvidas recorrentes do time comercial, escrevi diálogos completos (cliente + atendente) e converti tudo em JSON pronto para o importador `server/src/scripts/importWhatsAppHistory.ts`. Cada mensagem segue a linha do tempo verdadeira do lead, descreve 1 produto adquirido e é preparada para receber embeddings reais via OpenRouter.
+## Análise dos meus problemas e erros identificados
 
-## Como funciona
+PROBLEMA: Nunca tinha usado o Supabase nem o pgvector diretamente, apenas via Lovable, fiz sisteminhas simples com RAG esse ano e ficou bom, eu deveria ter pesquisado anteriormente e ter pesquisado a melhor já bem definida e conhecida técnica/função para o pgvector
+- SUGESTÃO agora sempre farei a busca teorica e implementada para poder definir corretanabete  a forma que a IA deve seguir. Eu só usei QDrant, FAISS, Pinecone e em produção somente o Weaviate (acho MTO bom) e em minhas pesquisas também encontrei também o Milvus.
 
-1. Salve os arquivos dentro de `server/data/example`.
-2. Execute o importador (`bun --cwd server scripts/run-import.ts import -p server/data/example`) com as credenciais do Supabase.
-3. A cada mensagem o script cria o cliente (caso não exista), gera embeddings reais (com fallback sintético) e guarda o sentimento para alimentar métricas.
+- PROBLEMA: o pincipal foi ter utilizado o TRAE e acreditando no seu modo SOLO, tão bem falado antes, eu podia deixar ele SOLO até finalizar uma sequência de funcionalidades. Ele mudou coisas que não deveria, criou coisas dupplicadas, muitos eros de tipagem. NUNCA MAIS cometerei esse erro, fico somente no Kiro e Cursor na IDE e QWEN e Codex no CLI
+- SUGESTÃO: definir que ele deve gerar os testes para cada funcionalidade gerada, ele deve ir corrigindo até passar em todos, para ai gerar um texto falando qual a funcionalidade criada, onde foi criada, seu nome e definir que ela não deve ser modificada, se o valor desejado do seu retorno não estiver de acordo o agente deve implementar um parser do resultado da funcionalidade para o tipo que esse agente deseja. Uma funcionalidade só pode ser modificada se eu pedir.
 
-Os novos cenários cobrem cafeteria, logística, saúde, educação, moda e turismo para testar se o pipeline reage bem a perfis distintos.
+- PROBLEMA: ele não conseguia executar os testes por causa do caminho do WSL
+- SUGESTÃO: definir que ao executar um colmando com PATH ele deve adicionar "\" após cada "\" que encontrar, ou usar `wsl -d Ubuntu -e bash -c {comando em UNIX-like}` ou testar o WSL MCP server. 
 
-## Como testar
+- PROBLEMA: ele comentava que o banco retornava um valor mas a API outra, até ele falar que podia esta r em cache, ai me liguei que a API estava sem hot-reaload
+- SUGESTÃO: mesmo com hot-reload, definir que ele deve reiniciar o servidor para confirmar a mudança
 
-1. Configure o `.env` em `server/` com `SUPABASE_URL`, `SUPABASE_SERVICE_KEY` e `OPENROUTER_API_KEY`.
-2. Rode `bun --cwd server scripts/run-import.ts import -p server/data/example` para popular `customers` + `interactions`.
-3. Confira em `npm --prefix app run dev` (ou `bun --cwd app dev`) se os cards de métricas refletem as novas conversões.
+## Melhorias necessárias
 
-## Fontes
+- rerank
+- rerank human-in-the-loop
 
-- [Principais Métricas de um Ecommerce — Mago do Ecommerce](https://www.youtube.com/watch?v=kZmVJfO0N-0&utm_source=openai)
-- [OpenAI — Embeddings Guide](https://platform.openai.com/docs/guides/embeddings)
-- [Supabase — Documentação Oficial](https://supabase.com/docs)
+## Mudança no meu Vibe Coding
+
+Não vou mais pedir para gerar a API após o banco gerado, principalmente quando existir execulção de funções RPC. Como eu ja modularizo todas as camadas da entidade na sua pasta, vou uma a uma, testando as funcionalidades dessa entidade via MCP, após estar válida, mando gerar o Repoitory cm que será o responsável pela interação com o Supabase:
+
+```ts
+export const listCustomers = async () <Customer[] | []> => 
+  await supabase
+        .from('customers')
+        .select('*')
+        .order('created_at', { ascending: false });
+```
