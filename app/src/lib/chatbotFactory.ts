@@ -59,24 +59,28 @@ export class ChatbotFactory {
     // Width
     if (size.w === '100vw') {
       classes.push('w-screen');
+    } else if (size.w === '100%') {
+      classes.push('w-full');
     } else {
       classes.push(`w-[${size.w}]`);
     }
 
     // Max width (responsive)
-    if (size['md:max-x']) {
+    if (size['md:max-x'] && size['md:max-x'] !== 'none') {
       classes.push(`md:max-w-[${size['md:max-x']}]`);
     }
 
     // Height
     if (size.y === '100vh') {
       classes.push('h-screen');
+    } else if (size.y === '100%') {
+      classes.push('h-full');
     } else {
       classes.push(`h-[${size.y}]`);
     }
 
     // Max height (responsive)
-    if (size['md:max-y']) {
+    if (size['md:max-y'] && size['md:max-y'] !== 'none') {
       classes.push(`md:max-h-[${size['md:max-y']}]`);
     }
 
@@ -91,6 +95,10 @@ export class ChatbotFactory {
     
     if (position === 'center.all') {
       return 'flex items-center justify-center';
+    }
+    
+    if (position === 'none' || !position) {
+      return '';
     }
     
     // Outros casos podem ser adicionados aqui
