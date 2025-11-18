@@ -10,11 +10,11 @@
     "theme": "equal",
     "size": {
       "w": "100%",
-      "md:max-x": "none",
+      "md:max-x": "800px",
       "y": "100%",
-      "md:max-y": "none"
+      "md:max-y": "600px"
     },
-    "position": "none"
+    "position": "center.all"
   },
   "behavior": {
     "in": {
