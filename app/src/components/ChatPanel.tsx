@@ -68,6 +68,16 @@ export default function ChatPanel() {
       console.log('📥 Response from API:', JSON.stringify(response.data, null, 2));
       console.log('📚 Sources:', JSON.stringify(response.data.sources, null, 2));
       
+      // Debug: verificar cada source individualmente
+      response.data.sources?.forEach((source: any, idx: number) => {
+        console.log(`Source ${idx}:`, {
+          documentId: source.documentId,
+          similarity: source.similarity,
+          similarityType: typeof source.similarity,
+          similarityValue: source.similarity
+        });
+      });
+      
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',

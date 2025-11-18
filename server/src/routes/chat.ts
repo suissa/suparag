@@ -180,11 +180,21 @@ router.post('/', async (req: Request, res: Response) => {
       });
     }
 
-    const sourcesResponse = chunks?.map((c: any) => ({
-      documentId: c.id || c.document_id,
-      content: c.content ? c.content.substring(0, 200) + '...' : '',
-      similarity: c.score || c.similarity || c.combined_score || 0
-    })) || [];
+    const sourcesResponse = chunks?.map((c: any) => {
+      // Converter para número e validar
+      const parseScore = (value: any): number => {
+        const num = Number(value);
+        return Number.isFinite(num) ? num : 0;
+      };
+      
+      const similarity = parseScore(c.score) || parseScore(c.similarity) || parseScore(c.combined_score) || 0;
+      
+      return {
+        documentId: c.id || c.document_id,
+        content: c.content ? c.content.substring(0, 200) + '...' : '',
+        similarity
+      };
+    }) || [];
 
     console.log('📤 Sending sources to frontend:', JSON.stringify(sourcesResponse, null, 2));
 
