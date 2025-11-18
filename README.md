@@ -90,3 +90,13 @@ export const listCustomers = async () <Customer[] | []> =>
 
 
 ## CRM - Sugestões
+
+
+### Bot - Trainamento
+
+Uma forma de treinamento do chatbot, de uma forma bem simples e rápida, que eu acredito que seja bem ideal para integrar tanto o usuário como a plataforma, é ele selecionar, por exemplo, 5 a 10 contatos que viraram clientes, e 5 a 10 que não chegaram até esse momento, que já saíram, já deu o churn. Para que? Para que o sistema analise, então, a sequência dessas conversas, e possa, então, definir quais foram esses passos, isso é bem geralzão, quais foram esses passos, e apresentar isso para o usuário, para que ele possa fazer certas correções nas suposições que a LLM teve. Então, acho que isso automatiza essa sequência, essa definição que o usuário tem que fazer, até porque, às vezes, ele pode até não conhecer tanto dessa forma otimizada, entendeu? E não é tão difícil fazer assim, dessa forma que eu falei, com 5 a 10, é bem simples, ainda mais deixar o usuário finalizar com a sua confirmação, então é uma coisa assim, da forma mais simples que tem de treinar um chatbot, eu acredito que seja essa, não tem nada mais simples do que isso.
+
+
+### MCPS - Omni-channel
+
+#### Marketplaces
