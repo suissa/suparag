@@ -90,7 +90,7 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
       console.log('[WhatsAppConnectionContext] Verificando status da conexão...');
       console.log('[WhatsAppConnectionContext] SessionId:', sessionId);
       
-      const response = await api.get('/whatsapp/status', {
+      const response = await api.get('http://localhost:4000/api/v1/whatsapp/status', {
         params: { sessionId }
       });
       

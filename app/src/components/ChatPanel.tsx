@@ -78,132 +78,97 @@ export default function ChatPanel() {
   };
 
   return (
-    /* 1. WRAPPER EXTERNO: Centraliza tudo na tela */
-    <div className="flex items-center justify-center w-full h-full bg-transparent">
-      
-      /* 2. CARD DO CHAT: Tem 80% de largura e altura */
-      <div className="flex flex-col w-[80%] h-[80%] bg-background-light dark:bg-background-dark rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-[#325567]">
-        
-        {/* Header */}
-        <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#325567] p-4 shrink-0">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">Chat Assistant</h2>
-          <button
-            onClick={handleNewChat}
-            className="flex items-center justify-center gap-2 rounded-lg h-9 px-3 text-gray-700 dark:text-white text-sm font-medium hover:bg-gray-200 dark:hover:bg-white/10"
-          >
-            <Plus size={18} />
-            <span className="truncate">New Chat</span>
-          </button>
-        </div>
+<div className="flex items-center justify-center w-full h-full bg-transparent">
+  
+  {/* Container do CHAT (Filho): Tem 80% de largura e altura */}
+  <div className="flex flex-col w-[80%] h-[80%] bg-background-light dark:bg-background-dark rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-[#325567]">
+    
+    {/* Header */}
+    <div className="flex items-center justify-between border-b border-gray-200 dark:border-[#325567] p-4 shrink-0">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white">Chat Assistant</h2>
+      <button
+        onClick={handleNewChat}
+        className="flex items-center justify-center gap-2 rounded-lg h-9 px-3 text-gray-700 dark:text-white text-sm font-medium hover:bg-gray-200 dark:hover:bg-white/10"
+      >
+        <Plus size={18} />
+        <span className="truncate">New Chat</span>
+      </button>
+    </div>
 
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4">
-          {messages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 gap-4 h-full">
-              <div className="flex items-center justify-center size-16 rounded-full bg-primary/10 dark:bg-primary/20 text-primary">
-                <MessageSquare size={32} />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-                Welcome to DocuChat AI!
-              </h3>
-              <p className="max-w-xs">
-                Ask me anything about the documents in your knowledge base to get started.
-              </p>
-            </div>
-          ) : (
-            <>
-              {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${msg.role === 'user' ? 'justify-end' : 'items-start'} gap-3`}
-                >
-                  {msg.role === 'assistant' && (
-                    <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
-                      <MessageSquare size={18} />
-                    </div>
-                  )}
-                  <div
-                    className={`max-w-lg rounded-lg p-3 text-sm ${
-                      msg.role === 'user'
-                        ? 'rounded-br-none bg-primary text-white'
-                        : 'rounded-tl-none bg-gray-100 dark:bg-[#111c22] text-gray-800 dark:text-gray-200'
-                    }`}
-                  >
-                    <p className="whitespace-pre-wrap">{msg.content}</p>
-                    {msg.sources && msg.sources.length > 0 && (
-                      <div className="mt-3 pt-3 border-t border-gray-300 dark:border-gray-600">
-                        <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
-                          📚 Sources ({msg.sources.length} documents):
-                        </p>
-                        {msg.sources.map((source, idx) => (
-                          <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 mb-1.5 pl-2 border-l-2 border-primary/30">
-                            <span className="font-medium">Doc {idx + 1}:</span> {source.documentId.substring(0, 12)}...
-                            <span className="ml-2 text-primary font-semibold">
-                              {(source.similarity * 100).toFixed(1)}% relevance
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {msg.role === 'assistant' && (!msg.sources || msg.sources.length === 0) && (
-                      <div className="mt-2 pt-2 border-t border-yellow-300 dark:border-yellow-600">
-                        <p className="text-xs text-yellow-600 dark:text-yellow-400">
-                          ⚠️ No documents found for this query
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {loading && (
-                <div className="flex items-start gap-3">
-                  <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
-                    <MessageSquare size={18} />
-                  </div>
-                  <div className="max-w-lg rounded-lg rounded-tl-none bg-gray-100 dark:bg-[#111c22] p-3 text-sm">
-                    <Loader2 className="animate-spin text-primary" size={20} />
-                  </div>
+    {/* Messages */}
+    <div className="flex-1 overflow-y-auto p-6 space-y-4">
+      {messages.length === 0 ? (
+        <div className="flex flex-col items-center justify-center text-center text-gray-500 dark:text-gray-400 gap-4 h-full">
+          <div className="flex items-center justify-center size-16 rounded-full bg-primary/10 dark:bg-primary/20 text-primary">
+            <MessageSquare size={32} />
+          </div>
+          <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
+            Welcome to DocuChat AI!
+          </h3>
+          <p className="max-w-xs">
+            Ask me anything about the documents in your knowledge base to get started.
+          </p>
+        </div>
+      ) : (
+        <>
+          {messages.map((msg) => (
+            <div
+              key={msg.id}
+              className={`flex ${msg.role === 'user' ? 'justify-end' : 'items-start'} gap-3`}
+            >
+              {msg.role === 'assistant' && (
+                <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
+                  <MessageSquare size={18} />
                 </div>
               )}
-              <div ref={messagesEndRef} />
-            </>
-          )}
-        </div>
-
-        {/* Error Message Wrapper */}
-        {error && (
-          <div className="px-4">
-             <div className="p-3 bg-red-50 dark:bg-red-500/20 border border-red-200 dark:border-red-500/30 rounded-lg flex items-start gap-2">
-              <AlertCircle className="text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" size={16} />
-              <p className="text-sm text-red-800 dark:text-red-300">{error}</p>
+              <div
+                className={`max-w-lg rounded-lg p-3 text-sm ${
+                  msg.role === 'user'
+                    ? 'rounded-br-none bg-primary text-white'
+                    : 'rounded-tl-none bg-gray-100 dark:bg-[#111c22] text-gray-800 dark:text-gray-200'
+                }`}
+              >
+                <p className="whitespace-pre-wrap">{msg.content}</p>
+                {msg.sources && msg.sources.length > 0 && (
+                  <div className="mt-3 pt-3 border-t border-gray-300 dark:border-gray-600">
+                    <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-2">
+                      📚 Sources ({msg.sources.length} documents):
+                    </p>
+                    {msg.sources.map((source, idx) => (
+                      <div key={idx} className="text-xs text-gray-600 dark:text-gray-400 mb-1.5 pl-2 border-l-2 border-primary/30">
+                        <span className="font-medium">Doc {idx + 1}:</span> {source.documentId.substring(0, 12)}...
+                        <span className="ml-2 text-primary font-semibold">
+                          {(source.similarity * 100).toFixed(1)}% relevance
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {msg.role === 'assistant' && (!msg.sources || msg.sources.length === 0) && (
+                  <div className="mt-2 pt-2 border-t border-yellow-300 dark:border-yellow-600">
+                    <p className="text-xs text-yellow-600 dark:text-yellow-400">
+                      ⚠️ No documents found for this query
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        )}
-
-        {/* Input Area */}
-        <div className="border-t border-gray-200 dark:border-[#325567] p-4 shrink-0 bg-background-light dark:bg-background-dark">
-          <div className="relative">
-            <textarea
-              ref={textareaRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              disabled={loading}
-              className="form-input w-full resize-none rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-[#233c48] pr-12 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-primary focus:ring-primary disabled:opacity-50"
-              placeholder="Ask a question about your documents..."
-              rows={1}
-            />
-            <button
-              onClick={handleSend}
-              disabled={loading || !input.trim()}
-              className="absolute bottom-2 right-2 flex size-8 items-center justify-center rounded-md bg-primary text-white hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? <Loader2 className="animate-spin" size={20} /> : <Send size={20} />}
-            </button>
-          </div>
-        </div>
-
-      </div>
+          ))}
+          {loading && (
+            <div className="flex items-start gap-3">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
+                <MessageSquare size={18} />
+              </div>
+              <div className="max-w-lg rounded-lg rounded-tl-none bg-gray-100 dark:bg-[#111c22] p-3 text-sm">
+                <Loader2 className="animate-spin text-primary" size={20} />
+              </div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </>
+      )}
     </div>
-  );
-}
+  </div>
+</div>
+
+)}

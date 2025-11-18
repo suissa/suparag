@@ -199,66 +199,76 @@ export class EvolutionService {
   }
 
   /**
-   * Tenta encontrar uma instância conectada para um sessionId
-   * Verifica se há alguma instância com nome similar ao sessionId
+   * Vincula manualmente uma instância existente ao sessionId
+   * Útil quando o usuário já tem uma instância conectada no Evolution Manager
+   * 
+   * @param sessionId - ID da sessão do usuário
+   * @param instanceName - Nome exato da instância (ex: neuropgrag_1763390942512_2844c7c4)
+   * @returns true se vinculado com sucesso
+   */
+  async linkExistingInstance(sessionId: string, instanceName: string): Promise<boolean> {
+    const startTime = Date.now();
+    
+    try {
+      this.logger.info('Vinculando instância existente ao sessionId', {
+        operation: 'linkExistingInstance',
+        sessionId,
+        instanceName
+      });
+
+      // Verificar se a instância existe e está conectada
+      const status = await this.checkStatus(instanceName);
+      
+      if (!status.connected) {
+        this.logger.warn('Instância não está conectada', {
+          operation: 'linkExistingInstance',
+          sessionId,
+          instanceName,
+          status: status.status
+        });
+        return false;
+      }
+
+      // Vincular ao sessionId
+      this.linkInstanceToSession(sessionId, instanceName);
+
+      const duration = Date.now() - startTime;
+      this.logger.info('Instância vinculada com sucesso', {
+        operation: 'linkExistingInstance',
+        sessionId,
+        instanceName,
+        duration: `${duration}ms`
+      });
+
+      return true;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      this.logger.error('Erro ao vincular instância existente', {
+        operation: 'linkExistingInstance',
+        sessionId,
+        instanceName,
+        duration: `${duration}ms`
+      }, error as Error);
+      
+      return false;
+    }
+  }
+
+  /**
+   * Tenta encontrar uma instância conectada para vincular ao sessionId
+   * SOLUÇÃO TEMPORÁRIA: Retorna undefined para forçar uso do endpoint de link manual
    * 
    * @param sessionId - ID da sessão do usuário
    * @returns instanceName se encontrado, undefined caso contrário
    */
   async findInstanceBySessionId(sessionId: string): Promise<string | undefined> {
-    const startTime = Date.now();
+    this.logger.info('findInstanceBySessionId chamado - use linkExistingInstance com instanceName específico', {
+      operation: 'findInstanceBySessionId',
+      sessionId
+    });
     
-    try {
-      this.logger.info('Procurando instância para sessionId', {
-        operation: 'findInstanceBySessionId',
-        sessionId
-      });
-
-      // Tentar verificar status de possíveis nomes de instância
-      // Formato: SUPARAG_{timestamp}_{uuid}
-      // Vamos tentar com o prefixo do sessionId
-      const sessionPrefix = sessionId.split('-')[0];
-      const possibleInstanceName = `${env.evolution.instancePrefix}_${sessionPrefix}`;
-
-      try {
-        const status = await this.checkStatus(possibleInstanceName);
-        if (status.connected) {
-          const duration = Date.now() - startTime;
-          this.logger.info('Instância encontrada e conectada', {
-            operation: 'findInstanceBySessionId',
-            sessionId,
-            instanceName: possibleInstanceName,
-            duration: `${duration}ms`
-          });
-          return possibleInstanceName;
-        }
-      } catch (error) {
-        // Instância não existe com esse nome
-        this.logger.debug('Instância não encontrada com nome padrão', {
-          operation: 'findInstanceBySessionId',
-          sessionId,
-          triedName: possibleInstanceName
-        });
-      }
-
-      const duration = Date.now() - startTime;
-      this.logger.warn('Nenhuma instância encontrada para sessionId', {
-        operation: 'findInstanceBySessionId',
-        sessionId,
-        duration: `${duration}ms`
-      });
-
-      return undefined;
-    } catch (error) {
-      const duration = Date.now() - startTime;
-      this.logger.error('Erro ao procurar instância', {
-        operation: 'findInstanceBySessionId',
-        sessionId,
-        duration: `${duration}ms`
-      }, error as Error);
-      
-      return undefined;
-    }
+    // Retornar undefined para forçar uso do endpoint de link manual
+    return undefined;
   }
 
   /**

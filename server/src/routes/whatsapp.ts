@@ -706,6 +706,89 @@ router.delete('/disconnect', async (req: Request, res: Response) => {
 });
 
 /**
+ * POST /api/v1/whatsapp/link
+ * 
+ * Vincula uma instância existente (já conectada no Evolution Manager) ao sessionId do usuário
+ * 
+ * Body:
+ *   - sessionId: string (obrigatório) - ID da sessão do usuário
+ *   - instanceName: string (obrigatório) - Nome da instância (ex: neuropgrag_1763390942512_2844c7c4)
+ * 
+ * Response:
+ *   - 200: { success: true, message: string, instanceName: string }
+ *   - 400: { error: string, message: string }
+ *   - 500: { error: string, message: string }
+ */
+router.post('/link', async (req: Request, res: Response) => {
+  const startTime = Date.now();
+  
+  try {
+    const { sessionId, instanceName } = req.body;
+
+    if (!sessionId || !instanceName) {
+      logger.warn('Tentativa de vincular sem sessionId ou instanceName', {
+        operation: 'POST /link',
+        ip: req.ip
+      });
+      
+      return res.status(400).json({
+        error: 'MISSING_PARAMETERS',
+        message: 'sessionId e instanceName são obrigatórios',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    logger.info('POST /link - Vinculando instância existente', {
+      operation: 'POST /link',
+      sessionId,
+      instanceName,
+      ip: req.ip
+    });
+
+    // Vincular instância ao sessionId
+    const success = await evolutionService.linkExistingInstance(sessionId, instanceName);
+
+    if (!success) {
+      return res.status(400).json({
+        error: 'LINK_FAILED',
+        message: 'Não foi possível vincular a instância. Verifique se ela está conectada.',
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    const duration = Date.now() - startTime;
+    logger.info('Instância vinculada com sucesso', {
+      operation: 'POST /link',
+      sessionId,
+      instanceName,
+      duration: `${duration}ms`
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Instância vinculada com sucesso ao sessionId',
+      instanceName,
+      sessionId,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error: any) {
+    const duration = Date.now() - startTime;
+    logger.error('Erro ao vincular instância', {
+      operation: 'POST /link',
+      duration: `${duration}ms`,
+      ip: req.ip
+    }, error);
+
+    return res.status(500).json({
+      error: 'LINK_ERROR',
+      message: error.message || 'Erro ao vincular instância',
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+/**
  * POST /api/v1/whatsapp/import
  * 
  * Importa contatos e mensagens do WhatsApp após conexão bem-sucedida
