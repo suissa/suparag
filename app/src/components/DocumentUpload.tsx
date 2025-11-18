@@ -44,7 +44,7 @@ export default function DocumentUpload() {
       const formData = new FormData();
       formData.append('file', file);
 
-      const response = await fetch('/api/v1/docs', {
+      const response = await fetch('/api/v1/rag/documents', {
         method: 'POST',
         body: formData,
       });

@@ -11,7 +11,8 @@ export default function Documents() {
     setLoading(true);
     try {
       const response = await documentsAPI.list();
-      setDocuments(response.data.documents || []);
+      // API retorna { success: true, data: { documents: [...] } }
+      setDocuments(response.data.data?.documents || response.data.documents || []);
     } catch (error) {
       console.error('Erro ao carregar documentos:', error);
     } finally {
@@ -37,7 +38,8 @@ export default function Documents() {
   const handleView = async (id: string) => {
     try {
       const response = await documentsAPI.get(id);
-      setSelectedDoc(response.data.document);
+      // API retorna { success: true, data: { document: {...} } }
+      setSelectedDoc(response.data.data?.document || response.data.document);
     } catch (error) {
       console.error('Erro ao carregar documento:', error);
     }
@@ -85,10 +87,10 @@ export default function Documents() {
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-800 text-lg">{doc.title}</h3>
                     <div className="flex gap-4 mt-2 text-sm text-gray-500">
-                      <span>{doc.type.toUpperCase()}</span>
-                      <span>{formatFileSize(doc.size)}</span>
-                      <span>{doc.characterCount?.toLocaleString()} caracteres</span>
-                      <span>{new Date(doc.createdAt).toLocaleDateString('pt-BR')}</span>
+                      <span>{doc.metadata?.type?.toUpperCase() || 'N/A'}</span>
+                      <span>{formatFileSize(doc.metadata?.size || 0)}</span>
+                      <span>{doc.metadata?.characterCount?.toLocaleString() || 0} caracteres</span>
+                      <span>{new Date(doc.created_at || doc.createdAt).toLocaleDateString('pt-BR')}</span>
                     </div>
                   </div>
                 </div>

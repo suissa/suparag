@@ -9,18 +9,18 @@ const api = axios.create({
   },
 });
 
-// Documents
+// Documents (usando rota RAG unificada)
 export const documentsAPI = {
   upload: (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    return api.post('/docs', formData, {
+    return api.post('/rag/documents', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
-  list: () => api.get('/docs'),
-  get: (id: string) => api.get(`/docs/${id}`),
-  delete: (id: string) => api.delete(`/docs/${id}`),
+  list: () => api.get('/rag/documents'),
+  get: (id: string) => api.get(`/rag/documents/${id}`),
+  delete: (id: string) => api.delete(`/rag/documents/${id}`),
 };
 
 // Settings

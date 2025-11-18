@@ -1,7 +1,61 @@
 import { Router, Request, Response } from 'express';
+import multer from 'multer';
+import pdfParse from 'pdf-parse';
+import fs from 'fs/promises';
 import { supabase } from '../config/supabase';
+import { embeddingService } from '../services/embeddingService';
 
 const router = Router();
+
+// Configuração do Multer para upload
+const storage = multer.diskStorage({
+  destination: async (req, file, cb) => {
+    const uploadDir = './uploads';
+    try {
+      await fs.mkdir(uploadDir, { recursive: true });
+      cb(null, uploadDir);
+    } catch (error) {
+      cb(error as Error, uploadDir);
+    }
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    cb(null, `${uniqueSuffix}-${file.originalname}`);
+  }
+});
+
+const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
+  const allowedMimes = ['application/pdf', 'text/plain', 'text/markdown'];
+  const allowedExts = ['.pdf', '.txt', '.md'];
+  const ext = file.originalname.toLowerCase().substring(file.originalname.lastIndexOf('.'));
+  
+  if (allowedMimes.includes(file.mimetype) || allowedExts.includes(ext)) {
+    cb(null, true);
+  } else {
+    cb(new Error('Tipo de arquivo não permitido. Use PDF, TXT ou MD'));
+  }
+};
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB
+});
+
+// Função para extrair texto do arquivo
+async function extractText(file: Express.Multer.File): Promise<string> {
+  const fileBuffer = await fs.readFile(file.path);
+  const ext = file.originalname.toLowerCase().substring(file.originalname.lastIndexOf('.'));
+  
+  if (file.mimetype === 'application/pdf' || ext === '.pdf') {
+    const pdfData = await pdfParse(fileBuffer);
+    return pdfData.text;
+  } else if (file.mimetype === 'text/plain' || ext === '.txt' || ext === '.md') {
+    return fileBuffer.toString('utf-8');
+  }
+  
+  throw new Error('Tipo de arquivo não suportado');
+}
 
 // GET /api/v1/rag/documents - Listar documentos RAG
 router.get('/documents', async (_req: Request, res: Response) => {
@@ -72,15 +126,70 @@ router.get('/documents/:id', async (req: Request, res: Response) => {
   }
 });
 
-// POST /api/v1/rag/documents - Criar documento RAG
-router.post('/documents', async (req: Request, res: Response) => {
+// POST /api/v1/rag/documents - Upload de documento com embedding
+router.post('/documents', upload.single('file'), async (req: Request, res: Response) => {
   try {
+    // Se tem arquivo, fazer upload
+    if (req.file) {
+      const extractedText = await extractText(req.file);
+      await fs.unlink(req.file.path).catch(() => {});
+
+      console.log(`📄 Texto extraído: ${extractedText.length} caracteres`);
+
+      // Gerar embedding
+      console.log('🔄 Gerando embedding...');
+      const embedding = await embeddingService.generateEmbedding(extractedText);
+      console.log(`✅ Embedding gerado: ${embedding.length} dimensões`);
+
+      const fileType = req.file.originalname.substring(req.file.originalname.lastIndexOf('.') + 1);
+      const filename = req.file.originalname;
+
+      const { data, error } = await supabase
+        .from('rag_documents')
+        .insert({
+          title: filename,
+          content: extractedText,
+          embedding: embedding,
+          source: 'upload',
+          metadata: {
+            filename,
+            type: fileType,
+            size: req.file.size,
+            characterCount: extractedText.length,
+            uploaded_via: 'file_upload'
+          }
+        })
+        .select()
+        .single();
+
+      if (error) {
+        throw new Error(`Falha ao salvar documento: ${error.message}`);
+      }
+
+      console.log(`✅ Documento salvo: ${data.id}`);
+
+      return res.status(201).json({
+        success: true,
+        message: 'Documento enviado com sucesso',
+        document: {
+          id: data.id,
+          filename: data.metadata.filename,
+          type: data.metadata.type,
+          size: data.metadata.size,
+          uploadedAt: data.created_at,
+          contentPreview: data.content.substring(0, 200),
+          characterCount: data.metadata.characterCount,
+        }
+      });
+    }
+
+    // Se não tem arquivo, criar documento via JSON
     const { title, content, source } = req.body;
 
     if (!title || !content) {
       return res.status(400).json({
         success: false,
-        message: 'Campos "title" e "content" são obrigatórios'
+        message: 'Campos "title" e "content" são obrigatórios (ou envie um arquivo)'
       });
     }
 
@@ -89,7 +198,7 @@ router.post('/documents', async (req: Request, res: Response) => {
       .insert({
         title,
         content,
-        source,
+        source: source || 'api',
         metadata: { uploaded_via: 'api' }
       })
       .select('id, title, content, metadata, source, created_at, updated_at')
@@ -109,10 +218,15 @@ router.post('/documents', async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     console.error('Erro ao criar documento:', error);
+    
+    if (req.file?.path) {
+      await fs.unlink(req.file.path).catch(() => {});
+    }
+
     return res.status(500).json({
       success: false,
-      message: 'Erro interno do servidor',
-      error: error.message
+      error: 'Upload failed',
+      message: error.message || 'Erro ao processar o arquivo'
     });
   }
 });
