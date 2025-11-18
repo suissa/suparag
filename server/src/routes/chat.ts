@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express';
 import { supabase } from '../config/supabase';
 import axios from 'axios';
+import { embeddingService } from '../services/embeddingService';
+import { env } from '../config/env';
 
 const router = Router();
 
@@ -42,15 +44,19 @@ router.post('/', async (req: Request, res: Response) => {
       });
     }
 
-    // 2. Gerar embedding da pergunta usando OpenRouter
-    const embedding = await getEmbedding(message, apiKey);
+    // 2. Gerar embedding da pergunta usando EmbeddingService
+    console.log('🔄 Gerando embedding da pergunta...');
+    const embedding = await embeddingService.generateEmbedding(message);
+    console.log(`✅ Embedding gerado: ${embedding.length} dimensões`);
 
-    // 3. Buscar contexto relevante usando busca semântica
+    // 3. Buscar contexto relevante usando busca HÍBRIDA (vetorial + full-text)
+    console.log('🔍 Buscando documentos relevantes (busca híbrida)...');
     const { data: chunks, error: searchError } = await supabase
-      .rpc('match_documents', {
-        query_embedding: embedding,
-        match_threshold: 0.5,
-        match_count: 5
+      .rpc('search_documents_hybrid_simple', {
+        search_term: message,
+        search_embedding: embedding,
+        trigram_limit: 50,
+        final_limit: 5
       });
 
     if (searchError) {
@@ -131,34 +137,5 @@ router.post('/', async (req: Request, res: Response) => {
     });
   }
 });
-
-// Função auxiliar para gerar embedding usando OpenRouter
-async function getEmbedding(text: string, apiKey: string): Promise<number[]> {
-  try {
-    // Usar o modelo de embeddings do OpenAI via OpenRouter
-    const response = await axios.post(
-      'https://openrouter.ai/api/v1/embeddings',
-      {
-        model: 'openai/text-embedding-3-small',
-        input: text
-      },
-      {
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'http://localhost:5173',
-          'X-Title': 'SUPARAG'
-        }
-      }
-    );
-
-    return response.data.data[0].embedding;
-  } catch (error: any) {
-    console.error('Erro ao gerar embedding:', error.response?.data || error.message);
-    // Fallback: retornar embedding dummy se falhar
-    console.warn('⚠️ Usando embedding dummy como fallback');
-    return new Array(1536).fill(0).map(() => Math.random());
-  }
-}
 
 export default router;

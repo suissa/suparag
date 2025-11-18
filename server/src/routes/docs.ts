@@ -3,6 +3,7 @@ import multer from 'multer';
 import pdfParse from 'pdf-parse';
 import fs from 'fs/promises';
 import { supabase, Document } from '../config/supabase';
+import { embeddingService } from '../services/embeddingService';
 
 const router = Router();
 
@@ -138,15 +139,23 @@ router.post('/', upload.single('file'), async (req: Request, res: Response) => {
     // Limpar arquivo temporário
     await fs.unlink(req.file.path).catch(() => {});
 
+    console.log(`📄 Texto extraído: ${extractedText.length} caracteres`);
+
+    // Gerar embedding do conteúdo
+    console.log('🔄 Gerando embedding...');
+    const embedding = await embeddingService.generateEmbedding(extractedText);
+    console.log(`✅ Embedding gerado: ${embedding.length} dimensões`);
+
     // Preparar dados para salvar no Supabase
     const fileType = req.file.originalname.substring(req.file.originalname.lastIndexOf('.') + 1);
     
     // Garantir que o nome do arquivo está em UTF-8
     const filename = Buffer.from(req.file.originalname, 'latin1').toString('utf-8');
     
-    const documentData: Document = {
+    const documentData: any = {
       title: filename,
       content: extractedText,
+      embedding: embedding, // Adicionar embedding
       metadata: {
         filename: filename,
         type: fileType,
