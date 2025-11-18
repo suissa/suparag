@@ -65,16 +65,53 @@ async function extractText(file: Express.Multer.File): Promise<string> {
   
   if (file.mimetype === 'application/pdf' || ext === '.pdf') {
     try {
-      const pdfData = await pdfParse(fileBuffer);
-      return pdfData.text;
+      // Extrair texto do PDF com encoding UTF-8
+      const pdfData = await pdfParse(fileBuffer, {
+        // Garantir que o texto seja extraído em UTF-8
+        max: 0 // sem limite de páginas
+      });
+      
+      // Normalizar o texto para UTF-8
+      let text = pdfData.text;
+      
+      // Tentar corrigir problemas de encoding comuns
+      // Se detectar caracteres mal codificados, tentar recodificar
+      if (text.includes('Ã') || text.includes('Â') || text.includes('Ã§')) {
+        try {
+          // Tentar converter de latin1 para UTF-8
+          const buffer = Buffer.from(text, 'latin1');
+          text = buffer.toString('utf-8');
+        } catch (e) {
+          // Se falhar, manter o texto original
+          console.warn('Não foi possível corrigir encoding do PDF');
+        }
+      }
+      
+      return text;
     } catch (error) {
       console.error('Erro ao extrair texto do PDF:', error);
       throw new Error('Falha ao processar PDF');
     }
   } else if (file.mimetype === 'text/plain' || ext === '.txt') {
-    return fileBuffer.toString('utf-8');
+    // Tentar detectar encoding automaticamente
+    let text = fileBuffer.toString('utf-8');
+    
+    // Se detectar problemas de encoding, tentar latin1
+    if (text.includes('�')) {
+      text = fileBuffer.toString('latin1');
+    }
+    
+    return text;
   } else if (file.mimetype === 'text/markdown' || ext === '.md') {
-    return fileBuffer.toString('utf-8');
+    // Tentar detectar encoding automaticamente
+    let text = fileBuffer.toString('utf-8');
+    
+    // Se detectar problemas de encoding, tentar latin1
+    if (text.includes('�')) {
+      text = fileBuffer.toString('latin1');
+    }
+    
+    return text;
   }
   
   throw new Error('Tipo de arquivo não suportado');
@@ -103,11 +140,15 @@ router.post('/', upload.single('file'), async (req: Request, res: Response) => {
 
     // Preparar dados para salvar no Supabase
     const fileType = req.file.originalname.substring(req.file.originalname.lastIndexOf('.') + 1);
+    
+    // Garantir que o nome do arquivo está em UTF-8
+    const filename = Buffer.from(req.file.originalname, 'latin1').toString('utf-8');
+    
     const documentData: Document = {
-      title: req.file.originalname,
+      title: filename,
       content: extractedText,
       metadata: {
-        filename: req.file.originalname,
+        filename: filename,
         type: fileType,
         size: req.file.size,
         characterCount: extractedText.length,
