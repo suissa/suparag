@@ -4,7 +4,7 @@ import { env } from '../config/env';
  * Serviço para gerar embeddings usando OpenRouter API
  */
 export class EmbeddingService {
-  private apiKey: string;
+  private apiKey: string | undefined;
   private apiUrl: string;
   private model: string;
 
@@ -12,6 +12,33 @@ export class EmbeddingService {
     this.apiKey = env.openrouter.apiKey;
     this.apiUrl = 'https://openrouter.ai/api/v1/embeddings';
     this.model = 'openai/text-embedding-3-small'; // Modelo de embedding
+    
+    console.log('[EmbeddingService] Inicializado');
+    console.log(`[EmbeddingService] API Key do env: ${this.apiKey ? '✅ Encontrada' : '❌ Não encontrada'}`);
+  }
+
+  /**
+   * Busca API key do banco de dados (tabela settings)
+   */
+  private async getApiKeyFromDatabase(): Promise<string | null> {
+    try {
+      const { supabase } = await import('../config/supabase');
+      const { data, error } = await supabase
+        .from('settings')
+        .select('openrouter_api_key')
+        .single();
+
+      if (error || !data?.openrouter_api_key) {
+        console.warn('[EmbeddingService] API key não encontrada no banco');
+        return null;
+      }
+
+      console.log('[EmbeddingService] ✅ API key encontrada no banco');
+      return data.openrouter_api_key;
+    } catch (error) {
+      console.error('[EmbeddingService] Erro ao buscar API key do banco:', error);
+      return null;
+    }
   }
 
   /**
@@ -24,10 +51,24 @@ export class EmbeddingService {
     try {
       console.log(`[EmbeddingService] Gerando embedding para texto de ${text.length} caracteres`);
 
+      // Tentar pegar API key do env primeiro, depois do banco
+      let apiKey = this.apiKey;
+      
+      if (!apiKey) {
+        console.log('[EmbeddingService] API key não encontrada no env, buscando no banco...');
+        apiKey = await this.getApiKeyFromDatabase();
+      }
+
+      if (!apiKey) {
+        throw new Error('API key do OpenRouter não configurada (nem no env nem no banco)');
+      }
+
+      console.log(`[EmbeddingService] Usando API key: ${apiKey.substring(0, 10)}...`);
+
       const response = await fetch(this.apiUrl, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${this.apiKey}`,
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
           'HTTP-Referer': 'http://localhost:4000',
           'X-Title': 'NeuroPgRag'
