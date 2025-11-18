@@ -184,9 +184,9 @@ router.post('/', async (req: Request, res: Response) => {
       success: true,
       message: assistantMessage,
       sources: chunks?.map((c: any) => ({
-        documentId: c.document_id,
-        content: c.content.substring(0, 200) + '...',
-        similarity: c.similarity
+        documentId: c.id || c.document_id,
+        content: c.content ? c.content.substring(0, 200) + '...' : '',
+        similarity: c.score || c.similarity || c.combined_score || 0
       })) || []
     });
 
