@@ -6,11 +6,13 @@ import { Button } from '../../components/Button';
 import { Input } from '../../components/Input';
 import { Modal } from '../../components/Modal';
 import { Card } from '../../components/Card';
+import { FileUpload } from '../../components/FileUpload';
 import { useRagDocuments, useCreateRagDocument, useDeleteRagDocument, useSemanticSearch } from '../../hooks/useRagDocs';
 import type { RagDocument, SearchMatch } from '../../services/supabaseClient';
+import api from '../../services/api';
 
 export default function RagPage() {
-  const { data: documents = [], isLoading } = useRagDocuments();
+  const { data: documents = [], isLoading, refetch } = useRagDocuments();
   const createDocument = useCreateRagDocument();
   const deleteDocument = useDeleteRagDocument();
   const semanticSearch = useSemanticSearch();
@@ -18,6 +20,9 @@ export default function RagPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchMatch[]>([]);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -29,16 +34,61 @@ export default function RagPage() {
     doc.content.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleFileSelect = (file: File) => {
+    setSelectedFile(file);
+    setFormData({ ...formData, title: file.name, source: file.name });
+  };
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    try {
-      // Gerar embedding sintético
-      const embedding = Array.from({ length: 1536 }, () => Math.random() * 2 - 1);
-      await createDocument.mutateAsync({ ...formData, embedding });
-      setIsModalOpen(false);
-      setFormData({ title: '', content: '', source: '' });
-    } catch (error) {
-      console.error('Erro ao criar documento:', error);
+    
+    if (selectedFile) {
+      // Upload de arquivo
+      try {
+        setIsUploading(true);
+        setUploadProgress(0);
+
+        const formDataUpload = new FormData();
+        formDataUpload.append('file', selectedFile);
+
+        const response = await api.post('/docs', formDataUpload, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          onUploadProgress: (progressEvent) => {
+            const progress = progressEvent.total 
+              ? Math.round((progressEvent.loaded * 100) / progressEvent.total)
+              : 0;
+            setUploadProgress(progress);
+          },
+        });
+
+        console.log('Documento enviado com sucesso:', response.data);
+        
+        // Recarregar lista de documentos
+        await refetch();
+        
+        // Fechar modal e limpar estado
+        setIsModalOpen(false);
+        setSelectedFile(null);
+        setFormData({ title: '', content: '', source: '' });
+        setUploadProgress(0);
+      } catch (error) {
+        console.error('Erro ao enviar arquivo:', error);
+        alert('Erro ao enviar arquivo. Tente novamente.');
+      } finally {
+        setIsUploading(false);
+      }
+    } else {
+      // Criação manual (texto)
+      try {
+        const embedding = Array.from({ length: 1536 }, () => Math.random() * 2 - 1);
+        await createDocument.mutateAsync({ ...formData, embedding });
+        setIsModalOpen(false);
+        setFormData({ title: '', content: '', source: '' });
+      } catch (error) {
+        console.error('Erro ao criar documento:', error);
+      }
     }
   };
 

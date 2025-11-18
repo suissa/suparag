@@ -78,35 +78,10 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
   });
 
   /**
-   * Tenta vincular uma instância existente ao sessionId
-   * Usado quando há uma instância conectada no Evolution Manager mas não vinculada
-   * 
-   * @param instanceName - Nome da instância a vincular
-   */
-  const linkExistingInstance = async (instanceName: string): Promise<boolean> => {
-    try {
-      console.log('[WhatsAppConnectionContext] Tentando vincular instância existente...', {
-        sessionId,
-        instanceName
-      });
-      
-      const response = await api.post('/whatsapp/link', {
-        sessionId,
-        instanceName
-      });
-      
-      console.log('[WhatsAppConnectionContext] Instância vinculada com sucesso:', response.data);
-      
-      return true;
-    } catch (error: any) {
-      console.error('[WhatsAppConnectionContext] Erro ao vincular instância:', error);
-      return false;
-    }
-  };
-
-  /**
    * Verifica o status atual da conexão consultando o backend
    * Atualiza o estado isConnected baseado na resposta
+   * 
+   * O backend busca automaticamente instâncias conectadas e vincula ao sessionId
    * 
    * Consulta GET /api/v1/whatsapp/status e atualiza o estado global
    * 
@@ -130,27 +105,10 @@ export function WhatsAppConnectionProvider({ children }: WhatsAppConnectionProvi
     } catch (error: any) {
       console.error('[WhatsAppConnectionContext] Erro ao verificar conexão:', error);
       
-      // Se o erro for INSTANCE_NOT_FOUND, tentar vincular instância existente
+      // Se o erro for INSTANCE_NOT_FOUND, o backend já tentou buscar automaticamente
+      // Apenas logar e assumir desconectado
       if (error.response?.data?.error === 'INSTANCE_NOT_FOUND') {
-        console.log('[WhatsAppConnectionContext] Instância não encontrada, tentando vincular existente...');
-        
-        // Tentar vincular com nome padrão baseado no sessionId
-        // Formato: neuropgrag_{timestamp}_{uuid}
-        const instanceName = prompt(
-          'Instância WhatsApp não vinculada.\n\n' +
-          'Cole o nome da instância conectada no Evolution Manager\n' +
-          '(ex: neuropgrag_1763390942512_2844c7c4):'
-        );
-        
-        if (instanceName && instanceName.trim()) {
-          const linked = await linkExistingInstance(instanceName.trim());
-          
-          if (linked) {
-            // Tentar verificar status novamente após vincular
-            await checkConnection();
-            return;
-          }
-        }
+        console.log('[WhatsAppConnectionContext] Nenhuma instância conectada encontrada automaticamente');
       }
       
       // Em caso de erro, assumir desconectado

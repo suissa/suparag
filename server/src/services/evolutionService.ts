@@ -255,20 +255,148 @@ export class EvolutionService {
   }
 
   /**
-   * Tenta encontrar uma instância conectada para vincular ao sessionId
-   * SOLUÇÃO TEMPORÁRIA: Retorna undefined para forçar uso do endpoint de link manual
+   * Lista todas as instâncias da Evolution API via HTTP
+   * 
+   * @returns Array de instâncias
+   */
+  async listAllInstances(): Promise<any[]> {
+    const startTime = Date.now();
+    
+    try {
+      this.logger.info('Listando todas as instâncias da Evolution API', {
+        operation: 'listAllInstances'
+      });
+
+      // Fazer requisição HTTP direta para a Evolution API
+      const response = await fetch(`${env.evolution.apiUrl}/instance/fetchInstances`, {
+        method: 'GET',
+        headers: {
+          'apikey': env.evolution.apiKey,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const instances = await response.json();
+
+      const duration = Date.now() - startTime;
+      this.logger.info('Instâncias listadas com sucesso', {
+        operation: 'listAllInstances',
+        count: Array.isArray(instances) ? instances.length : 0,
+        duration: `${duration}ms`
+      });
+
+      return Array.isArray(instances) ? instances : [];
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      this.logger.error('Erro ao listar instâncias da API', {
+        operation: 'listAllInstances',
+        duration: `${duration}ms`
+      }, error as Error);
+      
+      return [];
+    }
+  }
+
+  /**
+   * Busca automaticamente uma instância conectada disponível para vincular ao sessionId
+   * Lista todas as instâncias da Evolution API e retorna a primeira conectada não vinculada
    * 
    * @param sessionId - ID da sessão do usuário
    * @returns instanceName se encontrado, undefined caso contrário
    */
   async findInstanceBySessionId(sessionId: string): Promise<string | undefined> {
-    this.logger.info('findInstanceBySessionId chamado - use linkExistingInstance com instanceName específico', {
-      operation: 'findInstanceBySessionId',
-      sessionId
-    });
+    const startTime = Date.now();
     
-    // Retornar undefined para forçar uso do endpoint de link manual
-    return undefined;
+    try {
+      this.logger.info('Buscando instância conectada automaticamente', {
+        operation: 'findInstanceBySessionId',
+        sessionId
+      });
+
+      // Listar instâncias já vinculadas para não reutilizar
+      const linkedInstances = new Set(
+        Array.from(this.instances.values()).map(data => data.instanceName)
+      );
+
+      this.logger.debug('Instâncias já vinculadas', {
+        operation: 'findInstanceBySessionId',
+        linkedCount: linkedInstances.size,
+        linkedInstances: Array.from(linkedInstances)
+      });
+
+      // Listar todas as instâncias da Evolution API
+      const allInstances = await this.listAllInstances();
+
+      if (allInstances.length === 0) {
+        this.logger.warn('Nenhuma instância encontrada na Evolution API', {
+          operation: 'findInstanceBySessionId',
+          sessionId
+        });
+        return undefined;
+      }
+
+      this.logger.info('Instâncias encontradas na Evolution API', {
+        operation: 'findInstanceBySessionId',
+        sessionId,
+        totalInstances: allInstances.length
+      });
+
+      // Procurar primeira instância conectada não vinculada
+      for (const instance of allInstances) {
+        const instanceName = instance.instance?.instanceName || instance.instanceName;
+        
+        if (!instanceName) continue;
+
+        // Pular se já está vinculada
+        if (linkedInstances.has(instanceName)) {
+          this.logger.debug('Instância já vinculada, pulando', {
+            operation: 'findInstanceBySessionId',
+            instanceName
+          });
+          continue;
+        }
+
+        // Verificar se está conectada
+        const state = instance.instance?.state || instance.state;
+        const isConnected = state === 'open' || state === 'OPEN';
+
+        if (isConnected) {
+          const duration = Date.now() - startTime;
+          this.logger.info('Instância conectada encontrada automaticamente!', {
+            operation: 'findInstanceBySessionId',
+            sessionId,
+            instanceName,
+            state,
+            duration: `${duration}ms`
+          });
+          return instanceName;
+        }
+      }
+
+      const duration = Date.now() - startTime;
+      this.logger.warn('Nenhuma instância conectada disponível encontrada', {
+        operation: 'findInstanceBySessionId',
+        sessionId,
+        totalInstances: allInstances.length,
+        linkedInstances: linkedInstances.size,
+        duration: `${duration}ms`
+      });
+
+      return undefined;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      this.logger.error('Erro ao buscar instância automaticamente', {
+        operation: 'findInstanceBySessionId',
+        sessionId,
+        duration: `${duration}ms`
+      }, error as Error);
+      
+      return undefined;
+    }
   }
 
   /**
