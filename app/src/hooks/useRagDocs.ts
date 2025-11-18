@@ -1,5 +1,4 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '../services/supabaseClient';
 import type { RagDocument, SearchMatch } from '../services/supabaseClient';
 import axios from 'axios';
 
@@ -9,13 +8,8 @@ export const useRagDocuments = () => {
   return useQuery({
     queryKey: ['rag-documents'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('rag_documents')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      return data as RagDocument[];
+      const response = await axios.get(`${API_URL}/rag/documents`);
+      return response.data.data.documents as RagDocument[];
     },
   });
 };
@@ -24,14 +18,8 @@ export const useRagDocument = (id: string) => {
   return useQuery({
     queryKey: ['rag-document', id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('rag_documents')
-        .select('*')
-        .eq('id', id)
-        .single();
-      
-      if (error) throw error;
-      return data as RagDocument;
+      const response = await axios.get(`${API_URL}/rag/documents/${id}`);
+      return response.data.data.document as RagDocument;
     },
     enabled: !!id,
   });

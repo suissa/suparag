@@ -7,8 +7,8 @@ const router = Router();
 router.get('/documents', async (req: Request, res: Response) => {
   try {
     const { data, error } = await supabase
-      .from('rag_documents')
-      .select('*')
+      .from('documents')
+      .select('id, title, content, metadata, source, created_at, updated_at')
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -38,9 +38,9 @@ router.get('/documents/:id', async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const { data, error } = await supabase
-      .from('rag_documents')
-      .select('*')
+    const { data, error} = await supabase
+      .from('documents')
+      .select('id, title, content, metadata, source, section, created_at, updated_at')
       .eq('id', id)
       .single();
 
@@ -75,7 +75,7 @@ router.get('/documents/:id', async (req: Request, res: Response) => {
 // POST /api/v1/rag/documents - Criar documento RAG
 router.post('/documents', async (req: Request, res: Response) => {
   try {
-    const { title, content, source, embedding } = req.body;
+    const { title, content, source } = req.body;
 
     if (!title || !content) {
       return res.status(400).json({
@@ -85,14 +85,14 @@ router.post('/documents', async (req: Request, res: Response) => {
     }
 
     const { data, error } = await supabase
-      .from('rag_documents')
+      .from('documents')
       .insert({
         title,
         content,
         source,
-        embedding
+        metadata: { uploaded_via: 'api' }
       })
-      .select()
+      .select('id, title, content, metadata, source, created_at, updated_at')
       .single();
 
     if (error) {
@@ -205,7 +205,7 @@ router.delete('/documents/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const { error } = await supabase
-      .from('rag_documents')
+      .from('documents')
       .delete()
       .eq('id', id);
 
