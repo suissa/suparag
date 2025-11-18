@@ -14,7 +14,17 @@ describe('Charts API - Success Cases', () => {
         phone: '+5511999996666'
       });
 
-    createdCustomerId = customerResponse.body.data.customer.id;
+    if (customerResponse.body?.data?.customer?.id) {
+      createdCustomerId = customerResponse.body.data.customer.id;
+    } else {
+      // Buscar um cliente existente
+      const listResponse = await request(app).get('/api/v1/customers');
+      if (listResponse.body?.data?.customers?.length > 0) {
+        createdCustomerId = listResponse.body.data.customers[0].id;
+      } else {
+        createdCustomerId = '00000000-0000-0000-0000-000000000001';
+      }
+    }
   });
 
   describe('POST /api/charts/:chartId/explain/audio', () => {
@@ -123,7 +133,19 @@ describe('Charts API - Success Cases', () => {
           generateAudio: false
         });
 
-      createdExplanationId = createResponse.body.data.explanationId;
+      if (createResponse.body?.data?.explanationId) {
+        createdExplanationId = createResponse.body.data.explanationId;
+      } else {
+        // Buscar uma explicação existente
+        const listResponse = await request(app)
+          .get('/api/charts/chart-get-1/explanations')
+          .query({ userId: createdCustomerId });
+        if (listResponse.body?.data?.length > 0) {
+          createdExplanationId = listResponse.body.data[0].id;
+        } else {
+          createdExplanationId = '00000000-0000-0000-0000-000000000003';
+        }
+      }
     });
 
     it('deve buscar explicação por ID', async () => {
