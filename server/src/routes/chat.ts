@@ -121,7 +121,8 @@ router.post('/', async (req: Request, res: Response) => {
 
     console.log(`✅ Total após deduplicação: ${chunks.length} documentos únicos`);
     chunks.forEach((doc, i) => {
-      console.log(`  ${i + 1}. [${doc.source}] Score: ${doc.score?.toFixed(3)} - ${doc.title?.substring(0, 50)}...`);
+      const scoreStr = typeof doc.score === 'number' ? doc.score.toFixed(3) : String(doc.score || 'N/A');
+      console.log(`  ${i + 1}. [${doc.source}] Score: ${scoreStr} - ${doc.title?.substring(0, 50)}...`);
     });
 
     // 4. Construir contexto

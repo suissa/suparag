@@ -121,7 +121,7 @@ export default function ChatPanel() {
               <MessageSquare size={32} />
             </div>
             <h3 className="text-lg font-semibold text-gray-800 dark:text-gray-200">
-              Welcome to DocuChat AI!
+              Welcome to suparag!
             </h3>
             <p className="max-w-xs">
               Ask me anything about the documents in your knowledge base to get started.
