@@ -126,7 +126,7 @@ export const env = {
   
   // OpenRouter
   openRouter: {
-    apiKey: process.env.OPENROUTER_API_KEY
+    apiKey: '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' // process.env.OPENROUTER_API_KEY
   },
   
   // Upload
