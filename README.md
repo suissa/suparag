@@ -70,7 +70,7 @@ PROBLEMA: Nunca tinha usado o Supabase nem o pgvector diretamente, apenas via Lo
 - PROBLEMA: pedir coisas simples de frontend aproveitando que ele está usando o MCP do Playwright
 - SUGESTÃO: corrigir na mão com algumas classes do Tailwind que é bem mais rápido, porpem o mais correto é eu finalizar toda a interface com dados mockados para deixar tudo do jeito certo e só trabalhar com os dados e iknterações.
 
-## Melhorias necessárias
+## Melhorias necessárias no RAG
 
 - rerank
 - rerank human-in-the-loop
