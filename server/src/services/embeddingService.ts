@@ -122,9 +122,8 @@ export class EmbeddingService {
     } catch (error) {
       console.error('[EmbeddingService] Erro ao gerar embedding:', error);
       
-      // Fallback: retornar embedding sintético (zeros)
-      console.warn('[EmbeddingService] Usando embedding sintético como fallback');
-      return Array(1536).fill(0);
+      // NÃO usar fallback de zeros pois causa problemas com operador <=>
+      throw new Error(`Falha ao gerar embedding: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
     }
   }
 
