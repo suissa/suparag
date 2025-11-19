@@ -25,11 +25,11 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
     <div className="flex min-h-screen bg-[#101c22]">
       <aside className="w-64 flex-shrink-0 bg-[#111c22] p-4 flex flex-col justify-between h-screen sticky top-0">
         <div className="flex flex-col gap-2">
-          <div className="group flex flex-row items-center justify-center gap-2 px-2 w-full h-[80px] overflow-hidden">
+          <div className="group flex flex-row items-center justify-start gap-2 px-2 w-full h-[80px] overflow-hidden">
             {/* Aumentei para h-12 (aprox 48px). Se ainda achar pequeno, tente h-14 ou h-16 */}
             <img 
                 src="/logo-symbol.png" 
-                className="block w-auto object-contain h-[70px]" 
+                className="block w-auto object-contain h-[60px] ml-8" 
                 alt="Símbolo"
             />
             
