@@ -1,6 +1,0 @@
-Segundo documento de teste
-
-Este é outro documento para testar a busca semântica.
-Contém informações diferentes do primeiro documento.
-
-Palavras-chave: teste, segundo, diferente
