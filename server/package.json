@@ -17,7 +17,8 @@
     "seed:clean": "tsx scripts/seed_evaluations.ts clean",
     "seed:audio": "tsx scripts/seed_audio.ts generate",
     "seed:audio:clean": "tsx scripts/seed_audio.ts clean",
-    "report:evaluations": "tsx scripts/generate-evaluation-report.ts generate"
+    "report:evaluations": "tsx scripts/generate-evaluation-report.ts generate",
+    "test:webhook": "tsx scripts/test-whatsapp-webhook.ts"
   },
   "keywords": [
     "express",

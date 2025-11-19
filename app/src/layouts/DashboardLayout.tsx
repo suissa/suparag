@@ -29,7 +29,7 @@ export function DashboardLayout({ children }: DashboardLayoutProps) {
             {/* Aumentei para h-12 (aprox 48px). Se ainda achar pequeno, tente h-14 ou h-16 */}
             <img 
                 src="/logo-symbol.png" 
-                className="block w-auto object-contain h-[60px] ml-8" 
+                className="block w-auto object-contain h-[60px] ml-8 hover:grayscale hove:brightness-50" 
                 alt="Símbolo"
             />
             

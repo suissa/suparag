@@ -125,9 +125,8 @@ export default function ChatPanel() {
               <img src="/logo-full-top.png" className='w-[60%] h-auto block mx-auto duration-700 transition-all hover:blur-3xl hover:opacity-0' />
             </h3>
             <p className="max-w-xs">
-            
-Para começar, pergunte-me qualquer coisa sobre os documentos da sua base de conhecimento.
-</p>
+              
+Para começar, pergunte-me qualquer coisa sobre os documentos da sua base de conhecimento.</p>
           </div>
         ) : (
           <>

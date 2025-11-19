@@ -345,21 +345,13 @@ export class EvolutionService {
         totalInstances: allInstances.length
       });
 
-      // Procurar primeira instância conectada não vinculada
+      // Procurar QUALQUER instância conectada (ignorar se já está vinculada)
+      // SEMPRE usar a primeira instância conectada disponível
       for (const instance of allInstances) {
         // A Evolution API retorna: { name, connectionStatus, ... }
         const instanceName = instance.name || instance.instance?.instanceName || instance.instanceName;
         
         if (!instanceName) continue;
-
-        // Pular se já está vinculada
-        if (linkedInstances.has(instanceName)) {
-          this.logger.debug('Instância já vinculada, pulando', {
-            operation: 'findInstanceBySessionId',
-            instanceName
-          });
-          continue;
-        }
 
         // Verificar se está conectada
         // A Evolution API usa connectionStatus: "open" | "close"
@@ -373,6 +365,7 @@ export class EvolutionService {
             sessionId,
             instanceName,
             connectionStatus,
+            wasLinked: linkedInstances.has(instanceName),
             duration: `${duration}ms`
           });
           return instanceName;
@@ -686,6 +679,99 @@ export class EvolutionService {
       }, error as Error);
       
       throw new Error(`Falha ao importar mensagens: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+    }
+  }
+
+  /**
+   * Envia mensagem de texto para um número WhatsApp
+   * 
+   * @param phoneNumber - Número do destinatário (formato: 5511999999999)
+   * @param text - Texto da mensagem
+   * @returns true se enviado com sucesso
+   * @throws Error se o envio falhar
+   */
+  async sendTextMessage(phoneNumber: string, text: string): Promise<boolean> {
+    const startTime = Date.now();
+    
+    try {
+      // Buscar instância conectada
+      const instanceName = await this.findConnectedInstance();
+      
+      if (!instanceName) {
+        throw new Error('Nenhuma instância WhatsApp conectada disponível');
+      }
+
+      this.logger.info('Enviando mensagem de texto via WhatsApp', {
+        operation: 'sendTextMessage',
+        instanceName,
+        phoneNumber,
+        textLength: text.length
+      });
+
+      // Enviar mensagem usando SDK
+      await this.client.messages.sendText({
+        number: phoneNumber,
+        text: text
+      });
+
+      const duration = Date.now() - startTime;
+      this.logger.info('Mensagem enviada com sucesso', {
+        operation: 'sendTextMessage',
+        instanceName,
+        phoneNumber,
+        duration: `${duration}ms`
+      });
+
+      return true;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      this.logger.error('Erro ao enviar mensagem de texto', {
+        operation: 'sendTextMessage',
+        phoneNumber,
+        duration: `${duration}ms`
+      }, error as Error);
+      
+      throw new Error(`Falha ao enviar mensagem: ${error instanceof Error ? error.message : 'Erro desconhecido'}`);
+    }
+  }
+
+  /**
+   * Busca a primeira instância conectada disponível
+   * 
+   * @returns instanceName da instância conectada ou undefined
+   */
+  private async findConnectedInstance(): Promise<string | undefined> {
+    try {
+      // Primeiro, verificar instâncias locais
+      for (const [, data] of this.instances.entries()) {
+        const status = await this.checkStatus(data.instanceName);
+        if (status.connected) {
+          return data.instanceName;
+        }
+      }
+
+      // Se não encontrou localmente, buscar na API
+      const allInstances = await this.listAllInstances();
+      
+      for (const instance of allInstances) {
+        const instanceName = instance.name || instance.instance?.instanceName || instance.instanceName;
+        if (!instanceName) continue;
+
+        const connectionStatus = instance.connectionStatus || instance.instance?.state || instance.state;
+        const isConnected = connectionStatus === 'open' || connectionStatus === 'OPEN';
+
+        if (isConnected) {
+          return instanceName;
+        }
+      }
+
+      return undefined;
+    } catch (error) {
+      this.logger.error('Erro ao buscar instância conectada', {
+        operation: 'findConnectedInstance'
+      }, error as Error);
+      
+      return undefined;
     }
   }
 }

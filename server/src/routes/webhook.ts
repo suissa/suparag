@@ -1,6 +1,10 @@
 import { Router, Request, Response } from 'express';
+import { EvolutionService } from '../services/evolutionService';
+import { embeddingService } from '../services/embeddingService';
+import { supabase } from '../config/supabase';
 
 const router = Router();
+const evolutionService = new EvolutionService();
 
 // Interface para o payload do webhook
 interface WebhookPayload {
@@ -42,16 +46,128 @@ function extractMessageText(message: any): string {
   return '';
 }
 
-// Processar mensagem de texto/conversa
+// Função para formatar texto para WhatsApp
+function whatsappTextMessageFormatter(text: string): string {
+  // Remover caracteres não suportados pelo WhatsApp
+  let formatted = text
+    // Remover emojis complexos que podem causar problemas
+    .replace(/[\u{1F600}-\u{1F64F}]/gu, '') // Emoticons
+    .replace(/[\u{1F300}-\u{1F5FF}]/gu, '') // Símbolos e pictogramas
+    .replace(/[\u{1F680}-\u{1F6FF}]/gu, '') // Transporte e símbolos de mapa
+    .replace(/[\u{1F1E0}-\u{1F1FF}]/gu, '') // Bandeiras
+    .replace(/[\u{2600}-\u{26FF}]/gu, '')   // Símbolos diversos
+    .replace(/[\u{2700}-\u{27BF}]/gu, '')   // Dingbats
+    // Normalizar quebras de linha
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    // Remover múltiplas quebras de linha consecutivas (máximo 2)
+    .replace(/\n{3,}/g, '\n\n')
+    // Remover espaços no início e fim de cada linha
+    .split('\n')
+    .map(line => line.trim())
+    .join('\n')
+    // Remover espaços múltiplos
+    .replace(/  +/g, ' ')
+    // Limitar tamanho (WhatsApp tem limite de ~65536 caracteres)
+    .substring(0, 4000); // Usar limite conservador de 4000 caracteres
+
+  // Formatar markdown básico para WhatsApp
+  formatted = formatted
+    // Negrito: **texto** ou __texto__ -> *texto*
+    .replace(/\*\*(.+?)\*\*/g, '*$1*')
+    .replace(/__(.+?)__/g, '*$1*')
+    // Itálico: _texto_ -> _texto_ (já suportado)
+    // Tachado: ~~texto~~ -> ~texto~
+    .replace(/~~(.+?)~~/g, '~$1~')
+    // Código: `texto` -> ```texto```
+    .replace(/`([^`]+)`/g, '```$1```');
+
+  return formatted.trim();
+}
+
+// Processar mensagem de texto/conversa com busca RAG
 async function processConversation(phoneNumber: string, data: any): Promise<string> {
   const messageText = extractMessageText(data.message);
   console.log('💬 Processando conversa:', messageText);
+  console.log('📱 Telefone:', phoneNumber);
   
-  // TODO: Implementar processamento com IA + RAG
-  // TODO: Buscar contexto nos documentos
-  // TODO: Gerar resposta com LLM
-  
-  return `Mensagem de texto recebida: "${messageText}"`;
+  try {
+    // 1. Gerar embedding da pergunta
+    console.log('🔄 Gerando embedding da pergunta...');
+    const queryEmbedding = await embeddingService.generateEmbedding(messageText);
+    console.log(`✅ Embedding gerado: ${queryEmbedding.length} dimensões`);
+
+    // 2. Buscar documentos similares no Supabase
+    console.log('🔍 Buscando documentos similares...');
+    const { data: matches, error: searchError } = await supabase
+      .rpc('match_documents', {
+        query_embedding: queryEmbedding,
+        match_threshold: 0.3,
+        match_count: 3
+      });
+
+    if (searchError) {
+      console.error('❌ Erro na busca semântica:', searchError);
+      throw new Error(`Erro na busca: ${searchError.message}`);
+    }
+
+    console.log(`📚 Encontrados ${matches?.length || 0} documentos relevantes`);
+
+    // 3. Montar contexto com os documentos encontrados
+    let context = '';
+    if (matches && matches.length > 0) {
+      context = matches
+        .map((match: any, idx: number) => 
+          `[Documento ${idx + 1} - Relevância: ${(match.similarity * 100).toFixed(1)}%]\n${match.content}`
+        )
+        .join('\n\n---\n\n');
+    }
+
+    // 4. Gerar resposta usando LLM com contexto RAG
+    console.log('🤖 Gerando resposta com LLM...');
+    const prompt = context 
+      ? `Você é um assistente útil. Use o contexto abaixo para responder a pergunta do usuário de forma clara e objetiva.
+
+CONTEXTO:
+${context}
+
+PERGUNTA DO USUÁRIO:
+${messageText}
+
+RESPOSTA:`
+      : `Você é um assistente útil. Responda a pergunta do usuário de forma clara e objetiva.
+
+PERGUNTA:
+${messageText}
+
+RESPOSTA:`;
+
+    const llmResponse = await embeddingService.generateCompletion(prompt);
+    console.log('✅ Resposta gerada pelo LLM');
+
+    // 5. Formatar resposta para WhatsApp
+    const formattedResponse = whatsappTextMessageFormatter(llmResponse);
+    console.log(`📝 Resposta formatada (${formattedResponse.length} caracteres)`);
+
+    // 6. Enviar resposta via WhatsApp
+    console.log('📤 Enviando resposta via WhatsApp...');
+    await evolutionService.sendTextMessage(phoneNumber, formattedResponse);
+    console.log('✅ Resposta enviada com sucesso!');
+
+    return formattedResponse;
+  } catch (error: any) {
+    console.error('❌ Erro ao processar conversa:', error);
+    
+    // Tentar enviar mensagem de erro ao usuário
+    try {
+      const errorMessage = 'Desculpe, ocorreu um erro ao processar sua mensagem. Por favor, tente novamente.';
+      await evolutionService.sendTextMessage(phoneNumber, errorMessage);
+    } catch (sendError) {
+      console.error('❌ Erro ao enviar mensagem de erro:', sendError);
+    }
+    
+    throw error;
+  }
 }
 
 // Processar mensagem de imagem
