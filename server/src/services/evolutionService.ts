@@ -68,7 +68,7 @@ export class EvolutionService {
     this.client = new EvolutionClient({
       serverUrl: env.evolution.apiUrl,
       token: env.evolution.apiKey,
-      instance: 'SUPARAG'
+      instance: 'neuropgrag_1763390942512_2844c7c4'//'SUPARAG'
     });
 
     // Criar Map para armazenar instâncias ativas

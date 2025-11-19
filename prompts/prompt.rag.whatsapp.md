@@ -11,3 +11,7 @@ Então, você irá desenvolver esse Chatbot de WhatsApp recebendo no webhook, pr
 
 Crie um script que envie um payload com a pergunta e com o phoneNumber=xxx
 Eu confirmarei no chat se recebi ou não a resposta
+
+deve enviar para o phoneNumber que chega em processConversation 
+
+a lógica já existe

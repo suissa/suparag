@@ -230,13 +230,13 @@ router.post('/', async (req: Request, res: Response) => {
     }
 
     // Verificar se não é mensagem enviada por nós
-    if (payload.data?.key?.fromMe) {
-      console.log('⏭️ Mensagem própria ignorada');
-      return res.status(200).json({
-        success: true,
-        message: 'Mensagens próprias não são processadas'
-      });
-    }
+    // if (payload.data?.key?.fromMe) {
+    //   console.log('⏭️ Mensagem própria ignorada');
+    //   return res.status(200).json({
+    //     success: true,
+    //     message: 'Mensagens próprias não são processadas'
+    //   });
+    // }
 
     // Extrair informações da mensagem
     const remoteJid = payload.data?.key?.remoteJid;

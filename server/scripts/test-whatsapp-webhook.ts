@@ -10,7 +10,7 @@
 
 // Configuração
 const WEBHOOK_URL = 'http://localhost:4000/api/v1/webhook';
-const DEFAULT_PHONE = '5511999999999'; // Substitua pelo seu número
+const DEFAULT_PHONE = '5515997676610'; // Substitua pelo seu número
 const DEFAULT_MESSAGE = 'Olá! Como você pode me ajudar?';
 
 // Pegar argumentos da linha de comando
