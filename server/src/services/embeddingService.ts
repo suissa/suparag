@@ -19,19 +19,18 @@ export class EmbeddingService {
    */
   private getApiKeyFromEnv(): string | undefined {
     try {
-      // Tentar pegar diretamente do process.env primeiro
-      const apiKey = process.env.OPENROUTER_API_KEY;
-      
-      if (apiKey) {
-        console.log('[EmbeddingService] ✅ API key encontrada no env');
-        return apiKey;
-      }
-
-      // Tentar pegar do objeto env (se já foi carregado)
+      // Tentar pegar do objeto env primeiro (mais confiável)
       const { env } = require('../config/env');
       if (env?.openRouter?.apiKey) {
         console.log('[EmbeddingService] ✅ API key encontrada no env.openRouter');
         return env.openRouter.apiKey;
+      }
+
+      // Fallback: tentar pegar diretamente do process.env
+      const apiKey = process.env.OPENROUTER_API_KEY;
+      if (apiKey) {
+        console.log('[EmbeddingService] ✅ API key encontrada no process.env');
+        return apiKey;
       }
 
       console.warn('[EmbeddingService] ❌ API key não encontrada no env');
