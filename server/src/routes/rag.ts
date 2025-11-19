@@ -144,17 +144,14 @@ router.post('/documents', upload.single('file'), async (req: Request, res: Respo
       const fileType = req.file.originalname.substring(req.file.originalname.lastIndexOf('.') + 1);
       const filename = req.file.originalname;
 
-      // Converter embedding para formato pgvector (string)
-      const embeddingStr = `[${embedding.join(',')}]`;
-      
+      // Usar RPC para inserir com embedding
       const { data, error } = await supabase
-        .from('rag_documents')
-        .insert({
-          title: filename,
-          content: extractedText,
-          embedding: embeddingStr,
-          source: 'upload',
-          metadata: {
+        .rpc('insert_document_with_embedding', {
+          p_title: filename,
+          p_content: extractedText,
+          p_embedding_array: embedding,
+          p_source: 'upload',
+          p_metadata: {
             filename,
             type: fileType,
             size: req.file.size,
@@ -162,7 +159,6 @@ router.post('/documents', upload.single('file'), async (req: Request, res: Respo
             uploaded_via: 'file_upload'
           }
         })
-        .select()
         .single();
 
       if (error) {
