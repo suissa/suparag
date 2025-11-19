@@ -144,12 +144,15 @@ router.post('/documents', upload.single('file'), async (req: Request, res: Respo
       const fileType = req.file.originalname.substring(req.file.originalname.lastIndexOf('.') + 1);
       const filename = req.file.originalname;
 
+      // Converter embedding para formato pgvector (string)
+      const embeddingStr = `[${embedding.join(',')}]`;
+      
       const { data, error } = await supabase
         .from('rag_documents')
         .insert({
           title: filename,
           content: extractedText,
-          embedding: embedding,
+          embedding: embeddingStr,
           source: 'upload',
           metadata: {
             filename,
